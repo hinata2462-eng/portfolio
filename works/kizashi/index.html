@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AIニュースの発信「KIZASHI」｜作品ページ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap">
+<link rel="stylesheet" href="../../assets/case.css">
+<style>
+section h3 { font-size: 17px; font-weight: 700; margin: 26px 0 10px; }
+.lede { max-width: 46em; margin-bottom: 14px; }
+.who { width: 7.5em; }
+td .chip { margin: 1px 0; }
+.time { font-family: var(--mono); font-size: 13px; white-space: nowrap; }
+.human { border-left: 4px solid var(--warn); }
+.human ul { max-width: none; }
+.human h3 { margin-top: 0; }
+.fixes { counter-reset: fx; list-style: none; padding: 0; max-width: 46em; }
+.fixes li { position: relative; padding-left: 2.2em; }
+.fixes li::before { counter-increment: fx; content: counter(fx); position: absolute; left: 0; top: 2px; width: 1.6em; height: 1.6em; border-radius: 50%; border: 1.5px solid var(--accent); color: var(--accent); font: 700 12px/1.45 var(--mono); text-align: center; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0; }
+.stat b { display: block; font-family: var(--display); font-size: 24px; line-height: 1.25; }
+.stat span { display: block; font-size: 13px; color: var(--muted); margin-top: 4px; }
+.learn li { margin-top: 8px; }
+.learn b { color: var(--ink); }
+.src { font-size: 12.5px; color: var(--muted); margin-top: 10px; max-width: 46em; }
+.links { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.media { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 300px)); gap: 18px 24px; align-items: start; }
+.media figure { min-width: 0; }
+.v916 { position: relative; width: 100%; max-width: 300px; aspect-ratio: 9 / 16; border-radius: 10px; overflow: hidden; background: var(--line); border: 1px solid var(--line); }
+.v916 iframe, .v916 video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; object-fit: contain; background: var(--ink); }
+.rules td:first-child { font-family: var(--mono); white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../../">← ポートフォリオに戻る</a>
+
+  <header class="case-head">
+    <p class="eyebrow">SNSの自動運用 · 2026.07 –（運用中）</p>
+    <h1>AIニュースの発信「KIZASHI」</h1>
+    <p class="lead">新しいAIのニュースを毎日1本選び、試せる物は実際に試して、YouTube・TikTok・Instagram・X・noteに、それぞれ別の形で出しています。題材選びから制作、予約、公開の確認、翌朝の数字の記録まで、AIが決まった時刻に進めます。</p>
+    <div class="meta"><span class="chip ok">運用中</span><span class="tag">Claude Code</span><span class="tag">Codex（初期）</span><span class="tag">ブラウザの自動操作</span><span class="tag">Python（ffmpeg）</span><span class="tag">AivisSpeech</span></div>
+  </header>
+
+  <section>
+    <h2>何をしているか</h2>
+    <p class="lede">自分で作ったAIニュースのまとめサイト「AI進化レーダー」（3時間ごとに自動で記事を集めて要約するサイト）の、その時の上位5本から1本を選び、会社の公式の発表で確かめてから、短いニュースにします。無料で試せる物は、KIZASHI専用のブラウザでAIを実際に操作して試し、出てきた画面を見せて「使う・待つ・見送る」まで言います。試していない話は「試した」と言わず、「公式の発表で確かめた」と書きます。</p>
+    <p class="lede">見てほしい人は、AIが好きで、無料の ChatGPT や Gemini を自分でも試している日本の大人です。</p>
+
+    <h3>これまでの流れ</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>時期</th><th>起きたこと・変えたこと</th></tr></thead>
+        <tbody>
+          <tr><td class="time">2026.07</td><td>Codex で最初の仕組みを作る。AIのニュース3本を、4分の横長の解説動画と、X・Instagram用の素材にする手順書（スキル）。</td></tr>
+          <tr><td class="time">08.31</td><td>毎日の運用を Claude（Claude Code）へ移す。YouTube（本編・ショート）・note・X・Instagram の5か所。9/3 から毎日投稿、9/9 に TikTok を足す。</td></tr>
+          <tr><td class="time">09月</td><td>投稿の手段を API からブラウザの操作へ。X の API は前払いの残高が切れると投稿が止まり（8/31 に実際に止まった）、YouTube と note はブラウザの操作で足りたため。</td></tr>
+          <tr><td class="time">10.26</td><td>「紹介」をやめ、「実際に試して判定する」形へ。</td></tr>
+          <tr><td class="time">11.08</td><td>同じ動画を全部の場所に流すのをやめ、場所ごとに別の形へ。</td></tr>
+          <tr><td class="time">11.12</td><td>投稿が止まる日が続いたため、止まらない作りへ全面的に作り直す（下の「止まらないための作り」）。</td></tr>
+          <tr><td class="time">11.15</td><td>題材を「AI進化レーダーの上位5本から1本」に戻す。</td></tr>
+          <tr><td class="time">11.16</td><td>定時の回を作り直し、11/17 朝から人の手なしで最後まで動くことを確かめる。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>自動化の仕組み</h2>
+    <p class="lede">1つの話から、各場所に出す物をまとめて作り、1つのフォルダに置きます。出す日は場所ごとに違い、YouTube は翌朝 7:31、TikTok・Instagram・X はその前の晩です。どの回も、最初に「番人」の道具に足りない物を数えさせ、足りない物だけを決まった順に作ります。</p>
+
+    <h3>1本ができるまで</h3>
+    <ol class="flow">
+      <li><b>番人が数える</b><span>番人は「受け取り記録」（予約した・出した・置いた・出せなかった、を書いた紙）だけを読み、今日の分・先の用意・欠けた日を数えます。同じ作業を2つの回が同時にしないよう、最初に鍵を取ります。</span></li>
+      <li><b>題材を選ぶ</b><span>AI進化レーダーのその時の上位5本を読み込み、候補ごとに「見る人にとって何が変わるか」を1行ずつ書いてから1本選びます。レーダーは報道のまとめなので、必ず会社の公式の発表を探して確かめます。見つからない話は選びません。</span></li>
+      <li><b>実際に試す</b><span>KIZASHI専用のブラウザで、ログイン済み・無料の範囲だけAIを操作します。打った文そのまま、かかった秒数、押した物、出てきた画面を、試した順に記録します。新しいログイン・課金・設定の変更はしません。</span></li>
+      <li><b>型と雰囲気を選ぶ</b><span>場所ごとに、直近5本の型・雰囲気・始まり方を道具で読み、重ならない候補を3つ出させます。その中から、中身に合う物をAIが選びます。前の回の台本やコードは開かず、白紙から書きます。</span></li>
+      <li><b>台本と動画を作る</b><span>声はパソコンの中の音声合成（AivisSpeech、費用0円）、縦の動画は Python と ffmpeg で組み立てます。台本は別のAIに「下調べなしの、AIが好きな視聴者」として読ませ、10点満点で8点未満なら直します。</span></li>
+      <li><b>道具で検査する</b><span>長さ、最初の3場面の前置き、字幕と画面の重なり、直近5本との違いを道具が数で確かめます。通らなければ作り直し、並べた一覧を目でも見ます。</span></li>
+      <li><b>予約・公開する</b><span>YouTube Studio・X・Instagram・note を、ブラウザの操作で予約または公開します。出す直前に、その場所の直近の投稿とアカウント名を読みます（二重の投稿と、別のアカウントへの誤投稿を防ぐため）。TikTok 用は「運行ボード」に載せます。</span></li>
+      <li><b>記録する</b><span>出した物ごとに受け取り記録を書きます。翌朝、前の日の各場所の数字を1行ずつ残します。取れなかった日は「取れなかった（理由）」と書き、空欄にしません。</span></li>
+    </ol>
+
+    <h3>1日の時刻表</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>時刻</th><th>動くもの</th><th>やること</th><th class="who">担い手</th></tr></thead>
+        <tbody>
+          <tr><td class="time">6:04ごろ</td><td>朝の定時の回（定時タスク）</td><td>番人 → 前の日の数字の記録。YouTube の公開（7:31）より前に動くので、公開の確かめと note は次の回が拾う</td><td><span class="chip ok">自動</span></td></tr>
+          <tr><td class="time">6:55</td><td>パソコンの定時の処理</td><td>番人の結果を、朝のメモの1行目に出す（止まっていれば朝いちばんに分かる）</td><td><span class="chip ok">自動</span></td></tr>
+          <tr><td class="time">7:31</td><td>YouTube ショート</td><td>前の晩までに予約しておいた1本が公開される</td><td><span class="chip ok">自動</span></td></tr>
+          <tr><td class="time">8:17ごろ</td><td>朝の控えの回（作業の会話の中の予約）</td><td>公開の確かめ → 固定コメント → 関連動画の設定 → レーダーの「見た回」の欄にその回を載せる → note の公開</td><td><span class="chip ok">自動</span></td></tr>
+          <tr><td class="time">11:07ごろ</td><td>仕込みの回（同上）</td><td>先の用意や作り置きが足りない時だけ、新しく作る（1回に2つまで）。足りていれば何もせず終わる</td><td><span class="chip ok">自動</span></td></tr>
+          <tr><td class="time">16:08ごろ<br>16:11ごろ</td><td>夕の控えの回／夕の定時の回</td><td>今夜の TikTok 用をボードへ → 明日朝の YouTube を作って予約 → 今夜の X → Instagram のリールとストーリーズ。先に動いた方だけが作業し、もう片方は鍵を見て何もせず終わる</td><td><span class="chip ok">自動</span></td></tr>
+          <tr><td class="time">18〜21時ごろ</td><td>TikTok</td><td>ボードから動画を保存し、スマホのアプリで出して「出した」を押す</td><td><span class="chip warn">人</span></td></tr>
+          <tr><td class="time">21:30</td><td>切り替えの時刻</td><td>明日の YouTube が予約できていなければ、作り置きの「常備の回」に切り替える。それも無ければ X に文字と画像だけ出し、「動画なし」と報告する</td><td><span class="chip ok">自動</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel human" style="margin-top:18px">
+      <h3>人の手が残っている所と、その理由</h3>
+      <ul>
+        <li><b>TikTok への投稿</b>：パソコンのWebから出した動画は、おすすめに配られなかったため、人がスマホのアプリから出します。AIは動画と本文をボードに載せるだけで、「出した」の印は人だけが付けます。</li>
+        <li><b>ログイン・パスワード・課金・アカウントの設定</b>：AIはしません。ログインが切れた時（例：Instagram のストーリーズを出す Meta Business Suite）は、その分を飛ばして「待ち」の一覧に1行足し、ほかは止めずに進みます。</li>
+        <li><b>決まりを変えること</b>：毎日の回は決まりの紙を書き換えません。気づいた事は報告に1行書き、決まりにするかは人との会話で決めます。</li>
+      </ul>
+    </div>
+
+    <h3>止まらないための作り（11/12 の作り直し）</h3>
+    <p class="lede">11月7日から、投稿が出ない日が続きました。調べると、10/2〜11/6 に毎日出ていたのは定時タスクではなく、1つの会話の中の「1回きりの予約」を毎日つなぐ鎖で、11/8 にそれが切れていました。控えのはずの定時タスクは、10/1 以降の64回のうち、人の手なしで最後まで通った回が0回。最初の操作の確認待ちのまま約50分で打ち切られ、一覧には「成功」と出ていました。止まりに先に気づいたのは、毎回、人の方でした。</p>
+    <ol class="fixes">
+      <li><b>番人から始める</b>：どの回も、受け取り記録だけを数える番人から始め、終わりに「動いた印」を残します。途中で止まっても、次の回が続きから拾えます。</li>
+      <li><b>動かす役を二重に</b>：定時タスク（朝・夕）と、作業の会話の中の予約（朝・昼・夕）の両方で動かします。会話の中の予約は7日で切れるので、月曜と木曜に張り直します。鍵で、同じ作業を同時に2つ動かしません。</li>
+      <li><b>作る事と出す事を分ける</b>：YouTube は前の晩までに予約まで済ませておき、朝は確かめるだけにします。</li>
+      <li><b>作り置きと切り替えの時刻</b>：日付に縛られない「常備の回」を3本持ち、21:30 に間に合わなければそれに切り替えます。</li>
+      <li><b>人の返事を待って止めない</b>：返事・許可・ログイン待ちの物は飛ばし、「待ち」の一覧に1行足して先へ進みます。</li>
+      <li><b>止まったら見える</b>：番人の結果を朝のメモの1行目に出します。</li>
+    </ol>
+    <p class="lede" style="margin-top:12px">それでも11/16 は、会話の中の予約が会話ごと止まっていて1回も動かず、その日の分が丸ごと無くなりました（また人が先に見つけました）。そこで、人の承認を得て、定時タスクを確認なしで最後まで動く形に作り直し、11/16 夜の試しと 11/17 朝の回が最後まで動いたことを、記録の最後の行まで読んで確かめました。</p>
+  </section>
+
+  <section>
+    <h2>媒体ごとの作り分け</h2>
+    <p class="lede">同じ動画を全部の場所に流すのはやめました。Instagram では、YouTube と同じ動画のリールは再生の中央値が約6回、Instagram 専用に作ったリールは98回でした（数え方は少し違います）。場所ごとに役を決め、同じ話から別の物を作ります。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>場所</th><th>役</th><th>形</th><th>出す時</th><th>出し方</th></tr></thead>
+        <tbody>
+          <tr><td>YouTube<br>ショート</td><td>主戦場。知らない人に届き、登録してもらう</td><td>縦・声つき・1本に1つの話。30〜60秒。最初の3場面で「何の話か・使ったAI・何を渡して何と頼んだか」を言う。締めは登録のお願い1つ</td><td class="time">毎朝 7:31</td><td>YouTube Studio をブラウザで操作して公開予約。API は使わない</td></tr>
+          <tr><td>TikTok</td><td>その場で遊べる問い</td><td>声つき・15〜45秒。例：「AとB、どっちが効いた？」で答えを当ててもらう</td><td class="time">夜</td><td>AIはボードへ。人がスマホのアプリから</td></tr>
+          <tr><td>Instagram</td><td>人に送りたくなる技</td><td>声なしの専用リール（8〜22秒）。画面の文字が語りの代わり。ほかにストーリーズを1枚</td><td class="time">夜</td><td>リールは Web 版、ストーリーズは Meta Business Suite をブラウザで操作</td></tr>
+          <tr><td>X</td><td>文字で読む人に、結果を1行で</td><td>文字と、AIが実際に出した画面1枚。本文の中で答えまで渡し、頼み事はしない。日本語1字を2と数えて280以内を道具が確かめる</td><td class="time">夜</td><td>ブラウザで操作（最初は X の API。今は残高を足した時だけ）</td></tr>
+          <tr><td>note</td><td>試した記録を残す。検索で来る人の受け皿</td><td>3,000字以上・無料。打った文をそのまま枠で見せ、画面と説明、判定、確かめた範囲を書く</td><td class="time">朝（YouTube の後）</td><td>公開用の API が無いので、編集画面をブラウザで操作して公開</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul style="margin-top:14px">
+      <li>ブラウザの拡張で渡せるファイルは1回10MBまでなので、動画は 9.5MB 未満に縮めた版を作って上げます。</li>
+      <li>説明文には「AIで作っています」と書き、AIで作ったことを隠しません。</li>
+      <li>ショートの説明欄のリンクは押せない作りだと分かったので、そこでの「0回」を中身の失敗とは読みません。X では、レーダーへのリンクを返信に置く日と本文に置く日を、2日ずつ入れ替えて比べています。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>品質の関門（出す前の検品・決まりごと）</h2>
+    <ul class="learn">
+      <li><b>記録に残った物だけを「出した」と言う。</b>定時タスクの一覧の「成功」は信じず、公開ページや作業の記録の最後の行を読んで確かめます。</li>
+      <li><b>聞いて分かるかの検査。</b>台本を別のAIに視聴者として読ませ、言い直し・意味が取れない文・点数を出させます。8点未満は直します。「その・これ」や「右上」のような画面頼みの言葉は使わず、毎文に主語と何をしたかを入れます。</li>
+      <li><b>毎回ちがう顔。</b>直近5本と型・雰囲気・始まり方を道具で比べ、同じ物に戻らないようにします。</li>
+      <li><b>絵や画像の使い回しをしない。</b>人物の絵も毎回新しく描きます。</li>
+      <li><b>note の深さの検査。</b>字数・見出し・図などを道具が数え、通らないと公開用の形に変換しません。</li>
+      <li><b>確かめた事だけを書く。</b>公式の発表で確かめた事だけを使い、確かめていない事は「確かめていません」と書きます。判定は30日後に見直し、外れたら外れたと書きます。</li>
+    </ul>
+
+    <h3>失敗のたびに足してきた決まり（例）</h3>
+    <p class="lede">失敗するたびに、次の回から守る決まりを「0-◯◯」の番号で足してきました（0-2 から 0-60 まで）。</p>
+    <div class="table-wrap">
+      <table class="rules">
+        <thead><tr><th>番号</th><th>決まり</th><th>きっかけ</th></tr></thead>
+        <tbody>
+          <tr><td>0-52</td><td>絵を使い回さない。人物の絵は毎回新しく描く</td><td>「毎回画像がそっくり」と言われた</td></tr>
+          <tr><td>0-53</td><td>note は「試した記録」の型で、深さを道具で数える</td><td>「内容が薄い」と言われ、読まれている note 36本と比べて字数・見出し・画像の差を数えた</td></tr>
+          <tr><td>0-55</td><td>見る人を「AIが好きな人」に絞る</td><td>「お題が興味を引かない」と言われた</td></tr>
+          <tr><td>0-57</td><td>聞いて分かる文にする。読み手のAIの点数が8点未満なら直す</td><td>30秒に4つの話を詰め、「何を言っているか分からない」と言われた</td></tr>
+          <tr><td>0-58</td><td>最後に登録のお願いを声で1つ</td><td>動画の中で一度も登録を頼んでいなかった</td></tr>
+          <tr><td>0-60</td><td>場所ごとに別の形で作る</td><td>同じ動画の流し直しが、どの場所の仕組みにも合わなかった</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="lede" style="margin-top:12px">ただ、足し続けた結果、11/12 には決まりが約5.7万字、4割が失効、食い違いが30件以上になり、毎回読むのも守るのも難しくなっていました。そこで「全体の設計」「毎回の進め方」「場所ごとの仕様6枚」「工程ごとの手順4枚」に分け直し、前の番号が今どこにあるかは台帳で引けるようにしました。</p>
+  </section>
+
+  <section>
+    <h2>数字と学んだこと</h2>
+    <div class="stats">
+      <div class="stat"><b>21,449回</b><span>YouTube ショート 36本の合計（10/1〜11/5）。1本の最高は 1,192回</span></div>
+      <div class="stat"><b>11〜29%</b><span>スワイプせずに見た人の割合のふだんの幅。1つの話に絞った回で 54.3%・35.1%</span></div>
+      <div class="stat"><b>3人 → 14人</b><span>YouTube の登録者（9/1 → 11/7）。およそ3,000回の再生に1人</span></div>
+      <div class="stat"><b>表示346・スキ19</b><span>note の28日間（11/6 時点）。読まれた回数は36。10月末から全部無料</span></div>
+    </div>
+    <ul class="learn">
+      <li><b>止まっても気づけない作りだった。</b>1本の鎖に全部が掛かっていて、切れても誰にも知らせなかった。→ 番人・二重化・朝のメモの1行目（上の「止まらないための作り」）。</li>
+      <li><b>「深み」を情報の量と取り違えた。</b>30秒に4つの話を詰めた回は、スワイプせずに見た人が 16.3%。1つの話に絞った回は 54.3%（24時間で 1,173回・初めての視聴者のコメント）。まだ数本なので、手柄とは言わず数え続けています。</li>
+      <li><b>短さを分かりやすさより上に置いていた。</b>字数の上限で前置きまで削り、「何の話か分からない」と言われた。→ 長さの上限を広げ、最初の3場面で前置きを言うことを道具で確かめる形に。</li>
+      <li><b>数字の記録が 11/6 の朝で止まっていた。</b>決めていた判定が成り立たなくなったので、11/13 から数え直しています。</li>
+      <li><b>1,000回前後で止まる。</b>どの回も24時間でほぼ止まり、約1,200回を超えた回はありません。理由はまだ確かめられていません。</li>
+    </ul>
+    <p class="src">数字は運用の記録（11/12 にまとめた「出した物と数字」、10/25 の YouTube Studio の調べ）から。X の1投稿の表示は24時間で 2〜101、TikTok は10月以降の数字を取れていません（11/12 時点）。</p>
+  </section>
+
+  <section>
+    <h2>見てみる</h2>
+    <div class="links">
+      <a class="btn" href="https://www.youtube.com/@kizashi_jp" target="_blank" rel="noopener">YouTube ↗</a>
+      <a class="btn" href="https://www.tiktok.com/@kizashi_jp" target="_blank" rel="noopener">TikTok ↗</a>
+      <a class="btn" href="https://www.instagram.com/kizashi_jp/" target="_blank" rel="noopener">Instagram ↗</a>
+      <a class="btn" href="https://x.com/KIZASHI_jp" target="_blank" rel="noopener">X ↗</a>
+      <a class="btn" href="https://note.com/natty_swan9072" target="_blank" rel="noopener">note ↗</a>
+    </div>
+    <div class="media">
+      <figure>
+        <div class="v916"><iframe loading="lazy" src="https://www.youtube-nocookie.com/embed/e1hbA6ieveg" title="本日休業の貼り紙、1文字消えた（KIZASHI）" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+        <figcaption>11/4「本日休業の貼り紙、1文字消えた」。無料のGeminiに貼り紙の画像を3回頼み、1文字ずつ数えた回。36本の中で再生が最も多く（1,192回）、見た割合も最高（54.3%）。</figcaption>
+      </figure>
+      <figure>
+        <div class="v916"><iframe loading="lazy" src="https://www.youtube-nocookie.com/embed/vfj_FYhs7vo" title="ESETの守り専用AI、なぜ自前で作った？（KIZASHI）" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+        <figcaption>11/17「ESETの守り専用AI、なぜ自前で作った？」。レーダーのその日の1位の話を、会社の公式の発表で確かめて作った回（試していない話なので「試した」とは言っていません）。</figcaption>
+      </figure>
+      <figure>
+        <div class="v916"><video controls preload="none" playsinline poster="tiktok-ab-1109.jpg"><source src="tiktok-ab-1109.mp4" type="video/mp4"></video></div>
+        <figcaption>TikTok 用に作った「AとB、どっちが効いた？」の版（11/9 分）。同じ試しから、YouTube とは別の形で作っています。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <footer>数字はどれも運用の記録にある実測で、記録した時点のものです。題材の会社名は、ニュースの中身として出しています。</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>ワンタップ応募入力（デモ）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=JetBrains+Mono:wght@400&display=swap">
+<style>
+/* Layout: one narrow column of numbered step sheets, like the stub of a raffle ticket; the sample form sits in its own framed panel. */
+:root {
+  --bg: #f4f5f1;
+  --sheet: #ffffff;
+  --ink: #1d2521;
+  --muted: #5b6862;
+  --line: #d8dfda;
+  --accent: #2f45a3;
+  --accent-ink: #ffffff;
+  --ok: #2f9e68;
+  --todo: #e07f12;
+  --soft: #eef1ff;
+  --field: #fbfcfa;
+  --font-display: "Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
+  --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111513; --sheet: #1a201d; --ink: #e5ebe7; --muted: #9eaba4; --line: #2e3833;
+    --accent: #9aa8ff; --accent-ink: #11152b; --ok: #4fc58d; --todo: #f3a64a; --soft: #222842; --field: #151a17;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111513; --sheet: #1a201d; --ink: #e5ebe7; --muted: #9eaba4; --line: #2e3833;
+  --accent: #9aa8ff; --accent-ink: #11152b; --ok: #4fc58d; --todo: #f3a64a; --soft: #222842; --field: #151a17;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 400 15px/1.75 var(--font-body); }
+.wrap { max-width: 640px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 64px; display: grid; gap: 22px; }
+header { display: grid; gap: 8px; padding-top: 8px; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; color: var(--muted); font-weight: 500; }
+h1 { font-family: var(--font-display); font-weight: 900; font-size: clamp(28px, 7vw, 38px); line-height: 1.2; margin: 0; letter-spacing: .02em; text-wrap: balance; }
+.lead { margin: 0; color: var(--muted); max-width: 34em; }
+.does { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 6px; }
+.does div { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--sheet); font-size: 13px; line-height: 1.55; min-width: 0; }
+.does b { display: block; font-size: 12px; letter-spacing: .06em; margin-bottom: 2px; }
+.does .k-ok b { color: var(--ok); } .does .k-todo b { color: var(--todo); } .does .k-no b { color: var(--muted); }
+@media (max-width: 520px) { .does { grid-template-columns: 1fr; } }
+
+.sheet { background: var(--sheet); border: 1px solid var(--line); border-radius: 14px; padding: 20px 18px 22px; display: grid; gap: 14px; position: relative; }
+.step { display: flex; align-items: baseline; gap: 10px; min-height: 30px; padding-bottom: 12px; margin-inline: -18px; padding-inline: 18px; border-bottom: 1px dashed var(--line); }
+.num { font-family: var(--font-mono); font-size: 13px; color: var(--accent); border: 1.5px solid var(--accent); border-radius: 999px; width: 28px; height: 28px; display: inline-grid; place-items: center; flex: none; transform: translateY(-2px); }
+h2 { font-family: var(--font-display); font-size: 19px; font-weight: 700; margin: 0; text-wrap: balance; }
+.note { font-size: 13px; color: var(--muted); margin: 0; }
+
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 12px; margin-top: 6px; }
+.grid .wide { grid-column: 1 / -1; }
+label.f { display: grid; gap: 4px; font-size: 13px; font-weight: 500; min-width: 0; }
+label.f span.hint { font-weight: 400; color: var(--muted); font-size: 12px; }
+input[type=text], input[type=email], input[type=tel], input[type=date], select, textarea {
+  width: 100%; font: 400 16px/1.4 var(--font-body); color: var(--ink); background: var(--field);
+  border: 1px solid var(--line); border-radius: 9px; padding: 10px 11px; min-width: 0;
+}
+input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.opts { display: grid; gap: 10px; border-top: 1px solid var(--line); padding-top: 14px; }
+.check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; }
+.check input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--accent); flex: none; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; }
+.seg label { padding: 7px 12px; font-size: 13px; cursor: pointer; border-left: 1px solid var(--line); }
+.seg label:first-child { border-left: 0; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg label:has(input:checked) { background: var(--soft); color: var(--accent); font-weight: 700; }
+
+button.btn { font: 700 15px/1 var(--font-body); padding: 13px 16px; border-radius: 10px; border: 0; background: var(--accent); color: var(--accent-ink); cursor: pointer; }
+button.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); font-weight: 500; }
+button.btn:active { transform: translateY(1px); }
+.codebox { font: 400 12px/1.5 var(--font-mono); height: 92px; resize: vertical; word-break: break-all; color: var(--muted); }
+.status { font-size: 13px; color: var(--ok); min-height: 1.5em; margin: 0; }
+.status.warn { color: var(--todo); }
+.pc-link { display: inline-block; padding: 8px 14px; border-radius: 999px; border: 1.5px dashed var(--accent); color: var(--accent); text-decoration: none; font-weight: 700; font-size: 14px; }
+
+ol.how { margin: 0; padding-left: 0; list-style: none; counter-reset: s; display: grid; gap: 12px; }
+ol.how li { counter-increment: s; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; }
+ol.how li::before { content: counter(s); font: 400 12px/26px var(--font-mono); text-align: center; width: 26px; height: 26px; border-radius: 7px; background: var(--soft); color: var(--accent); }
+ol.how b { font-weight: 700; }
+.ui { display: inline-block; font-size: 12px; padding: 0 6px; border: 1px solid var(--line); border-radius: 5px; background: var(--field); white-space: nowrap; }
+.sub { font-family: var(--font-display); font-size: 15px; font-weight: 700; margin: 6px 0 0; }
+.ico { width: 14px; height: 14px; vertical-align: -2px; fill: currentColor; }
+.ico[fill="none"] { fill: none; }
+.mock { border: 1px solid var(--line); border-radius: 14px; background: var(--field); padding: 12px; display: grid; gap: 8px; max-width: 360px; font-size: 14px; }
+.mock-bar { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; color: var(--accent); }
+.mock-bar b { color: var(--ink); }
+.mock-field { background: var(--sheet); border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px; display: flex; justify-content: space-between; gap: 8px; min-width: 0; }
+.mock-field span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.mock-field.hot { border: 2px solid var(--todo); }
+.mock-field .x { color: var(--muted); flex: none; }
+.mock-tip { color: var(--todo); font-weight: 700; font-size: 13px; }
+details { border-top: 1px solid var(--line); padding-top: 12px; }
+summary { cursor: pointer; font-weight: 700; font-size: 14px; }
+details > div { padding-top: 10px; display: grid; gap: 10px; font-size: 14px; }
+ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+
+/* sample form, styled like a typical lottery entry form */
+.demo { border: 1px solid var(--line); border-radius: 12px; padding: 14px; background: var(--bg); display: grid; gap: 10px; }
+.demo-title { font-weight: 700; font-size: 14px; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.demo-title span { font-weight: 400; color: var(--muted); font-size: 12px; }
+.q { background: var(--sheet); border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: grid; gap: 6px; }
+.q .qt { font-weight: 700; font-size: 14px; }
+.q .req { display: inline-block; font-size: 11px; background: #d3343f; color: #fff; padding: 0 5px; border-radius: 3px; margin-left: 6px; vertical-align: 2px; font-weight: 700; }
+.q .help { font-size: 12px; color: var(--muted); margin: 0; white-space: pre-line; }
+.q label.o { display: flex; gap: 8px; align-items: center; font-size: 14px; }
+.q label.o input { width: 18px; height: 18px; accent-color: var(--accent); }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+.legend i { display: inline-block; width: 14px; height: 14px; border-radius: 3px; vertical-align: -2px; margin-right: 5px; }
+footer { font-size: 12px; color: var(--muted); text-align: center; }
+@media (max-width: 520px) { .grid { grid-template-columns: 1fr 1fr; } .grid .half-sm { grid-column: 1 / -1; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+
+/* デモ版の注記バナーと、手順6のリンクボタン */
+.demo-banner { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; padding: 6px 12px; background: #fff7e6; color: #6b4d0a; border-bottom: 1px solid #f0d9a8; font-size: 12.5px; }
+.demo-banner button { font: inherit; font-size: 12px; padding: 2px 10px; border-radius: 999px; border: 1px solid #e0c48a; background: #fff; color: #6b4d0a; cursor: pointer; }
+a.link-btn { display: inline-block; text-decoration: none; font: 700 15px/1 var(--font-body); padding: 13px 16px; border-radius: 10px; background: var(--accent); color: var(--accent-ink); }
+.try-card { border: 2px solid var(--accent); }
+</style>
+</head>
+<body style="margin:0">
+<div class="demo-banner" role="note"><span>デモ版：人物・住所はすべて架空です</span><button type="button" id="demoReset">見本データに戻す</button></div>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">抽選・応募フォーム用</div>
+    <h1>ワンタップ応募入力</h1>
+    <p class="lead">自分の情報を一度登録しておくと、どの応募フォームでもブックマークを1回タップするだけで名前・住所・生年月日・メールなどが入ります。項目名の文字を読んで、何を入れる欄かを判断します。</p>
+    <div class="does">
+      <div class="k-ok"><b>自動で入れる</b>名前・ふりがな・住所・郵便番号・生年月日・電話・メール・性別・年齢・同意チェック</div>
+      <div class="k-todo"><b>自分で選ぶ</b>店舗・本人確認書類・購入数など、毎回変わる項目。オレンジ枠で知らせます</div>
+      <div class="k-no"><b>しないこと</b>送信ボタンは押しません。画像認証にも触りません</div>
+    </div>
+  </header>
+
+  <section class="sheet" aria-labelledby="s1">
+    <div class="step"><span class="num">1</span><h2 id="s1">自分の情報を入れる</h2></div>
+    <p class="note">デモ版なので、架空の「見本 花子」さんの情報が入っています。書き換えて試せます。入れた情報はこのブラウザの中だけに保存され、どこにも送信されません。</p>
+    <form id="profile" class="grid" autocomplete="on" onsubmit="return false">
+      <label class="f">姓（漢字）<input type="text" id="sei" autocomplete="family-name" placeholder="例）見本"></label>
+      <label class="f">名（漢字）<input type="text" id="mei" autocomplete="given-name" placeholder="例）花子"></label>
+      <label class="f">せい（ひらがな）<input type="text" id="seiKana" placeholder="例）みほん"></label>
+      <label class="f">めい（ひらがな）<input type="text" id="meiKana" placeholder="例）はなこ"></label>
+      <label class="f half-sm">生年月日<input type="date" id="birth" autocomplete="bday"></label>
+      <label class="f half-sm">性別 <span class="hint">聞かれたときだけ使います</span>
+        <select id="gender"><option value="">入れない</option><option value="m">男性</option><option value="f">女性</option><option value="o">その他・回答しない</option></select>
+      </label>
+      <label class="f wide">メールアドレス<input type="email" id="email" autocomplete="email" inputmode="email" placeholder="例）sample@example.com"></label>
+      <label class="f half-sm">電話番号 <span class="hint">ハイフン付きで</span><input type="tel" id="tel" autocomplete="tel" placeholder="例）000-0000-0000"></label>
+      <label class="f half-sm">郵便番号<input type="text" id="zip" autocomplete="postal-code" inputmode="numeric" placeholder="例）000-0000"></label>
+      <label class="f">都道府県<select id="pref" autocomplete="address-level1"></select></label>
+      <label class="f">市区町村<input type="text" id="city" autocomplete="address-level2" placeholder="例）見本市"></label>
+      <label class="f wide">町名・番地<input type="text" id="street" autocomplete="address-line1" placeholder="例）見本町1-2-3"></label>
+      <label class="f wide">建物名・部屋番号 <span class="hint">なければ空でOK</span><input type="text" id="bldg" autocomplete="address-line2" placeholder="例）見本ハイツ101"></label>
+    </form>
+    <div class="opts">
+      <label class="check"><input type="checkbox" id="agree" checked><span><b>同意チェックも自動で入れる</b><br><span class="note">「同意しました」「確認しました」「保存しました」などのチェックだけを入れます。メルマガ・広告の受け取りには入れません。</span></span></label>
+      <div class="row"><span style="font-size:14px">姓と名の間</span>
+        <div class="seg" role="radiogroup" aria-label="姓と名の間">
+          <label><input type="radio" name="sep" value="　" checked>全角スペース</label>
+          <label><input type="radio" name="sep" value=" ">半角スペース</label>
+          <label><input type="radio" name="sep" value="">空けない</label>
+        </div>
+      </div>
+      <p class="note">フォームに「スペースを空けずに」などの指示があれば、そちらに自動で合わせます。</p>
+      <label class="check"><input type="checkbox" id="remember" checked><span>この端末のこの画面に情報を覚えておく<br><span class="note">作り直すときに入れ直さなくて済みます。</span></span></label>
+      <div class="row"><button type="button" class="btn ghost" id="forget">覚えた情報を消す</button></div>
+    </div>
+  </section>
+
+  <section class="sheet" aria-labelledby="s2">
+    <div class="step"><span class="num">2</span><h2 id="s2">ボタン用のコードをコピーする</h2></div>
+    <p class="note">1 の内容から、ブックマークに貼るコードを自動で作っています。情報を変えたら、もう一度コピーして貼り替えてください。</p>
+    <textarea id="code" class="codebox" readonly aria-label="ブックマーク用コード"></textarea>
+    <div class="row">
+      <button type="button" class="btn" id="copy">コードをコピー</button>
+      <a class="pc-link" id="pclink" href="#" title="パソコンではブックマークバーへドラッグ">応募入力</a>
+    </div>
+    <p class="status" id="status" aria-live="polite"></p>
+  </section>
+
+  <section class="sheet" aria-labelledby="s3">
+    <div class="step"><span class="num">3</span><h2 id="s3">Safariに空のブックマークを作る</h2></div>
+    <p class="note">ここからはSafariアプリでの作業です。最初の1回だけです。</p>
+    <ol class="how">
+      <li><span>Safariを開いて、どんなページでもいいので1つ開きます。たとえば yahoo.co.jp。</span></li>
+      <li><span>画面のいちばん下にある <span class="ui"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg> 点3つ</span> を押して、<span class="ui">ブックマークを追加</span> を押します。<br><span class="note">下に <span class="ui"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M7 11H5v10h14V11h-2"/></svg> 共有ボタン</span> が見えているiPhoneは、共有ボタンから <span class="ui">ブックマークを追加</span> を選びます。</span></span></li>
+      <li><span>名前の欄を消して <b>応募入力</b> と入れます。その下の場所が <b>お気に入り</b> になっているのを確かめて <span class="ui">保存</span> を押します。</span></li>
+    </ol>
+  </section>
+
+  <section class="sheet" aria-labelledby="s3b">
+    <div class="step"><span class="num">4</span><h2 id="s3b">ブックマークの中身をコードに入れ替える</h2></div>
+    <ol class="how">
+      <li><span><span class="ui"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg> 点3つ</span> → <span class="ui">ブックマーク</span> を押します。<span class="note">下に <span class="ui"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h6a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H3z"/><path d="M21 5h-6a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h7z"/></svg> 本のマーク</span> があるiPhoneは、それを押します。</span></span></li>
+      <li><span><span class="ui">お気に入り</span> を開き、右下の <span class="ui">編集</span> を押してから、<b>応募入力</b> をタップします。</span></li>
+      <li><span>下のような画面になります。<b>2段目の「https://〜」の欄</b>をタップし、右端の <span class="ui">ⓧ</span> を押して中身を全部消します。</span></li>
+      <li><span>空になった欄を長押しして <span class="ui">ペースト</span> を押し、2 でコピーしたコードを貼ります。最後に <span class="ui">完了</span> を押せば登録は終わりです。</span></li>
+    </ol>
+    <div class="mock" aria-hidden="true">
+      <div class="mock-bar"><span>キャンセル</span><b>ブックマークを編集</b><span>完了</span></div>
+      <div class="mock-field">応募入力</div>
+      <div class="mock-field hot"><span>https://www.yahoo.co.jp/</span><span class="x">ⓧ</span></div>
+      <div class="mock-tip">← ここを全部消して、コードを貼る</div>
+    </div>
+  </section>
+
+  <section class="sheet" aria-labelledby="s3c">
+    <div class="step"><span class="num">5</span><h2 id="s3c">応募するとき（毎回これだけ）</h2></div>
+    <ol class="how">
+      <li><span>応募フォームを <b>Safariで</b> 開きます。X・Instagram・LINEなどのアプリの中で開いた画面では動きません。その場合は画面の <span class="ui">…</span> や共有ボタンから <span class="ui">Safariで開く</span> か <span class="ui">ブラウザで開く</span> を選びます。</span></li>
+      <li><span>フォームが表示されたら、<b>アドレス欄をタップ</b>します。お気に入りのアイコンが並ぶので、<b>応募入力</b> をタップします。</span></li>
+      <li><span>1〜2秒で入力され、画面の下にお知らせが出ます。<b>オレンジ枠</b>の項目、たとえば店舗だけ自分で選び、全体を確認してから送信します。</span></li>
+    </ol>
+    <details>
+      <summary>パソコン（Chrome・Edge）で使う場合</summary>
+      <div>
+        <p class="note" style="margin:0">ブックマークバーを表示して、2 の <span class="ui">応募入力</span> ボタンをバーまでドラッグします。うまくいかないときは、適当なページをブックマークしてから、URL欄にコードを貼り付けてください。フォームのページでそのブックマークをクリックすれば入力されます。</p>
+      </div>
+    </details>
+    <details>
+      <summary>うまく入らないとき</summary>
+      <div>
+        <ul class="plain">
+          <li>何も起きないときは、アプリ内ブラウザで開いていないか確認してください。Safariで開き直すと動きます。</li>
+          <li>「フォームが埋め込み表示になっています」と出たら、表示されたリンクからフォームだけを開いて、もう一度押してください。</li>
+          <li>入らなかった項目はオレンジ枠になります。フォームの作りによっては判断できない欄があるので、その欄だけ手で入れてください。</li>
+          <li>生年月日を入れたあと入力欄の表示が変わらないときは、カレンダーを開いて日付を確かめてください。</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <section class="sheet try-card" aria-labelledby="s4">
+    <div class="step"><span class="num">6</span><h2 id="s4">見本の応募フォームで試す</h2></div>
+    <p class="note">よくある抽選応募フォームをまねた、架空のお店「見本ホビー」の応募ページを用意しました。ページ上の「ワンタップで入力」ボタンは、ブックマークを押したときと同じコードを動かします。1 に入れた情報で入力されます（空なら見本 花子さん）。</p>
+    <div class="row"><a class="btn link-btn" href="form.html">見本の応募フォームを開く →</a></div>
+    <p class="note">入るもの：名前・ふりがな・郵便番号・住所・電話・メール・生年月日・性別・同意チェック。<br>入れないもの：応募する店舗（オレンジ枠で知らせます）・メルマガの受け取り・送信ボタン。</p>
+  </section>
+
+  <footer>デモ版：人物・住所・お店はすべて架空です。入力した情報はこのブラウザの外には送られません。</footer>
+</div>
+
+<script src="filler.js"></script>
+<script src="profile.js"></script>
+<script>
+(function () {
+  // 都道府県（デモ用の「見本県」を先頭に足す）
+  const PREFS = ['見本県','北海道','青森県','岩手県','宮城県','秋田県','山形県','福島県','茨城県','栃木県','\u7fa4\u99ac県','埼玉県','千葉県','東京都','神奈川県','新潟県','富山県','石川県','福井県','山梨県','長野県','岐阜県','静岡県','愛知県','三重県','滋賀県','京都府','大阪府','兵庫県','奈良県','和歌山県','鳥取県','島根県','岡山県','広島県','山口県','徳島県','香川県','愛媛県','高知県','福岡県','佐賀県','長崎県','熊本県','大分県','宮崎県','鹿児島県','沖縄県'];
+  const $ = id => document.getElementById(id);
+  const prefSel = $('pref');
+  prefSel.add(new Option('選択してください', ''));
+  PREFS.forEach(p => prefSel.add(new Option(p, p)));
+
+  const D = window.ONETAP_DEMO;
+  const KEYS = ['sei', 'mei', 'seiKana', 'meiKana', 'birth', 'gender', 'tel', 'email', 'zip', 'pref', 'city', 'street', 'bldg'];
+  const toHira = s => s.replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0) - 96));
+
+  const read = () => { const P = {}; KEYS.forEach(k => { P[k] = ($(k).value || '').trim(); }); return P; };
+  const opts = () => ({ agree: $('agree').checked, sep: (document.querySelector('input[name=sep]:checked') || {}).value ?? '　' });
+  const isEmpty = P => KEYS.every(k => !P[k]);
+
+  const fill = d => {
+    KEYS.forEach(k => { $(k).value = (d.P && d.P[k] != null) ? d.P[k] : ''; });
+    $('agree').checked = !(d.O && d.O.agree === false);
+    const r = document.querySelector('input[name=sep][value="' + ((d.O && d.O.sep != null) ? d.O.sep : '　') + '"]'); if (r) r.checked = true;
+  };
+  const save = () => {
+    try {
+      if ($('remember').checked) localStorage.setItem(D.STORE, JSON.stringify({ P: read(), O: opts() }));
+      else localStorage.removeItem(D.STORE);
+    } catch (e) {}
+  };
+
+  const build = () => {
+    const P = read(), O = opts();
+    const body = 'void (' + kmFill.toString() + ')(' + JSON.stringify(P) + ',' + JSON.stringify(O) + ')';
+    return 'javascript:' + encodeURI(body).replace(/#/g, '%23');
+  };
+  const refresh = () => {
+    const P = read();
+    const code = build();
+    $('code').value = code;
+    $('pclink').href = code;
+    const miss = [];
+    if (!P.sei || !P.mei) miss.push('名前');
+    if (!P.email) miss.push('メール');
+    if (!P.birth) miss.push('生年月日');
+    const st = $('status');
+    if (isEmpty(P)) { st.textContent = 'まだ情報が入っていません。1 を入れるとコードができます。'; st.className = 'status warn'; }
+    else if (miss.length) { st.textContent = miss.join('・') + 'が空です。入れておくとその欄も自動で入ります。'; st.className = 'status warn'; }
+    else { st.textContent = 'コードができています（' + Math.round(code.length / 1000) + 'KB）。コピーしてブックマークに貼ってください。'; st.className = 'status'; }
+    save();
+  };
+
+  ['seiKana', 'meiKana'].forEach(k => $(k).addEventListener('blur', () => { $(k).value = toHira($(k).value); refresh(); }));
+  document.querySelectorAll('#profile input, #profile select, #agree, input[name=sep], #remember').forEach(el => {
+    el.addEventListener('input', refresh); el.addEventListener('change', refresh);
+  });
+  $('forget').addEventListener('click', () => {
+    try { localStorage.removeItem(D.STORE); } catch (e) {}
+    KEYS.forEach(k => { $(k).value = ''; });
+    $('remember').checked = false;
+    refresh();
+    $('status').textContent = '覚えていた情報を消しました。'; $('status').className = 'status';
+  });
+  $('demoReset').addEventListener('click', () => {
+    $('remember').checked = true;
+    fill(D.SAMPLE);
+    refresh();
+    $('status').textContent = '見本の人物（見本 花子）に戻しました。'; $('status').className = 'status';
+  });
+
+  $('copy').addEventListener('click', () => {
+    const t = $('code').value;
+    const done = () => { $('status').textContent = 'コピーしました。次は 3 と 4 の手順で、Safariのブックマークに貼り付けます。'; $('status').className = 'status'; };
+    const fallback = () => {
+      const ta = $('code'); ta.focus(); ta.select(); ta.setSelectionRange(0, t.length);
+      let ok = false; try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      if (ok) done(); else { $('status').textContent = 'コードを選択しました。表示される「コピー」を押してください。'; $('status').className = 'status warn'; }
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, fallback);
+    else fallback();
+  });
+  $('pclink').addEventListener('click', ev => {
+    ev.preventDefault();
+    $('status').textContent = 'このボタンはパソコンでブックマークバーへドラッグして使います。スマホでは「コードをコピー」を使ってください。';
+    $('status').className = 'status warn';
+  });
+
+  fill(D.load());
+  refresh();
+})();
+</script>
+</body></html>

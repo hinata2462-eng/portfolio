@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>会議の文字起こしと議事録｜作品ページ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap">
+<link rel="stylesheet" href="../../assets/case.css">
+<style>
+.minutes h3 { font-size: 17px; margin: 18px 0 6px; }
+.minutes h3:first-child { margin-top: 0; }
+.minutes ul { max-width: none; }
+.check { list-style: none; padding: 0; }
+.check li::before { content: "□ "; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../../">← ポートフォリオに戻る</a>
+
+  <header class="case-head">
+    <p class="eyebrow">業務の効率化 · 2026.09 – 2026.11</p>
+    <h1>会議の文字起こしと議事録</h1>
+    <p class="lead">会議の録音から、3分で読める短い議事録と、発言をすべて残した全文の表を作ります。</p>
+    <div class="meta"><span class="tag">faster-whisper</span><span class="tag">Claude Code</span><span class="tag">Googleスプレッドシート</span></div>
+    <span class="sample-note">見本：架空の会社の、架空の会議です</span>
+  </header>
+
+  <section>
+    <h2>困りごと</h2>
+    <p>1時間の会議を後から聞き直すのは大変です。かといって、細かい発言を全部並べた議事録は「読み取りづらい」と言われました。自動の文字起こしは人の名前の聞き間違いも多くなります。</p>
+  </section>
+
+  <section>
+    <h2>仕組み</h2>
+    <ol class="flow">
+      <li><b>録音・録画を受け取る</b><span>スマホの録音や、パソコンで撮った打ち合わせの録画。長いものは6時間ほどあります。</span></li>
+      <li><b>パソコンの中で文字起こし</b><span>音声は外へ送らず、手元で処理します。長い録画は20分ずつに分けて、メモリが足りなくならないようにしています。</span></li>
+      <li><b>名前と用語を直す</b><span>聞き間違えやすい名前・地名・社内の言葉を表にしておき、正しい表記に直します。分からない名前は推測せず「要確認」と残します。</span></li>
+      <li><b>議事録を書く</b><span>議題ごとに3〜5行。決まったことと「やること・担当・期限」の表、課題と対策の提案、次回話すことをまとめます。</span></li>
+      <li><b>全文を表に残す</b><span>番号・議題・発言を1行ずつ。議事録で省いた雑談も含めてすべて残すので、あとで確かめられます。</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>見本</h2>
+    <div class="tabs" role="tablist" aria-label="見本の切り替え">
+      <button type="button" role="tab" id="t-min" aria-selected="true" aria-controls="p-min">議事録</button>
+      <button type="button" role="tab" id="t-all" aria-selected="false" aria-controls="p-all">全文の表</button>
+    </div>
+
+    <div class="panel minutes" id="p-min" role="tabpanel" aria-labelledby="t-min">
+      <p class="muted small">見本商事 業務部ミーティング　2026年11月（架空）　出席 5名　司会 山田</p>
+      <h3>1. 冬タイヤへの交換</h3>
+      <ul>
+        <li>配送車6台のうち、まだ4台が夏タイヤのまま。</li>
+        <li>雪の予報が出る前に、11月中に全台を終える。</li>
+        <li>交換の予約は佐藤さんがまとめて取る。</li>
+      </ul>
+      <h3>2. 倉庫の棚の入れ替え</h3>
+      <ul>
+        <li>よく出る品が奥の棚にあり、出し入れに時間がかかっている。</li>
+        <li>出荷の多い上位20品を手前の棚へ移す。</li>
+        <li>作業は来月の第1土曜。棚の配置図は鈴木さんが作る。</li>
+      </ul>
+      <h3>3. 新しく入る人の研修</h3>
+      <ul>
+        <li>12月に1名入社。最初の1週間は先輩と同じ便に乗る。</li>
+        <li>安全運転の確認テストを初日に行う。</li>
+      </ul>
+
+      <h3>決まったこと・やること</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>やること</th><th>担当</th><th>いつまで</th></tr></thead>
+          <tbody>
+            <tr><td>配送車4台のタイヤ交換を予約する</td><td>佐藤</td><td>11/20</td></tr>
+            <tr><td>倉庫の棚の配置図を作る</td><td>鈴木</td><td>11/28</td></tr>
+            <tr><td>新人研修の1週間の予定表を作る</td><td>高橋</td><td>12/1</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>課題と対策（提案）</h3>
+      <ul>
+        <li><b>タイヤ交換が毎年ぎりぎりになる</b>：来年からは10月の会議で予約まで決める。</li>
+        <li><b>棚の場所が人によって違う覚え方</b>：入れ替えに合わせて、棚の番号札を付ける。</li>
+        <li>ほかに：車の鍵の置き場所、月末の残業の偏り</li>
+      </ul>
+
+      <h3>次回話すこと</h3>
+      <ul class="check">
+        <li>タイヤ交換が全台終わったかの確認</li>
+        <li>棚の入れ替えをやってみての感想</li>
+        <li>年末年始の配送の日程</li>
+      </ul>
+    </div>
+
+    <div class="panel" id="p-all" role="tabpanel" aria-labelledby="t-all" hidden>
+      <p class="muted small" style="margin-bottom:10px">全文の表（一部）。実物は1回の会議で200行前後になります。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th class="num">番号</th><th>議題</th><th>発言</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td>開始</td><td>山田：11月の業務部ミーティングを始めます。よろしくお願いします。</td></tr>
+            <tr><td class="num">2</td><td>冬タイヤ</td><td>山田：まずタイヤです。今、何台終わってますか。</td></tr>
+            <tr><td class="num">3</td><td>冬タイヤ</td><td>佐藤：2台だけです。残り4台はまだ夏のままです。</td></tr>
+            <tr><td class="num">4</td><td>冬タイヤ</td><td>高橋：予報だと来週あたり冷え込むみたいですね。</td></tr>
+            <tr><td class="num">5</td><td>冬タイヤ</td><td>山田：じゃあ今月中に全部やりましょう。予約は佐藤さん、お願いできますか。</td></tr>
+            <tr><td class="num">6</td><td>冬タイヤ</td><td>佐藤：はい、まとめて取っておきます。</td></tr>
+            <tr><td class="num">7</td><td>雑談</td><td>鈴木：去年は12月に入ってから慌ててましたよね（笑）。</td></tr>
+            <tr><td class="num">8</td><td>倉庫の棚</td><td>山田：次、倉庫です。よく出る物が奥にあって取りにくいという話がありました。</td></tr>
+            <tr><td class="num">9</td><td>倉庫の棚</td><td>鈴木：上位20品くらいを手前に持ってくれば、だいぶ楽になると思います。</td></tr>
+            <tr><td class="num">10</td><td>倉庫の棚</td><td>山田：配置図を作ってもらえますか。作業は来月の第1土曜で。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>工夫したこと</h2>
+    <ul>
+      <li>最初は発言を細かく並べていましたが、「読み取りづらい」と言われ、1議題3〜5行に絞りました。課題と対策も「大事な2つだけ」に減らしています。</li>
+      <li>全文は別の表に残すので、議事録で省いても情報は失われません。</li>
+      <li>聞き間違えた名前は表にして、次の回から自動で正しい表記に直します。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>結果</h2>
+    <p>職場の月1回の会議（約1時間）を、議事録とスプレッドシートの全文にまとめました。別の打ち合わせ全7回分（最長で3時間半）も文字起こしして、ほかのAIに読ませるための資料一式にしました。</p>
+  </section>
+
+  <footer>見本の会社名・人名・内容はすべて架空です。</footer>
+</div>
+<script>
+(function () {
+  var tabs = document.querySelectorAll('[role="tab"]');
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      tabs.forEach(function (u) {
+        var on = u === t;
+        u.setAttribute('aria-selected', on ? 'true' : 'false');
+        document.getElementById(u.getAttribute('aria-controls')).hidden = !on;
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>商品WEB・動画・楽天記事の制作セット｜作品ページ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap">
+<link rel="stylesheet" href="../../assets/case.css">
+<style>
+section h3 { font-size: 17px; font-weight: 700; margin: 22px 0 8px; }
+.panel h3:first-child { margin-top: 0; }
+.panel ul { max-width: none; }
+.codex { border-left: 4px solid var(--accent); background: var(--surface); border-radius: 0 8px 8px 0; padding: 8px 14px; font-size: 14px; max-width: 46em; }
+.pipe { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 10.5em) minmax(0, 1fr) minmax(0, 10.5em) minmax(0, 1fr); gap: 10px; align-items: stretch; }
+.skill { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; background: var(--paper); display: grid; gap: 4px; align-content: start; min-width: 0; }
+.skill .no { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: .08em; }
+.skill b { font-size: 15px; }
+.skill p { font-size: 13px; color: var(--muted); }
+.hand { display: grid; align-content: center; gap: 4px; font-size: 12.5px; min-width: 0; }
+.hand .arr { font-family: var(--mono); color: var(--muted); text-align: center; font-size: 18px; line-height: 1; }
+.hand .arr::before { content: "→"; }
+.hand ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 3px; }
+.hand li { margin: 0; border: 1px dashed var(--line); border-radius: 6px; padding: 2px 6px; background: var(--surface); }
+.hand .lbl { font-size: 11.5px; color: var(--muted); text-align: center; }
+.down { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 10px; margin-top: 10px; }
+.down .skill { background: var(--surface); }
+.out-box { border-color: var(--accent); }
+.qa { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.qa .card h3 { margin: 0; }
+.qa .card ul { padding-left: 1.1em; font-size: 13.5px; color: var(--ink); }
+.qa .card li + li { margin-top: 5px; }
+.rec-ctrl { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin-bottom: 12px; font-size: 14px; }
+.rec-ctrl label { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; max-width: 100%; }
+.rec-ctrl select { font: inherit; font-size: 14px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); min-width: 0; max-width: 100%; flex: 1 1 14em; }
+.rec td:first-child { width: 11em; color: var(--muted); font-size: 13px; }
+.rec td code { font-family: var(--mono); font-size: 12.5px; overflow-wrap: anywhere; }
+.raw { font-family: var(--mono); font-size: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; white-space: pre-wrap; overflow-wrap: anywhere; margin-top: 12px; line-height: 1.6; }
+.flash { animation: flash 1.2s ease; }
+@keyframes flash { from { background: color-mix(in srgb, var(--sample) 45%, transparent); } to { background: transparent; } }
+@media (max-width: 860px) {
+  .pipe { grid-template-columns: minmax(0, 1fr); }
+  .hand .arr::before { content: "↓"; }
+  .down { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { .flash { animation: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../../">← ポートフォリオに戻る</a>
+
+  <header class="case-head">
+    <p class="eyebrow">Web・EC制作 · 2026.11</p>
+    <h1>商品WEB・動画・楽天記事の制作セット</h1>
+    <p class="lead">1つの商品から、操作できるWEBページ、同じ動きを収録した動画、楽天の記事、Instagram用の素材までを、連携する3つのスキル（AIに渡す手順書）で作ります。作品の一覧と、楽天に載せる人向けの素材一式まで自動で整えます。</p>
+    <div class="meta"><span class="tag">Codex</span><span class="tag">Python</span><span class="tag">WebGL</span><span class="tag">HTML/CSS</span></div>
+    <span class="sample-note">見本：作品名・ID・記録はすべて架空です</span>
+  </header>
+
+  <p class="codex" style="margin-top:22px">このセットは Claude ではなく、<b>Codex</b>（OpenAIのAIエージェント）で作りました。スキルもCodexから呼び出して使います。</p>
+
+  <section>
+    <h2>困りごと</h2>
+    <p>シルバーアクセサリーの楽天店で、商品を紹介する動画と記事を毎日増やしたい、という依頼でした。動画・記事・Instagramを別々に作ると、どの記事がどの動画の何番目の版に対応しているのか分からなくなります。楽天に載せる担当の方にも、動画・表紙・原稿をそろえて渡す必要がありました。AIに任せきりにすると、商品の形が崩れる、前の回と似たものになる、「AIっぽい」と言われる、という問題もありました。</p>
+  </section>
+
+  <section>
+    <h2>仕組み</h2>
+    <ol class="flow">
+      <li><b>動画とWEBを作る</b><span>参考になる実際の映像を見て見せ場を決め、商品を置いた操作できる3DのWEBページを作ります。同じカメラと演出をそのまま動画に収録し、横長（16:9）と縦寄り（3:4）を1作品ずつ交互に作ります。前日の18時に始め、翌朝9時に3本を納品する流れです。</span></li>
+      <li><b>楽天の記事を書く</b><span>検査を通った動画1本に、記事1本。動画の説明ではなく、読む人の疑問に答える読み物として企画し、過去の記事と同じ問いになっていないかを履歴で確かめます。記事専用のサムネイルを作り、動画の画像は使い回しません。</span></li>
+      <li><b>Instagram向けに編集する</b><span>動画と記事を照らし合わせ、リールか、保存してもらうためのカルーセルに編集します。スマホで試写し、運用する人が有効にした条件のときだけ予約・配信します。最初は模擬で動きます。</span></li>
+      <li><b>作品集と掲載セットに整える</b><span>画像付きの作品一覧と、作品ごとに「動画・表紙・記事原稿・掲載メモ」を1つにしたZIPを作ります。楽天に載せる担当の方は、ZIPを1つ受け取るだけで済みます。</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>見本</h2>
+    <div class="tabs" role="tablist" aria-label="見本の切り替え">
+      <button type="button" role="tab" id="t-flow" aria-selected="true" aria-controls="p-flow">3つのスキルの受け渡し</button>
+      <button type="button" role="tab" id="t-qa" aria-selected="false" aria-controls="p-qa">品質の検査</button>
+      <button type="button" role="tab" id="t-rec" aria-selected="false" aria-controls="p-rec">受け渡しの記録</button>
+    </div>
+
+    <div class="panel" id="p-flow" role="tabpanel" aria-labelledby="t-flow">
+      <div class="pipe">
+        <div class="skill"><span class="no">SKILL 01</span><b>動画・WEBを作る</b><p>参考の映像を見る → 3DのWEBで試作 → 同じ演出で動画に収録 → 検査</p></div>
+        <div class="hand"><span class="lbl">記事の担当へ渡すもの</span><span class="arr" aria-hidden="true"></span>
+          <ul><li>作品IDと版</li><li>動画とハッシュ</li><li>WEBのURL</li><li>掲載フォルダの場所</li></ul></div>
+        <div class="skill"><span class="no">SKILL 02</span><b>楽天の記事を書く</b><p>読む人の疑問を決める → 過去の記事と比べる → 本文と専用サムネイル → 検査</p></div>
+        <div class="hand"><span class="lbl">Instagramへ渡すもの</span><span class="arr" aria-hidden="true"></span>
+          <ul><li>対応記録（記事と動画の組）</li><li>記事の版とハッシュ</li><li>本文と画像の検査結果</li></ul></div>
+        <div class="skill"><span class="no">SKILL 03</span><b>Instagram向けに編集</b><p>候補を検査 → リールかカルーセル → スマホで試写 → 予約・配信 → 24時間・7日の数字</p></div>
+      </div>
+      <div class="down">
+        <div class="skill out-box"><span class="no">OUTPUT</span><b>作品集と、作品ごとの掲載セットZIP</b><p>動画・表紙・記事原稿・掲載メモ（ファイル名、縦横、長さ、音、容量、楽天で確かめた条件と、まだ確かめていない条件）。楽天に載せる担当の方へ。</p></div>
+        <div class="skill"><span class="no">RULE</span><b>前の工程を読むだけ</b><p>後ろのスキルは前のスキルの成果物を書き換えず、照合して使います。</p></div>
+      </div>
+    </div>
+
+    <div class="panel" id="p-qa" role="tabpanel" aria-labelledby="t-qa" hidden>
+      <div class="qa">
+        <div class="card"><h3>① 動画・WEB</h3>
+          <ul>
+            <li>必須の6検査：全編を通常の速さで見る／音を聴く（曲の終わりも）／意味のある動きがある／実寸と全編の読み込み／パソコンで表示／スマホで表示</li>
+            <li>商品の形・ロゴ・刻印を実物の写真と照らす</li>
+            <li>一番広いカットは実写の場所と、一番寄ったカットは商品の実物写真と並べて比べる</li>
+            <li>無地の背景で商品を回すだけの構成は不可。場所と出来事が見えること</li>
+            <li>直近3作と、冒頭と終わりを比べる（色やコピーの違いだけでは新作と数えない）</li>
+          </ul></div>
+        <div class="card"><h3>② 楽天の記事</h3>
+          <ul>
+            <li>読む理由が伝わる → 本文が答える → 写真が理解を助ける → 商品が正確 → ブランドが自然に伝わる → スマホでも読める、のつながりを見る</li>
+            <li>サムネイルは、スマホの一覧の大きさのまま読めるか</li>
+            <li>過去の記事と同じ問いなら、新しい記事にせず改稿に回す</li>
+            <li>動画を隠しても記事として成り立つか</li>
+            <li>確かめきれない所は「保留」にし、自己採点で合格にしない</li>
+          </ul></div>
+        <div class="card"><h3>③ Instagram</h3>
+          <ul>
+            <li>候補を検査し、落とした候補も理由を付けて残す</li>
+            <li>公開の直前にもう一度検査し、1回だけ送る</li>
+            <li>設定の変更・認証切れ・送り先の違いに気づいたら止める</li>
+            <li>24時間と7日の数字を、取れなかった理由とあわせて残す</li>
+          </ul></div>
+      </div>
+      <p class="muted small" style="margin-top:12px">検査のスクリプトは「記録とファイルのハッシュが合っているか」だけを確かめます。全編を見た、音を聴いた、という事実まではスクリプトで作れないので、聴いていない音は「未確認」と書き、合格にはしません。</p>
+    </div>
+
+    <div class="panel" id="p-rec" role="tabpanel" aria-labelledby="t-rec" hidden>
+      <div class="rec-ctrl">
+        <label>作品（架空）<select id="work" aria-label="作品を選ぶ"></select></label>
+        <button type="button" class="btn" id="swap">動画を新しい版に差し替える</button>
+      </div>
+      <div class="table-wrap">
+        <table class="rec"><tbody id="rec-body"></tbody></table>
+      </div>
+      <div class="raw" id="raw" aria-label="記録の中身"></div>
+      <p class="muted small" style="margin-top:10px">動画を差し替えるとハッシュが変わるので、その動画に結んでいた検査と記事の対応は「確認し直し」に戻ります。作品名や日付が似ているかではなく、ID・版・ハッシュで結んでいるためです。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>工夫したこと</h2>
+    <ul>
+      <li>動画と記事は、作品ID・版・動画ファイルのハッシュで結びました。どちらかが差し替わると前の検査は使えなくなり、古い組み合わせのまま楽天に載ることがありません。</li>
+      <li>2026年11月12日の試写で「映像がAIっぽい」「曲を切る位置が悪い」と指摘があり、それまでの12作品は採用されませんでした。そこで、実写の場所や商品の実物写真と並べて比べる手順と、曲の終わりを所作に合わせる基準を検査に足しました。</li>
+      <li>記事は動画の付録ではなく、読む人の疑問に答える独立した読み物にしました。過去の記事と問いが重なったら、新しい記事を増やさず改稿にします。</li>
+      <li>朝9時に完成数を1回だけ確かめ、足りないときだけ1回、続きを頼む仕組みにしました。何度も催促して作業を止めないためです。</li>
+      <li>楽天に載せる担当の方には、作品ごとに1つのZIPと掲載メモを渡し、楽天で確かめていない条件は「未確認」と明記しました。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>結果</h2>
+    <p>11月17日の時点で、作品集には動画25本、楽天の記事15本、作品ごとの掲載セットZIP 39個（縦長版などの版違いを含む）が入っています。楽天への動画の登録と公開は、まだ確かめていません。Instagramは、運用する人が有効にするまで模擬で動く設定です。</p>
+  </section>
+
+  <footer>見本の作品名・ID・ハッシュ・記録はすべて架空です。取引先の店名・商品の画像・動画・ロゴは載せていません。</footer>
+</div>
+<script>
+(function () {
+  var tabs = document.querySelectorAll('[role="tab"]');
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      tabs.forEach(function (u) {
+        var on = u === t;
+        u.setAttribute('aria-selected', on ? 'true' : 'false');
+        document.getElementById(u.getAttribute('aria-controls')).hidden = !on;
+      });
+    });
+  });
+
+  // 架空の受け渡し記録
+  var WORKS = [
+    { id: '2026-11-20_window-seat', title: '窓辺の、ひと休み。', rev: 2, size: '縦寄り 720×960', video: 'READY', audio: '聴いて確認済み', content: 'c-0021', arev: 1, pair: 'verified', reuse: false },
+    { id: '2026-11-20_rain-walk', title: '雨上がりの、帰り道。', rev: 1, size: '横長 1280×720', video: 'READY', audio: '聴いて確認済み', content: 'c-0022', arev: 1, pair: 'pending', reuse: false },
+    { id: '2026-11-20_desk-light', title: '机の上の、灯り。', rev: 3, size: '縦寄り 720×960', video: 'REVIEW', audio: '未確認（波形のみ確認）', content: '—', arev: 0, pair: 'pending', reuse: false }
+  ];
+  var PAIR = { verified: '<span class="chip ok">対応を確認済み</span>', pending: '<span class="chip warn">記事を制作中</span>', needs_review: '<span class="chip bad">確認し直し</span>' };
+  var VID = { READY: '<span class="chip ok">完成（検査合格）</span>', REVIEW: '<span class="chip warn">確認待ち</span>' };
+  function hash(seed) { var h = 2166136261 >>> 0, s = ''; for (var i = 0; i < seed.length; i++) { h ^= seed.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } for (var k = 0; k < 8; k++) { h = Math.imul(h ^ (h >>> 13), 2246822519) >>> 0; s += ('0000000' + h.toString(16)).slice(-8); } return s; }
+  var sel = document.getElementById('work');
+  sel.innerHTML = WORKS.map(function (w, i) { return '<option value="' + i + '">' + w.title + '（' + w.id + '）</option>'; }).join('');
+  function r(n) { return 'r' + ('0' + n).slice(-2); }
+  function render(flash) {
+    var w = WORKS[Number(sel.value)];
+    var vh = hash(w.id + r(w.rev));
+    var file = w.title.replace(/[、。]/g, '') + '_' + w.size.split(' ')[1] + '.mp4';
+    var rows = [
+      ['作品ID', '<code>' + w.id + '</code>'],
+      ['動画の版', '<b>' + r(w.rev) + '</b>'],
+      ['作品名', w.title],
+      ['動画', file + '（' + w.size + '）'],
+      ['動画のハッシュ', '<code>' + vh.slice(0, 12) + '…' + vh.slice(-6) + '</code>'],
+      ['動画の状態', VID[w.video]],
+      ['音', w.audio],
+      ['対応する記事', w.content === '—' ? '動画の確認が済むまで、企画だけ保存' : '<code>' + w.content + '</code>　記事の版 ' + r(w.arev)],
+      ['記事との対応', PAIR[w.pair]],
+      ['動画の画像を記事に使ったか', w.reuse ? 'はい' : 'いいえ（記事専用の画像）'],
+      ['掲載セット', w.title.replace(/[、。]/g, '') + '_' + r(w.rev) + '.zip']
+    ];
+    var body = document.getElementById('rec-body');
+    body.innerHTML = rows.map(function (x) { return '<tr><td>' + x[0] + '</td><td>' + x[1] + '</td></tr>'; }).join('');
+    document.getElementById('raw').textContent = JSON.stringify({
+      video_work_id: w.id, video_revision: r(w.rev), video_sha256: vh,
+      video_status: w.video, music_excerpt: w.audio.indexOf('未確認') === 0 ? 'UNVERIFIED' : 'CHECKED',
+      content_id: w.content === '—' ? null : w.content, article_revision: w.arev ? r(w.arev) : null,
+      pairing_status: w.pair, article_independent_of_video: true, video_image_reuse: w.reuse
+    }, null, 2);
+    if (flash) { body.classList.remove('flash'); void body.offsetWidth; body.classList.add('flash'); }
+  }
+  sel.addEventListener('change', function () { render(false); });
+  document.getElementById('swap').addEventListener('click', function () {
+    var w = WORKS[Number(sel.value)];
+    w.rev += 1; w.video = 'REVIEW'; w.audio = '未確認（新しい版はまだ聴いていない）';
+    if (w.content !== '—') w.pair = 'needs_review';
+    render(true);
+  });
+  render(false);
+})();
+</script>
+</body>
+</html>

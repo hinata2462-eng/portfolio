@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[5275,[],"ViewportBoundary"]
+3:I[5275,[],"MetadataBoundary"]
+4:"$Sreact.suspense"
+5:I[1090,[],"IconMark"]
+0:{"rsc":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L2",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L3",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"InfluConnect｜元アプリの架空データ確認版"}],["$","meta","1",{"name":"description","content":"Instagramインフルエンサーを検索し、お気に入り登録・連絡管理ができるWebアプリ"}],["$","meta","2",{"name":"generator","content":"v0.app"}],["$","meta","3",{"name":"robots","content":"noindex, nofollow"}],["$","link","4",{"rel":"icon","href":"/portfolio/demo/influencer/icon-light-32x32.png","media":"(prefers-color-scheme: light)"}],["$","link","5",{"rel":"icon","href":"/portfolio/demo/influencer/icon-dark-32x32.png","media":"(prefers-color-scheme: dark)"}],["$","link","6",{"rel":"icon","href":"/portfolio/demo/influencer/icon.svg","type":"image/svg+xml"}],["$","link","7",{"rel":"apple-touch-icon","href":"/portfolio/demo/influencer/apple-icon.png"}],["$","$L5","8",{}]]}]}]}],null]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"Lh-WvYHafvy7JVpbVsDw_"}

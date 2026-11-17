@@ -1,0 +1,948 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}@page{size:A4;margin:14mm 12mm}</style>
+<title>AI成果物ポートフォリオ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap">
+<style>
+/* Layout: 作品台帳。上に要約と内訳の帯、代表作は「困りごと→作ったもの→結果」の2段組、残りは区分ごとの台帳行 */
+:root {
+  --paper: #F4F5F8;
+  --surface: #FFFFFF;
+  --ink: #151922;
+  --muted: #586071;
+  --line: #D9DEE6;
+  --accent: #2E43C2;
+  --live: #0B7A5C;
+  --live-soft: #DCF1E8;
+  --done-soft: #E8EBF1;
+  --c1: #2E43C2; --c2: #0C7C73; --c3: #7650C0; --c4: #B8650F; --c5: #4A5568; --c6: #B23B6C; --c7: #5A7A17; --c8: #7D8696;
+  --display: "Zen Kaku Gothic New", "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --body: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #101319; --surface: #171B23; --ink: #E7EAF0; --muted: #9CA4B3; --line: #2A303C;
+    --accent: #93A0FF; --live: #4CCB9F; --live-soft: #15332A; --done-soft: #232936;
+    --c1: #93A0FF; --c2: #4CC6B8; --c3: #B89BF2; --c4: #EFA75B; --c5: #A6B0C3; --c6: #F08DB5; --c7: #A9CF5E; --c8: #6E7787;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #101319; --surface: #171B23; --ink: #E7EAF0; --muted: #9CA4B3; --line: #2A303C;
+  --accent: #93A0FF; --live: #4CCB9F; --live-soft: #15332A; --done-soft: #232936;
+  --c1: #93A0FF; --c2: #4CC6B8; --c3: #B89BF2; --c4: #EFA75B; --c5: #A6B0C3; --c6: #F08DB5; --c7: #A9CF5E; --c8: #6E7787;
+  color-scheme: dark;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 56px;
+}
+h1, h2, h3, h4 { font-family: var(--display); text-wrap: balance; word-break: auto-phrase; margin: 0; line-height: 1.35; }
+p { margin: 0; }
+a { color: var(--accent); text-underline-offset: 3px; overflow-wrap: anywhere; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+time, .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+/* ---------- 冒頭 ---------- */
+.hero { padding-block: 56px 36px; display: grid; gap: 20px; }
+.eyebrow {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .14em; color: var(--muted); text-transform: uppercase;
+}
+.hero h1 { font-size: clamp(34px, 6.4vw, 58px); font-weight: 900; letter-spacing: .01em; }
+.name { font-family: var(--display); font-size: 19px; font-weight: 700; }
+.lead { max-width: 40em; color: var(--ink); font-size: 16px; }
+
+.figures { display: flex; flex-wrap: wrap; gap: 12px 40px; margin: 8px 0 0; }
+.figures div { display: grid; gap: 2px; }
+.figures dt { font-size: 12.5px; color: var(--muted); }
+.figures dd { margin: 0; font-family: var(--display); font-weight: 900; font-size: 40px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.figures dd span { font-size: 15px; font-weight: 700; margin-left: 3px; }
+
+.mix { display: grid; gap: 10px; margin-top: 4px; }
+.mix-bar { display: flex; height: 12px; border-radius: 6px; overflow: hidden; gap: 2px; background: var(--paper); }
+.mix-bar span { display: block; height: 100%; }
+.mix-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; list-style: none; margin: 0; padding: 0; font-size: 13px; color: var(--muted); }
+.mix-legend li { display: flex; align-items: center; gap: 7px; }
+.mix-legend b { color: var(--ink); font-family: var(--mono); font-weight: 500; }
+.sw { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+.k1 { background: var(--c1); } .k2 { background: var(--c2); } .k3 { background: var(--c3); } .k4 { background: var(--c4); } .k5 { background: var(--c5); } .k6 { background: var(--c6); } .k7 { background: var(--c7); } .k8 { background: var(--c8); }
+
+/* ---------- 見出し ---------- */
+section { padding-block: 40px 8px; border-top: 1px solid var(--line); }
+.sec-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin-bottom: 22px; }
+.sec-head h2 { font-size: 24px; font-weight: 900; }
+.sec-head p { color: var(--muted); font-size: 14px; }
+
+/* ---------- 作り方 ---------- */
+.ways { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 28px; }
+.ways li { display: grid; gap: 6px; align-content: start; }
+.ways h3 { font-size: 17px; font-weight: 700; }
+.ways p { color: var(--muted); font-size: 14.5px; }
+
+/* ---------- 代表作 ---------- */
+.works { display: grid; gap: 18px; }
+.work {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 24px 26px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 2fr);
+  gap: 18px 36px;
+  break-inside: avoid;
+}
+.work-head { display: grid; gap: 10px; align-content: start; }
+.cat { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--muted); }
+.work h3 { font-size: 21px; font-weight: 700; }
+.meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; font-size: 13px; color: var(--muted); }
+.work-link { font-size: 13.5px; }
+.open {
+  display: inline-flex; align-items: center; gap: 6px; justify-self: start;
+  font-size: 13.5px; font-weight: 700; text-decoration: none; color: var(--accent);
+  border: 1.5px solid var(--accent); border-radius: 8px; padding: 6px 12px; line-height: 1.2;
+}
+.open:hover { background: var(--accent); color: var(--surface); }
+.open.sm { font-size: 12.5px; padding: 4px 9px; border-width: 1px; }
+.open-note { font-size: 12px; color: var(--muted); }
+.demo-note { font-size: 13.5px; color: var(--muted); max-width: 44em; }
+.demo-note b { color: var(--ink); }
+.story { margin: 0; display: grid; grid-template-columns: 6.2em minmax(0, 1fr); gap: 10px 16px; }
+.story dt { font-size: 12.5px; font-weight: 700; color: var(--muted); padding-top: 2px; letter-spacing: .04em; }
+.story dd { margin: 0; }
+.story dd.result { font-weight: 500; }
+.tags { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; grid-column: 2; }
+.tags li { font-family: var(--mono); font-size: 12px; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 1px 8px; }
+
+/* 状態 */
+.chip {
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  font-size: 12px; font-weight: 700; line-height: 1; padding: 6px 10px; border-radius: 999px;
+}
+.chip.live { background: var(--live-soft); color: var(--live); }
+.chip.live::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.chip.done { background: var(--done-soft); color: var(--ink); }
+.chip.wip { border: 1px dashed var(--muted); color: var(--muted); padding: 5px 9px; }
+
+/* ---------- 一覧 ---------- */
+.groups { display: grid; gap: 30px; }
+.group h3 { display: flex; align-items: center; gap: 9px; font-size: 17px; font-weight: 700; padding-bottom: 8px; border-bottom: 1px solid var(--ink); }
+.items { list-style: none; margin: 0; padding: 0; }
+.item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 24px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  break-inside: avoid;
+}
+.item h4 { font-size: 15.5px; font-weight: 700; }
+.item p { color: var(--muted); font-size: 14px; margin-top: 3px; }
+.item .item-tags { font-family: var(--mono); font-size: 12px; margin-top: 5px; }
+.item-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; font-size: 13px; color: var(--muted); padding-top: 2px; }
+
+/* ---------- SNS ---------- */
+.sns-lead { max-width: 46em; margin-bottom: 18px; }
+.sns-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.sns-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: grid; gap: 10px; align-content: start; min-width: 0; break-inside: avoid; }
+.sns-card h3 { font-size: 19px; font-weight: 700; }
+.sns-card .what { font-size: 14px; color: var(--muted); }
+.auto { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
+.auto li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 6px; }
+.auto li::before { content: "▸"; color: var(--c4); font-weight: 700; }
+.sns-num { font-size: 13px; border-top: 1px dashed var(--line); padding-top: 10px; }
+.sns-num b { font-family: var(--display); font-size: 15px; }
+.sns-links { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; font-size: 13px; }
+.sched { margin-top: 18px; overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.sched table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+.sched th, .sched td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.sched th { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.sched tr:last-child td { border-bottom: 0; }
+.sched td:first-child { font-family: var(--mono); white-space: nowrap; }
+@media (max-width: 900px) { .sns-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- 歩み ---------- */
+.history { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.history li { display: grid; grid-template-columns: 6.5em minmax(0, 1fr); gap: 4px 18px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.history li:last-child { border-bottom: 0; }
+.history time { font-weight: 500; color: var(--accent); padding-top: 2px; }
+.history b { display: block; font-size: 15.5px; }
+.history p { color: var(--muted); font-size: 14px; }
+@media (max-width: 480px) { .history li { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- 道具 ---------- */
+.toolsets { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 36px; }
+.toolsets h3 { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+.toolsets ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.toolsets li { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; font-size: 13.5px; }
+.toolsets li small { color: var(--muted); font-size: 12px; margin-left: 4px; }
+
+footer { margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12.5px; display: grid; gap: 4px; }
+
+/* ---------- スマホ ---------- */
+@media (max-width: 760px) {
+  .hero { padding-block: 36px 28px; }
+  .ways { grid-template-columns: minmax(0, 1fr); }
+  .work { grid-template-columns: minmax(0, 1fr); padding: 20px 18px; gap: 16px; }
+  .tags { grid-column: 1; }
+  .story { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .story dd { margin-bottom: 10px; }
+  .toolsets { grid-template-columns: minmax(0, 1fr); }
+  .figures { gap: 12px 28px; }
+  .figures dd { font-size: 34px; }
+}
+@media (max-width: 480px) {
+  .item { grid-template-columns: minmax(0, 1fr); }
+  .item-meta { flex-direction: row; align-items: center; justify-content: flex-start; order: -1; }
+}
+@media print {
+  html:root:not(#print) {
+    --paper: #FFFFFF; --surface: #FFFFFF; --ink: #151922; --muted: #586071; --line: #D9DEE6;
+    --accent: #2E43C2; --live: #0B7A5C; --live-soft: #DCF1E8; --done-soft: #E8EBF1;
+    --c1: #2E43C2; --c2: #0C7C73; --c3: #7650C0; --c4: #B8650F; --c5: #4A5568; --c6: #B23B6C; --c7: #5A7A17; --c8: #7D8696;
+    color-scheme: light;
+  }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { background: #fff; color: #151922; font-size: 10.5pt; }
+  .wrap { max-width: none; padding: 0; }
+  .hero { padding-block: 0 20px; }
+  .work { border-color: #ccd2dc; }
+  section { padding-block: 22px 4px; }
+  .group { break-inside: auto; }
+  .group h3, .sec-head { break-after: avoid; }
+  .ways { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .work { grid-template-columns: minmax(0, 0.9fr) minmax(0, 2fr); padding: 16px 18px; gap: 10px 24px; }
+  .story { grid-template-columns: 5.6em minmax(0, 1fr); gap: 6px 12px; }
+  .story dd { margin-bottom: 0; }
+  .tags { grid-column: 2; }
+  .toolsets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .item { grid-template-columns: minmax(0, 1fr) auto; padding: 9px 0; }
+  .item-meta { flex-direction: column; align-items: flex-end; order: 0; }
+  .works { gap: 12px; }
+  .open { display: block; border: 0; padding: 0; font-weight: 700; font-size: 9pt; }
+  .open::after { display: block; content: attr(href); font-family: var(--mono); font-weight: 400; font-size: 7.5pt; color: #586071; word-break: break-all; margin-top: 2px; }
+  .open.sm { display: inline-block; }
+  .sns-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .sns-card { padding: 10px 11px; gap: 6px; }
+  .sns-card h3 { font-size: 13pt; }
+  .sns-card .what, .auto, .sns-num, .sns-lead { font-size: 8.5pt; line-height: 1.6; }
+  .sns-links { font-size: 8pt; }
+  .sns-links .open::after { font-size: 7pt; }
+  .open.sm::after { content: none; }
+  a { color: #2E43C2; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+
+
+<div class="wrap" lang="ja">
+
+  <header class="hero">
+    <p class="eyebrow">Portfolio · 2024.12 – 2026.11</p>
+    <h1>AIで作った成果物</h1>
+    <p class="name">新井 教文</p>
+    <p class="lead">2024年12月に、AIで商品のプロモーション動画とLPの画像を作るところから始めました。2026年7月からは Claude Code と Codex を使い、エンジニアではない立場で、仕事と暮らしの困りごとを片づけるツールやアプリも作っています。設計・制作・検品をAIに分担させ、できたものは自分の仕事で使いながら直しています。</p>
+
+    <p class="demo-note">作ったもの57件のうち40件は、中身を見られます。「<b>動かしてみる</b>」は架空のデータを入れた実物をブラウザで操作でき、「<b>見本を見る</b>」は仕組みと架空の見本を見られます。表示される会社名・人名・金額はすべて架空です。残りは見られる形を準備中です。</p>
+
+    <dl class="figures">
+      <div><dt>作ったもの</dt><dd>57<span>件</span></dd></div>
+      <div><dt>中身を見られる</dt><dd>40<span>件</span></dd></div>
+      <div><dt>AIでの制作歴（2024年12月〜）</dt><dd>約2<span>年</span></dd></div>
+    </dl>
+
+    <div class="mix" aria-label="区分ごとの件数">
+      <div class="mix-bar" role="img" aria-label="業務の効率化14件、Web・EC制作8件、EC商品の調査・企画8件、アプリ8件、SNS・発信の自動運用6件、AIの仕組みづくり5件、3D・映像の制作4件、設計・検証段階4件">
+        <span class="k1" style="flex-grow:14"></span>
+        <span class="k2" style="flex-grow:8"></span>
+        <span class="k6" style="flex-grow:8"></span>
+        <span class="k3" style="flex-grow:8"></span>
+        <span class="k4" style="flex-grow:6"></span>
+        <span class="k5" style="flex-grow:5"></span>
+        <span class="k7" style="flex-grow:4"></span>
+        <span class="k8" style="flex-grow:4"></span>
+      </div>
+      <ul class="mix-legend">
+        <li><span class="sw k1"></span>業務の効率化 <b>14</b></li>
+        <li><span class="sw k2"></span>Web・EC制作 <b>8</b></li>
+        <li><span class="sw k6"></span>EC商品の調査・企画 <b>8</b></li>
+        <li><span class="sw k3"></span>アプリ <b>8</b></li>
+        <li><span class="sw k4"></span>SNS・発信の自動運用 <b>6</b></li>
+        <li><span class="sw k5"></span>AIの仕組みづくり <b>5</b></li>
+        <li><span class="sw k7"></span>3D・映像の制作 <b>4</b></li>
+        <li><span class="sw k8"></span>設計・検証段階 <b>4</b></li>
+      </ul>
+    </div>
+  </header>
+
+  <section aria-labelledby="history-h">
+    <div class="sec-head"><h2 id="history-h">これまでの歩み</h2></div>
+    <ol class="history">
+      <li><time>2024.12</time><div><b>AIで、商品のプロモーション動画とLP画像を作り始める</b><p>AIの画像・動画生成と、Canva・Canva AI、Klingなどの動画編集ツールを組み合わせて、商品PVや商品ページの画像を制作。</p></div></li>
+      <li><time>2026.07</time><div><b>会社紹介PVを制作</b><p>大型ライブ会場の大画面での上映用に、1分44秒の会社紹介映像を制作。</p></div></li>
+      <li><time>2026.07〜</time><div><b>Claude Code と Codex で、ツール・アプリ・自動化を作り始める</b><p>請求書のチェック、顧客管理、予定アプリ、SNSの自動運用など、このページにある多くの作品はここから。</p></div></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="ways-h">
+    <div class="sec-head"><h2 id="ways-h">作り方</h2></div>
+    <ul class="ways">
+      <li>
+        <h3>困りごとから作る</h3>
+        <p>毎月の請求書のミス、しまった場所を忘れる、現場の顧客情報が残らない。自分と周りの人が実際に困っていることを出発点にしています。</p>
+      </li>
+      <li>
+        <h3>AIに役割を分けて任せる</h3>
+        <p>設計・制作・検品を別々のAIに担当させ、いくつもの視点で審査してから世に出します。</p>
+      </li>
+      <li>
+        <h3>数字で確かめて直す</h3>
+        <p>結果は実際に測ります。うまくいかなかった数字も記録して、原因を探して作り直します。</p>
+      </li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="works-h">
+    <div class="sec-head"><h2 id="works-h">代表作</h2><p>10件。困りごと（求められたこと）、作ったもの、結果の順に書いています。</p></div>
+    <div class="works">
+
+      <article class="work">
+        <div class="work-head">
+          <p class="cat"><span class="sw k1"></span>業務の効率化</p>
+          <h3>請求書の作成・自動チェックツール</h3>
+          <p class="meta"><span class="chip live">使用中</span><time>2026.10</time></p>
+          <a class="open" href="demo/invoice/" target="_blank" rel="noopener">動かしてみる ↗</a>
+        </div>
+        <dl class="story">
+          <dt>困りごと</dt>
+          <dd>取引先へ毎月送る請求書を手作業で作っていて、毎回どこかの間違いを指摘されていた。</dd>
+          <dt>作ったもの</dt>
+          <dd>ブラウザに入力するだけで、Excelの請求書ファイルに新しい月のシートを足し、PDFも保存するツール。保存する前に「○月分」の表記、番号の重複、二重請求、内税の計算、宛名や振込先の文字まで自動で検査する。</dd>
+          <dt>結果</dt>
+          <dd class="result">過去に送った請求書も検査し、月の表記ずれ、内税の計算ちがい（10%で計算していた。正しくは110分の10）、誤字を見つけた。上書きの前に控えを自動で残すので、いつでも元に戻せる。</dd>
+        </dl>
+        <ul class="tags"><li>Python</li><li>Excel連携</li><li>Claude Code</li></ul>
+      </article>
+
+      <article class="work">
+        <div class="work-head">
+          <p class="cat"><span class="sw k1"></span>業務の効率化</p>
+          <h3>工事注文書ツール</h3>
+          <p class="meta"><span class="chip done">完成</span><time>2026.10</time></p>
+          <a class="open" href="demo/order/" target="_blank" rel="noopener">動かしてみる ↗</a>
+        </div>
+        <dl class="story">
+          <dt>困りごと</dt>
+          <dd>工事の注文書づくりと、承認や進み具合の確認が、紙とExcelに分かれていた。</dd>
+          <dt>作ったもの</dt>
+          <dd>注文書の作成と印刷、承認番号の自動採番、工事カレンダー、営業の予定と日報、依頼金額の集計をひとつにした社内向けWebアプリ。社外のスマホから使えるよう、ログイン失敗の回数制限などの守りを入れた。会社の実データを中に持たず、導入先が管理画面で設定する作りにして、販売できる形にした。</dd>
+          <dt>結果</dt>
+          <dd class="result">50項目以上の自動検品に合格。インストールのいらないexe版と、導入の手順書まで用意した。</dd>
+        </dl>
+        <ul class="tags"><li>Python</li><li>PyInstaller</li><li>Claude Code</li></ul>
+      </article>
+
+      <article class="work">
+        <div class="work-head">
+          <p class="cat"><span class="sw k1"></span>業務の効率化</p>
+          <h3>白い棚（予定・タスクと毎朝の段取り）</h3>
+          <p class="meta"><span class="chip live">運用中</span><time>2026.09〜</time></p>
+          <a class="open" href="demo/shelf/" target="_blank" rel="noopener">動かしてみる ↗</a>
+          <a class="open sm" href="works/secretary/" target="_blank" rel="noopener">毎朝の段取りの見本 ↗</a>
+        </div>
+        <dl class="story">
+          <dt>困りごと</dt>
+          <dd>仕事の案件や予定がチャット・メモ・頭の中に散らばり、チャットで話した予定を別のアプリに入れ直す手間があった。締め切りの通知も来なかった。</dd>
+          <dt>作ったもの</dt>
+          <dd>ログイン不要で普通のアプリのように使える、スマホの予定・タスクアプリ。今日・全体・カレンダー・メモの4画面で、チャットからも登録・変更でき、1件に2回までお知らせをLINEへ送れる。毎朝、パソコンが中身の写しを保存し、仕事の台帳と合わせて「今日やること」を自動で書き出す。</dd>
+          <dt>結果</dt>
+          <dd class="result">毎日使っている。途中で、スマホのアプリが通知の仕組みにつながっておらず12日間データが届いていなかったことを見つけ、つながっていない時は画面に必ず出るように直した。毎朝の自動実行が確認待ちで止まる問題も、仕組みを組み替えて止まらない形にした。</dd>
+        </dl>
+        <ul class="tags"><li>PWA</li><li>Google Apps Script</li><li>LINE通知</li><li>Claude Code</li></ul>
+      </article>
+
+      <article class="work">
+        <div class="work-head">
+          <p class="cat"><span class="sw k2"></span>Web・EC制作</p>
+          <h3>ビニールハウス資材のECサイト</h3>
+          <p class="meta"><span class="chip wip">試作・公開中</span><time>2026.09</time></p>
+          <a class="open" href="demo/house-ec/" target="_blank" rel="noopener">動かしてみる ↗</a>
+        </div>
+        <dl class="story">
+          <dt>困りごと</dt>
+          <dd>ビニールハウスの資材を1個から買える場所がなく、お客様の情報（誰が・どこで・何棟・次はいつ張り替えか）が会社に残っていなかった。</dd>
+          <dt>作ったもの</dt>
+          <dd>資材を1個から買えるECサイト。被覆材の種類と張った年を入れると張り替えの目安・必要な面積・費用のめやすを30秒で答える診断、部材と寸法を選ぶと3Dの形と概算価格が変わる見積画面、施工事例から概算と相談へ進む流れ、担当者の画面とお客様のマイページをそろえた。</dd>
+          <dt>結果</dt>
+          <dd class="result">2026年9月に試作版を公開。「文字ばかり」「本物の農業の写真を先に」という声を受けて見せ方を3回作り直した。診断で「残す」を押したお客様は、担当者の「今日やること」に電話の予定として載る。本番のデータ保存先や正式な単価への切り替えはこれからで、売上への効果はまだ確かめていない。</dd>
+        </dl>
+        <ul class="tags"><li>HTML/JavaScript</li><li>Three.js</li><li>GitHub Pages</li><li>Claude Code</li></ul>
+      </article>
+
+      <article class="work">
+        <div class="work-head">
+          <p class="cat"><span class="sw k4"></span>SNS・発信の自動運用</p>
+          <h3>AI進化レーダー</h3>
+          <p class="meta"><span class="chip live">公開中</span><time>2026.07〜</time></p>
+          <a class="open" href="https://reiki-ai-apps.github.io/AI-/" target="_blank" rel="noopener">公開ページを開く ↗</a>
+        </div>
+        <dl class="story">
+          <dt>困りごと</dt>
+          <dd>AIのニュースが多すぎて、何が大事なのか追いきれない。</dd>
+          <dt>作ったもの</dt>
+          <dd>AIのニュースを自動で集め、AIが日本語で要約し、重要度と分野を判定して並べるWebアプリ。1日3回、人の手を使わずに更新される。</dd>
+          <dt>結果</dt>
+          <dd class="result">一時、AIが記事をほぼ全部はじいて更新が止まった（採用が1日27件から3件に）。はじく指示が強すぎたことなどの原因を突き止めて直し、復旧させた。</dd>
+        </dl>
+        <ul class="tags"><li>GitHub Actions</li><li>Claude API</li><li>PWA</li></ul>
+      </article>
+
+      <article class="work">
+        <div class="work-head">
+          <p class="cat"><span class="sw k4"></span>SNS・発信の自動運用</p>
+          <h3>投稿ボード（毎晩のSNS投稿の管理）</h3>
+          <p class="meta"><span class="chip live">運用中</span><time>2026.09〜</time></p>
+          <a class="open" href="demo/kiki-board/" target="_blank" rel="noopener">動かしてみる ↗</a>
+          <a class="open sm" href="works/kikitoa/" target="_blank" rel="noopener">投稿の仕組みを見る ↗</a>
+        </div>
+        <dl class="story">
+          <dt>困りごと</dt>
+          <dd>AIが毎晩作る音楽動画を、会話をさかのぼって探していた。「どれを出したか、まだか」の確認も大変で、仕事のあとの夜に残る時間と気力を削っていた。</dd>
+          <dt>作ったもの</dt>
+          <dd>1本ごとに、動画の保存ボタン、TikTokの本文をコピーするボタン、X・Instagram・YouTube・TikTokの投稿状況が並ぶボード。いちばん上に「今夜やること」が1行で出る。AIは動画を作ったらボードに載せ、予約したら状況を書き換え、次を作る前に本人が押した記録を読む。</dd>
+          <dt>結果</dt>
+          <dd class="result">2026年9月30日から毎晩使っている。会話をさかのぼらず、ボードだけで投稿を終えられるようになった。「ストーリーズ用の画像が保存できない」などの声を受けて、その日のうちに直してきた。</dd>
+        </dl>
+        <ul class="tags"><li>claude.ai のページ（共有データ）</li><li>Python</li><li>Claude Code</li></ul>
+      </article>
+
+      <article class="work">
+        <div class="work-head">
+          <p class="cat"><span class="sw k7"></span>3D・映像の制作</p>
+          <h3>会社紹介PV（大型ライブ会場での上映用）</h3>
+          <p class="meta"><span class="chip done">完成</span><time>2026.07</time></p>
+          <a class="open" href="works/company-pv/" target="_blank" rel="noopener">映像を見る ↗</a>
+          <a class="open sm" href="https://www.youtube.com/watch?v=5VCqCIsXEvw" target="_blank" rel="noopener">YouTube ↗</a>
+        </div>
+        <dl class="story">
+          <dt>求められたこと</dt>
+          <dd>取引先の会社の4つの事業（EC・事業開発・AI・クリエイティブ）を、ライブ会場に集まった人へ短い時間で伝える映像が必要だった。</dd>
+          <dt>作ったもの</dt>
+          <dd>1分44秒の会社紹介映像。事業ごとに一言の言葉と場面をそろえ、AIで作った画像と映像を黒と金の色調でまとめた。会場の横に長い大画面に合わせて、3840×1920で制作した。</dd>
+          <dt>結果</dt>
+          <dd class="result">会社の公式YouTubeチャンネルで公開している。映像の中で紹介している商品PVや音楽レーベルの作品も、自分がAIで作ったもの。</dd>
+        </dl>
+        <ul class="tags"><li>AIによる画像・映像の生成</li><li>動画編集</li><li>3840×1920</li></ul>
+      </article>
+
+      <article class="work">
+        <div class="work-head">
+          <p class="cat"><span class="sw k2"></span>Web・EC制作</p>
+          <h3>Beauty Salon Olive ホームページ</h3>
+          <p class="meta"><span class="chip live">公開中</span><time>2026.07</time></p>
+          <a class="open" href="https://hinata2462-eng.github.io/olive-salon/" target="_blank" rel="noopener">公開ページを開く ↗</a>
+        </div>
+        <dl class="story">
+          <dt>困りごと</dt>
+          <dd>自営のサロンにホームページがなく、新しいお客様をLINE予約につなぐ入口がなかった。</dd>
+          <dt>作ったもの</dt>
+          <dd>12ページのサイト。参考にしたサイトの雰囲気に合わせて全面的に作り直し、実店舗の写真は明るさの補正と写り込みの除去をして使った。施術の写真は「実際と違う機器が写っていないか」など5項目で1枚ずつ確かめた。</dd>
+          <dt>結果</dt>
+          <dd class="result">GitHub Pages で公開。住所と地図、メニュー、料金、予約の入口を1か所で案内できるようになった。</dd>
+        </dl>
+        <ul class="tags"><li>HTML/CSS/JavaScript</li><li>GitHub Pages</li><li>Claude Code</li></ul>
+      </article>
+
+      <article class="work">
+        <div class="work-head">
+          <p class="cat"><span class="sw k3"></span>アプリ</p>
+          <h3>どこしまった？</h3>
+          <p class="meta"><span class="chip wip">公開準備中</span><time>2026.11</time></p>
+          <a class="open" href="demo/dokoshimatta/" target="_blank" rel="noopener">動かしてみる ↗</a>
+        </div>
+        <dl class="story">
+          <dt>困りごと</dt>
+          <dd>衣替えの服や書類をしまった場所を忘れて、毎回家族に聞いて困らせていた。</dd>
+          <dt>作ったもの</dt>
+          <dd>しまった場所を写真で記録して、言葉で探せるiPhoneアプリ。「ジャンバー」で「上着」も見つかる言い換え辞書、場所を家族に送る機能、「毎年10月に出す」といったお知らせつき。データは端末の中だけに置き、アカウント登録もいらない。</dd>
+          <dt>結果</dt>
+          <dd class="result">Web版を自分で使いながら改良し、iPhoneアプリにした。App Store に無料で出す準備をしている。</dd>
+        </dl>
+        <ul class="tags"><li>Expo</li><li>React Native</li><li>Claude Code</li></ul>
+      </article>
+
+      <article class="work">
+        <div class="work-head">
+          <p class="cat"><span class="sw k5"></span>AIの仕組みづくり</p>
+          <h3>AIの会議・制作の仕組み「オー」</h3>
+          <p class="meta"><span class="chip live">運用中</span><time>2026.08〜</time></p>
+          <a class="open" href="works/awe/" target="_blank" rel="noopener">見本を見る ↗</a>
+        </div>
+        <dl class="story">
+          <dt>困りごと</dt>
+          <dd>AIに一人で考えさせると、見方が偏ったり、確かめないまま言い切ったりする。</dd>
+          <dt>作ったもの</dt>
+          <dd>集客、お金、法律、初めて見る人の目など、39人の専門家役が会議して、制作と出す前の検品まで行う作業の仕組み。毎朝ニュースや本を読み、確かな学びだけで考え方を少しずつ更新する。</dd>
+          <dt>結果</dt>
+          <dd class="result">サイト、動画、商品調査の判断と検品に毎日使っている。一人ずつ呼び出せるスキルも39個作った。</dd>
+        </dl>
+        <ul class="tags"><li>Claude Code</li><li>スキル</li><li>定時タスク</li></ul>
+      </article>
+
+    </div>
+  </section>
+
+  <section aria-labelledby="sns-h" id="sns">
+    <div class="sec-head"><h2 id="sns-h">SNSの自動運用</h2><p>3つのアカウントを、AIが毎日つくって予約投稿する仕組みで動かしています。</p></div>
+    <p class="sns-lead">題材選び、素材づくり、動画の組み立て、出す前の検品、予約投稿までをAIが進めます。決まった時間に動く定時タスクと、作業中の会話からの予約の二重で動かし、止まった日があれば作り直しています。人が手を動かすのは、TikTokのようにアプリからしか出せない投稿と、最後の判断です。フォロワーの購入や自動フォローなど、規約に触れるやり方は使っていません。</p>
+    <div class="sns-grid">
+      <article class="sns-card">
+        <p class="cat"><span class="sw k4"></span>AIニュース · 2026.07〜</p>
+        <h3>KIZASHI</h3>
+        <p class="what">自作のAIニュースサイトの上位5本から毎日1本を選び、公式の発表で確かめてから、試せる物は実際に試して判定します。YouTube・TikTok・Instagram・X・noteに、場所ごとに別の形で出しています。</p>
+        <ul class="auto">
+          <li>試せる物は専用のブラウザで実際に動かして判定</li>
+          <li>番人が足りない投稿を数え、その分だけ作る</li>
+          <li>朝・夕の定時の回と会話の予約で、二重に動かす</li>
+          <li>台本は別のAIが読み、8点未満なら直してから出す</li>
+          <li>noteは公開の窓口（API）がないので、編集画面を操作して自動で公開</li>
+        </ul>
+        <p class="sns-num"><b>ショート36本で合計21,449回再生</b>（1本の最高1,192回）<br>30秒に話を4つ詰めた回は見続けた人が16.3%、1つに絞った回は54.3%。この差から「1本1つの話」に直しました。</p>
+        <div class="sns-links">
+          <a class="open" href="works/kizashi/" target="_blank" rel="noopener">仕組みを詳しく見る ↗</a>
+          <a href="https://www.youtube.com/@kizashi_jp" target="_blank" rel="noopener">YouTube</a>
+          <a href="https://www.tiktok.com/@kizashi_jp" target="_blank" rel="noopener">TikTok</a>
+          <a href="https://www.instagram.com/kizashi_jp/" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://x.com/KIZASHI_jp" target="_blank" rel="noopener">X</a>
+          <a href="https://note.com/natty_swan9072" target="_blank" rel="noopener">note</a>
+        </div>
+      </article>
+      <article class="sns-card">
+        <p class="cat"><span class="sw k4"></span>AI音楽のMV · 2026.09〜</p>
+        <h3>kikitoa</h3>
+        <p class="what">AIで作った曲から、毎回新しく描いた絵と、声に合わせて流れる歌詞の縦型ミュージックビデオを作り、毎晩出しています。YouTube・Instagramは20:30、Xは21:00に予約し、TikTokは人が投稿ボードから出します。</p>
+        <ul class="auto">
+          <li>「前回より1点良くする所」を書かないと制作が始まらない</li>
+          <li>字幕の歌詞が元と一字でも違えば、描き出しを止める</li>
+          <li>使った絵は一覧と照らし、二度と使わない</li>
+          <li>字幕はTikTokやInstagramの文字の帯を避けた位置に置く</li>
+          <li>人の返事を待たず、毎晩3か所に予約を入れる</li>
+        </ul>
+        <p class="sns-num"><b>YouTube登録者237人</b><br>ショートは1本の真ん中が約73回。登録の入口は長い本編の方だと分かり、出し方を見直しています。</p>
+        <div class="sns-links">
+          <a class="open" href="works/kikitoa/" target="_blank" rel="noopener">仕組みを詳しく見る ↗</a>
+          <a class="open sm" href="demo/kiki-board/" target="_blank" rel="noopener">投稿ボードを動かす ↗</a>
+          <a href="https://www.youtube.com/@kikitoa_official" target="_blank" rel="noopener">YouTube</a>
+          <a href="https://www.tiktok.com/@kikitoa_official" target="_blank" rel="noopener">TikTok</a>
+          <a href="https://www.instagram.com/kiki_toa.axive/" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://x.com/kiki_toa_axive" target="_blank" rel="noopener">X</a>
+        </div>
+      </article>
+      <article class="sns-card">
+        <p class="cat"><span class="sw k4"></span>Instagramの実証 · 2026.10〜</p>
+        <h3>ai.silver.lab</h3>
+        <p class="what">「AIだけでInstagramを伸ばせるか」を取引先の社長に見せるため、新しいアカウントをAIだけで運用しています。動画を作り、文字と音を合わせ、検品してから予約します。</p>
+        <ul class="auto">
+          <li>動画の生成→文字と音の合成→検品→予約投稿を毎日回す</li>
+          <li>題材の数字は、出典2つで確かめた「事実表」の物だけ使う</li>
+          <li>出す前に3人のAIが、見え方・事実・初めて見る人の目で検品</li>
+          <li>最初の1秒の動きを数で測り、基準を超えたら作り直す</li>
+        </ul>
+        <p class="sns-num"><b>広告3,000円 → リーチ2,030・フォロー8人</b>（1人あたり約373円）<br>増えた人は買い手になりにくい層だと分かり、広告より中身の改善を先にしました。良くない見通しも、そのまま依頼側へ伝えています。</p>
+        <div class="sns-links">
+          <a class="open" href="works/ai-silver-lab/" target="_blank" rel="noopener">仕組みを詳しく見る ↗</a>
+          <a href="https://www.instagram.com/ai.silver.lab/" target="_blank" rel="noopener">Instagram</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section aria-labelledby="list-h">
+    <div class="sec-head" id="works"><h2 id="list-h">そのほかの成果物</h2><p>47件。区分ごとに、作った月の順で並べています。「準備中」は、見られる形をまだ用意できていないものです。</p></div>
+    <div class="groups">
+
+      <div class="group">
+        <h3><span class="sw k1"></span>業務の効率化</h3>
+        <ul class="items">
+          <li class="item">
+            <div><h4>サロンの売上表の作り直し</h4>
+              <p>月ごとに分かれていたExcelを1枚の明細にまとめ、月の集計・顧客一覧・年間収支を自動で出す形に。2025年分370行を移し、2026年分191件は手書きのノートの写真から入力して、どの月も合計が元と一致することを確かめた。旧ファイルの集計ミス2件（数式の範囲ずれで18,038円の漏れなど）も見つけた。</p>
+              <p class="item-tags">Excel · Claude Code</p></div>
+            <div class="item-meta"><time>2026.08</time><span class="chip live">使用中</span><a class="open sm" href="works/sales-excel/" target="_blank" rel="noopener">見本 ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>帳簿アプリのレシート読み取り改修</h4>
+              <p>読めないレシートでも金額をでっち上げていた帳簿アプリを、AIの読み取りを主役・従来の文字認識を保険にした二段構えに直した。読めない所は空欄で人が入れ、検算で合わない数字は採用しない。実際のレシート10枚・32伝票で自動入力率90.6%、金額と日付の捏造0件。</p>
+              <p class="item-tags">LLM · Cloudflare Workers · Claude Code（アプリ本体はChatGPT）</p></div>
+            <div class="item-meta"><time>2026.08</time><span class="chip done">完了</span><a class="open sm" href="works/receipt-ocr/" target="_blank" rel="noopener">見本 ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>営業現場の顧客管理アプリ</h4>
+              <p>農業資材の営業がスマホで、お客様、ハウスの仕様、電話や訪問の記録、次にやることを登録し、地図にピンを立てて管理する。会議で出た手書きの要望を反映して版を重ねた。</p>
+              <p class="item-tags">Google Apps Script · スプレッドシート</p></div>
+            <div class="item-meta"><time>2026.08</time><span class="chip live">稼働中</span><a class="open sm" href="demo/crm/" target="_blank" rel="noopener">動かす ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>会議の文字起こしと議事録</h4>
+              <p>録音や録画から文字起こしし、決定事項とやることの表にまとめた短い議事録を作る。全文は別にスプレッドシートへ残す。6時間ほどの録画は20分ずつに分けて処理した。</p>
+              <p class="item-tags">faster-whisper · Claude</p></div>
+            <div class="item-meta"><time>2026.09</time><span class="chip done">完了</span><a class="open sm" href="works/minutes/" target="_blank" rel="noopener">見本 ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>通話録音の保存と自動文字起こし</h4>
+              <p>毎日の通話の録音をGoogleドライブにまとめ、文字起こしして、相手先ごとに分けてスプレッドシートに記録する。音声はパソコンの中で処理する。初日は11本・128分を処理した。</p>
+              <p class="item-tags">faster-whisper · Googleスプレッドシート · 定時タスク</p></div>
+            <div class="item-meta"><time>2026.11</time><span class="chip live">運用中</span><a class="open sm" href="works/call-transcripts/" target="_blank" rel="noopener">見本 ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>PILOT 売上司令塔</h4>
+              <p>案件の段階・期限・次にやることを1画面にまとめ、受注から入金までの進み具合を管理する。手順はスキルとしても整理した。</p>
+              <p class="item-tags">Codex · React</p></div>
+            <div class="item-meta"><time>2026.08</time><span class="chip wip">試作</span><a class="open sm" href="demo/pilot/" target="_blank" rel="noopener">動かす ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>ID HUB（IDとアカウントの管理）</h4>
+              <p>管理先・サービスごとにログインIDを探し、確認済みか、未確認の候補かを整理する。パスワードは保存しない設計。</p>
+              <p class="item-tags">Codex · JavaScript</p></div>
+            <div class="item-meta"><span class="chip wip">試作</span><a class="open sm" href="demo/id-hub/" target="_blank" rel="noopener">動かす ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>DAY DECK</h4>
+              <p>今日のタスクと予定を、リストとカレンダーで整理するアプリ。タスクは端末の中に保存する。</p>
+              <p class="item-tags">Codex</p></div>
+            <div class="item-meta"><time>2026.07</time><span class="chip wip">試作</span><a class="open sm" href="https://day-deck-reiki.rahash.chatgpt.site/" target="_blank" rel="noopener">公開ページ ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>見積PDF→CSV・見積台帳</h4>
+              <p>見積書のPDFから項目を取り出し、CSVと台帳に整理する実行ファイル。</p>
+              <p class="item-tags">Python</p></div>
+            <div class="item-meta"><span class="chip wip">準備中</span></div>
+          </li>
+          <li class="item">
+            <div><h4>サブスク管理</h4>
+              <p>続けて払っている契約と支出を一覧にして、見直しを助ける。</p></div>
+            <div class="item-meta"><span class="chip wip">準備中</span></div>
+          </li>
+          <li class="item">
+            <div><h4>クチメモAI</h4>
+              <p>話した内容を、あとで読めるメモに整理する入力支援。</p></div>
+            <div class="item-meta"><span class="chip wip">準備中</span></div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <h3><span class="sw k2"></span>Web・EC制作</h3>
+        <ul class="items">
+          <li class="item">
+            <div><h4>シルバーアクセサリー店の自社ECサイト</h4>
+              <p>楽天店のトップと商品ページを再現するShopifyのテーマ、商品データの一括作成（楽天・Yahoo!・Amazonの画像や商品名と同期、11版まで改良）、商品画像の自動加工、自社ECサイト16件の分析レポート。</p>
+              <p class="item-tags">Shopify · Python · OpenCV</p></div>
+            <div class="item-meta"><time>2026.07</time><span class="chip done">構築</span><a class="open sm" href="works/shopify-ec/" target="_blank" rel="noopener">見本 ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>車の注文販売サイト</h4>
+              <p>実写の車を置いたショールームを、ページ送りで背景のスタジオごと回転させて見せるサイト。10の視点のAI審査で品質を確かめた。</p>
+              <p class="item-tags">HTML/CSS/JavaScript</p></div>
+            <div class="item-meta"><time>2026.08</time><span class="chip wip">デモ</span><a class="open sm" href="demo/showroom/" target="_blank" rel="noopener">動かす ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>地元のお店向けホームページ制作サービス</h4>
+              <p>「3日で納品」のサービス紹介サイト、問い合わせへの自動返信と受付表への記録を行うボット、営業先の台帳と週ごとの進捗表。</p>
+              <p class="item-tags">Google Apps Script · Claude API</p></div>
+            <div class="item-meta"><time>2026.10</time><span class="chip wip">試作</span><a class="open sm" href="demo/mikka/" target="_blank" rel="noopener">動かす ↗</a><a class="open sm" href="demo/mikka/management.html" target="_blank" rel="noopener">台帳 ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>商品WEB・動画・楽天記事・360°表示の制作セット</h4>
+              <p>商品ごとのWEBページ、動画、楽天の記事、回転して見られる商品表示、Instagram用の素材を、連携する3つの手順書（スキル）で作る。作品一覧と掲載用の素材一式まで自動で整理する。</p>
+              <p class="item-tags">Codex</p></div>
+            <div class="item-meta"><time>2026.11</time><span class="chip done">制作</span><a class="open sm" href="works/rakuten-content/" target="_blank" rel="noopener">見本 ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>新商品の商品ページ画像</h4>
+              <p>取引先の社長の指示書16項目から、世界観3案×21枚（計63枚）の写真と対応表を作った。続く画像は1枚ごとに背景の場所を変えている。発売前の商品のため、画像そのものは載せていません。</p>
+              <p class="item-tags">Gemini · Python</p></div>
+            <div class="item-meta"><time>2026.11</time><span class="chip done">制作</span><a class="open sm" href="works/product-images/" target="_blank" rel="noopener">見本 ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>携帯用香水容器のECサイト試作</h4>
+              <p>取引先の新商品（持ち歩ける香水の容器）の紹介ページと、商品詳細から購入先へ進む流れを試作した。取引先のページのため、リンクは載せていません。</p>
+              <p class="item-tags">Codex</p></div>
+            <div class="item-meta"><span class="chip done">公開中</span></div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <h3><span class="sw k6"></span>EC商品の調査・企画</h3>
+        <ul class="items">
+          <li class="item">
+            <div><h4>商品開発のリサーチ班</h4>
+              <p>「オー」から分けた、EC商品開発の調査専用チーム。大きさ、単価、売れている数の条件を数字で決めてから市場を調べる。</p>
+              <p class="item-tags">Claude Code</p></div>
+            <div class="item-meta"><time>2026.09</time><span class="chip done">完成</span><a class="open sm" href="works/juki/" target="_blank" rel="noopener">見本 ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>DOP商品リサーチ</h4>
+              <p>商品の大きさや手数料まで入れて、候補ごとの採算を比べるアプリ。画像から読み取って取り込める。</p>
+              <p class="item-tags">Codex</p></div>
+            <div class="item-meta"><time>2026.10</time><span class="chip live">公開中</span><a class="open sm" href="https://dop-research.rahash.chatgpt.site/" target="_blank" rel="noopener">公開ページ ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>吸音材の聞き比べ・図解と競合調査</h4>
+              <p>商品調査の一環。録音から聞き比べ用の音声を切り出し、周波数のグラフとイラストの説明図で「ひと目でわかる」資料にした。ブランド名の候補と競合の商品ページも調べてまとめた。</p>
+              <p class="item-tags">Python（音声処理） · Gemini</p></div>
+            <div class="item-meta"><time>2026.11</time><span class="chip done">完成</span><a class="open sm" href="works/soundproof/" target="_blank" rel="noopener">聞いてみる ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>インフルエンサー検索・管理</h4>
+              <p>紹介を頼む候補を検索・比較し、お気に入りや連絡の記録をまとめる。デモの送信は見せかけだけ。</p>
+              <p class="item-tags">Codex · Next.js</p></div>
+            <div class="item-meta"><span class="chip wip">試作</span><a class="open sm" href="demo/influencer/" target="_blank" rel="noopener">動かす ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>EC商品リサーチ台帳</h4>
+              <p>調べた商品候補を比べて、ためていく台帳。</p></div>
+            <div class="item-meta"><span class="chip wip">準備中</span></div>
+          </li>
+          <li class="item">
+            <div><h4>中国輸入リサーチ・採算シミュレーター</h4>
+              <p>仕入れ候補と費用の条件を整理して、採算を試算する。</p></div>
+            <div class="item-meta"><span class="chip wip">準備中</span></div>
+          </li>
+          <li class="item">
+            <div><h4>競合レビュー分析</h4>
+              <p>他社商品のレビューから不満や要望を拾い、商品改善の仮説にする。</p></div>
+            <div class="item-meta"><span class="chip wip">準備中</span></div>
+          </li>
+          <li class="item">
+            <div><h4>商品LP作成アプリ</h4>
+              <p>商品の情報から、紹介ページ（LP）づくりを手伝う。</p></div>
+            <div class="item-meta"><span class="chip wip">準備中</span></div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <h3><span class="sw k3"></span>アプリ</h3>
+        <ul class="items">
+          <li class="item">
+            <div><h4>PALMIRROR</h4>
+              <p>掌の上の小さな世界を毎日育てるスマホ向けアプリ。3Dで作り始めたが写実に届かないと判断し、AIで作った画像を使う方式に切り替えた。</p>
+              <p class="item-tags">React · TypeScript · Three.js</p></div>
+            <div class="item-meta"><time>2026.07</time><span class="chip wip">試作</span><a class="open sm" href="demo/palmirror/" target="_blank" rel="noopener">動かす ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>ビニールハウス3Dビュアー</h4>
+              <p>寸法から、ハウスの形と骨組みを3Dで確かめられるビュアー。</p>
+              <p class="item-tags">Three.js</p></div>
+            <div class="item-meta"><time>2026.07</time><span class="chip wip">試作</span><a class="open sm" href="demo/house3d/" target="_blank" rel="noopener">動かす ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>AGENT OFFICE</h4>
+              <p>AIが作業している様子を、ゲームのオフィスのように見える化するアプリの試作。</p>
+              <p class="item-tags">React · TypeScript</p></div>
+            <div class="item-meta"><time>2026.07</time><span class="chip wip">試作</span><a class="open sm" href="demo/agent-office/" target="_blank" rel="noopener">動かす ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>FX GATE TOOLKIT</h4>
+              <p>価格データがつながっていない時や確かめていない時は、判断を止めて知らせる状態表示とテスト画面。実際の取引はしない。チャートの見方を説明するスライド資料も作った。</p>
+              <p class="item-tags">Codex</p></div>
+            <div class="item-meta"><time>2026.07</time><span class="chip wip">デモ</span><a class="open sm" href="https://fx-gate-toolkit-shadow.rahash.chatgpt.site/" target="_blank" rel="noopener">公開ページ ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>TCG Nexus</h4>
+              <p>トレーディングカードの仕入れ、在庫、抽選、売却、利益をまとめて管理するアプリ。金額の計算などに自動テストを108件つけた。資産を整理する管理シートも作った。</p>
+              <p class="item-tags">JavaScript · PWA</p></div>
+            <div class="item-meta"><time>2026.08</time><span class="chip wip">試作</span><a class="open sm" href="demo/tcg/" target="_blank" rel="noopener">動かす ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>ワンタップ応募入力</h4>
+              <p>iPhoneのSafariで、抽選の応募フォームに自分の情報を一度に入れるブックマークレット。送信は自分で押す設計にした。</p>
+              <p class="item-tags">JavaScript</p></div>
+            <div class="item-meta"><time>2026.10</time><span class="chip done">完成</span><a class="open sm" href="demo/onetap/" target="_blank" rel="noopener">動かす ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>くじ予想ダッシュボード</h4>
+              <p>過去の全部の回で「答えを見ずに予想→答え合わせ」を繰り返し、でたらめに選んだ場合と必ず比べて、確率とその確かさを出す。当たりや収益を約束するものではない。</p>
+              <p class="item-tags">Python · Claude Code</p></div>
+            <div class="item-meta"><time>2026.11</time><span class="chip wip">準備中</span></div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <h3><span class="sw k4"></span>SNS・発信の自動運用</h3>
+        <ul class="items">
+          <li class="item">
+            <div><h4>AIニュースの発信「KIZASHI」</h4>
+              <p>YouTube、ショート動画、note、X、Instagramの5か所に、毎朝と毎夕の定時タスクで制作と予約をする。ショート動画の企画支援もここに含む。仕組みは上の「SNSの自動運用」に詳しく書いています。</p>
+              <p class="item-tags">Claude Code · Codex · ブラウザ自動操作</p></div>
+            <div class="item-meta"><time>2026.07</time><span class="chip live">運用中</span><a class="open sm" href="works/kizashi/" target="_blank" rel="noopener">見本 ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>SNS投稿の司令盤</h4>
+              <p>4つのSNSの投稿予定、承認、状況を1画面で管理するWebアプリ。39節ある設計書のうち、画面6つを先に作った。</p>
+              <p class="item-tags">JavaScript · Node.js</p></div>
+            <div class="item-meta"><time>2026.08</time><span class="chip wip">試作</span><a class="open sm" href="demo/post-board/" target="_blank" rel="noopener">動かす ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>AI音楽のミュージックビデオ「kikitoa」</h4>
+              <p>AIで作った曲から、毎回新しく描いた絵と、声に合わせて流れる歌詞の縦型MVを作り、毎晩投稿する。曲づくりの補助（歌詞・指示文・音源の見直し、作る順番の組み立て）と、承認や二重投稿を防ぐ管理画面もあわせて作った。毎晩の投稿は代表作の「投稿ボード」で管理している。</p>
+              <p class="item-tags">Suno · Gemini · Python（ffmpeg） · whisper · Codex</p></div>
+            <div class="item-meta"><time>2026.09</time><span class="chip live">運用中</span><a class="open sm" href="works/kikitoa/" target="_blank" rel="noopener">見本 ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>InstagramのAI運用の実証</h4>
+              <p>動画の生成、文字の合成、予約投稿までを自動化。広告3,000円でリーチ2,030、フォロー8（1人あたり約373円）と実測し、3秒以内に離れる人の割合を分析して作り方を見直した。</p>
+              <p class="item-tags">Gemini Veo · Python · Metricool</p></div>
+            <div class="item-meta"><time>2026.10</time><span class="chip live">実証中</span><a class="open sm" href="works/ai-silver-lab/" target="_blank" rel="noopener">見本 ↗</a></div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <h3><span class="sw k5"></span>AIの仕組みづくり</h3>
+        <ul class="items">
+          <li class="item">
+            <div><h4>10の視点の審査パネル</h4>
+              <p>作った物の品質と、売り方の判断を、それぞれ10の専門の視点で審査する仕組み。のちに「オー」へまとめた。</p>
+              <p class="item-tags">Codex · Claude Code</p></div>
+            <div class="item-meta"><time>2026.07</time><span class="chip done">完成</span><a class="open sm" href="works/review-panel/" target="_blank" rel="noopener">見本 ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>設計書のレビュー</h4>
+              <p>帳簿アプリや投資ツールなど、6件の設計書の欠陥やリスクを洗い出した。漫画づくりのスキルは、少年誌向けに根本から書き直した。</p>
+              <p class="item-tags">Claude Code</p></div>
+            <div class="item-meta"><time>2026.07</time><span class="chip done">完了</span><a class="open sm" href="works/design-review/" target="_blank" rel="noopener">見本 ↗</a></div>
+          </li>
+          <li class="item">
+            <div><h4>仕事ごとのAIスキル集</h4>
+              <p>漫画の連載づくり（設定・脚本・ネーム・作画・文字入れ）、集客の企画と改善、商品ごとの採算から広告案を組む、アプリの権限や公開範囲の点検、ゲーム制作の進め方など、仕事ごとの手順をAIに覚えさせたスキル。</p>
+              <p class="item-tags">Codex · Claude Code</p></div>
+            <div class="item-meta"><span class="chip wip">準備中</span></div>
+          </li>
+          <li class="item">
+            <div><h4>作ったものの棚卸しスキル</h4>
+              <p>会話の履歴、作業フォルダ、自動のタスクから、これまでに作った物を遡って一覧にするスキル。このポートフォリオの元になっている。</p>
+              <p class="item-tags">Python · Claude Code</p></div>
+            <div class="item-meta"><time>2026.11</time><span class="chip done">完成</span><a class="open sm" href="works/inventory-skill/" target="_blank" rel="noopener">見本 ↗</a></div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <h3><span class="sw k7"></span>3D・映像の制作</h3>
+        <ul class="items">
+          <li class="item">
+            <div><h4>写真から作る3Dモデル（商品・農業ハウス）</h4>
+              <p>参考写真からBlenderで立体モデルを作り、Webで使えるGLB形式に書き出した。写真で見えない寸法や部分は推定。</p>
+              <p class="item-tags">Blender · Codex</p></div>
+            <div class="item-meta"><span class="chip wip">準備中</span></div>
+          </li>
+          <li class="item">
+            <div><h4>3Dアバター</h4>
+              <p>取引先のキャラクターの、編集できるBlenderモデル2体とスマホ用のGLBを制作。表情や口の動きはまだ。</p>
+              <p class="item-tags">Blender · Codex</p></div>
+            <div class="item-meta"><span class="chip wip">準備中</span></div>
+          </li>
+          <li class="item">
+            <div><h4>楽曲のプロモーション動画</h4>
+              <p>横と縦の動画、字幕、3D用のデータを制作。</p>
+              <p class="item-tags">Blender · Codex</p></div>
+            <div class="item-meta"><span class="chip wip">準備中</span></div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="group">
+        <h3><span class="sw k8"></span>設計・検証段階</h3>
+        <ul class="items">
+          <li class="item">
+            <div><h4>サロンの集客・ケア提案・予約の画面</h4>
+              <p>集客からサービスの提案、予約までの流れを、公開中のサロンサイトとは別に検討。</p></div>
+            <div class="item-meta"><span class="chip wip">準備中</span></div>
+          </li>
+          <li class="item">
+            <div><h4>家計とこれから</h4>
+              <p>家計と将来の見通しを整理する画面と計算を検証。</p></div>
+            <div class="item-meta"><span class="chip wip">準備中</span></div>
+          </li>
+          <li class="item">
+            <div><h4>ビジネス情報の収集と学びログ</h4>
+              <p>集めた情報と気づきを、続けて記録していく仕組み。</p></div>
+            <div class="item-meta"><span class="chip wip">準備中</span></div>
+          </li>
+          <li class="item">
+            <div><h4>勤怠管理の有償案件</h4>
+              <p>勤怠管理についてご依頼いただいた案件。完成・納品はまだのため、実績には数えていません。</p></div>
+            <div class="item-meta"><span class="chip wip">準備中</span></div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <section aria-labelledby="tools-h">
+    <div class="sec-head"><h2 id="tools-h">使ってきたAIと技術</h2></div>
+    <div class="toolsets">
+      <div>
+        <h3>AI</h3>
+        <ul>
+          <li>Claude Code<small>設計・制作・検品・自動化</small></li>
+          <li>Codex</li>
+          <li>ChatGPT</li>
+          <li>Gemini<small>画像・動画・音楽</small></li>
+          <li>Suno<small>作曲</small></li>
+          <li>Kling<small>動画</small></li>
+          <li>Canva・Canva AI<small>動画・画像の編集</small></li>
+          <li>whisper<small>文字起こし</small></li>
+        </ul>
+      </div>
+      <div>
+        <h3>作ったものの技術</h3>
+        <ul>
+          <li>HTML / CSS / JavaScript</li>
+          <li>React / TypeScript</li>
+          <li>Expo（React Native）</li>
+          <li>Python</li>
+          <li>Google Apps Script</li>
+          <li>Excel</li>
+          <li>Shopify</li>
+          <li>GitHub Pages / Actions</li>
+          <li>Cloudflare</li>
+          <li>Metricool</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>勤務先や取引先の社名は伏せ、業種で書いています（映像そのものに社名が入っている作品は、公開中の映像をそのまま紹介しています）。数字は作業の記録にもとづきます。</p>
+    <p>2026年11月17日 時点</p>
+  </footer>
+</div>
+
+</body>
+</html>

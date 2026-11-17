@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>見本ホビー 抽選応募フォーム（デモ）</title>
+<style>
+/* 架空のお店「見本ホビー」の、よくある表形式の応募フォーム */
+:root { --red: #c8323c; --ink: #222; --muted: #666; --line: #d9d9d9; --th: #f5f1ea; --bg: #faf8f4; --demo: #2f45a3; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.7 "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif; }
+.demo-bar { position: sticky; top: 0; z-index: 50; background: #fff7e6; border-bottom: 1px solid #f0d9a8; color: #6b4d0a; padding: 8px 12px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 12px; font-size: 13px; }
+.demo-bar .msg { min-width: 0; }
+.demo-bar button, .demo-bar a { font: inherit; font-size: 14px; border-radius: 999px; padding: 7px 14px; cursor: pointer; text-decoration: none; }
+#oneTap { background: var(--demo); color: #fff; border: 0; font-weight: 700; padding: 9px 18px; box-shadow: 0 2px 8px rgba(47,69,163,.3); }
+#clearForm { background: #fff; color: #6b4d0a; border: 1px solid #e0c48a; }
+.demo-bar a { color: #6b4d0a; font-size: 13px; padding: 7px 4px; text-decoration: underline; }
+.shop { background: #fff; border-bottom: 3px solid var(--red); }
+.shop .in { max-width: 760px; margin: 0 auto; padding: 12px 16px; display: flex; align-items: baseline; gap: 10px; }
+.shop b { font-size: 20px; letter-spacing: .06em; color: var(--red); }
+.shop span { font-size: 12px; color: var(--muted); }
+main { max-width: 760px; margin: 0 auto; padding: 22px 16px 70px; }
+h1 { font-size: 22px; margin: 0 0 6px; }
+.lead { margin: 0 0 18px; color: #444; font-size: 14px; }
+.box { background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 16px; margin-bottom: 18px; }
+.box h2 { font-size: 16px; margin: 0 0 10px; padding-left: 10px; border-left: 4px solid var(--red); }
+table.ftable { width: 100%; border-collapse: collapse; font-size: 14px; }
+.ftable th, .ftable td { border: 1px solid var(--line); padding: 10px; vertical-align: middle; text-align: left; }
+.ftable th { background: var(--th); width: 34%; font-weight: 700; }
+.req { display: inline-block; font-size: 11px; color: #fff; background: var(--red); border-radius: 3px; padding: 0 5px; margin-left: 6px; vertical-align: 1px; font-weight: 700; }
+input[type=text], input[type=tel], input[type=email], select { font: inherit; font-size: 16px; padding: 7px 8px; border: 1px solid #bbb; border-radius: 4px; background: #fff; max-width: 100%; }
+.w-full { width: 100%; }
+.w-name { width: 7.5em; }
+.w-zip3 { width: 4.2em; }
+.w-zip4 { width: 5.2em; }
+.inline { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.radio label { margin-right: 14px; white-space: nowrap; }
+.notes { margin: 0 0 12px; padding-left: 1.3em; font-size: 13.5px; color: #444; }
+.check { display: flex; gap: 8px; align-items: flex-start; font-size: 14.5px; }
+.check input { width: 18px; height: 18px; margin-top: 4px; }
+.submit { text-align: center; margin-top: 8px; }
+.submit button { font: inherit; font-size: 17px; font-weight: 700; color: #fff; background: var(--red); border: 0; border-radius: 6px; padding: 14px 36px; cursor: pointer; }
+#sent { margin: 12px auto 0; max-width: 420px; text-align: center; font-weight: 700; color: var(--demo); background: #eef1ff; border-radius: 8px; padding: 10px; }
+.foot { font-size: 12px; color: var(--muted); text-align: center; margin-top: 26px; }
+@media (max-width: 560px) {
+  .ftable th, .ftable td { display: block; width: 100%; border-top: 0; }
+  .ftable tr:first-child th { border-top: 1px solid var(--line); }
+  .ftable th { padding: 8px 10px; }
+}
+</style>
+</head>
+<body>
+<div class="demo-bar" role="note">
+  <span class="msg">デモ版：お店と応募フォームは架空です。下のボタンは、本物のブックマークと同じコードを動かします。</span>
+  <button type="button" id="oneTap">ワンタップで入力</button>
+  <button type="button" id="clearForm">空に戻す</button>
+  <a href="./">← 設定ページ</a>
+</div>
+
+<header class="shop"><div class="in"><b>見本ホビー</b><span>ボードゲーム・模型の専門店（架空）</span></div></header>
+
+<main>
+  <h1>見本ホビー 抽選応募フォーム</h1>
+  <p class="lead">新作ボードゲーム「見本の森」限定版の抽選販売です。応募はお1人様1回まで。当選された方にはメールでお知らせします。</p>
+
+  <form id="entry" novalidate>
+    <section class="box">
+      <h2>お客様情報</h2>
+      <table class="ftable">
+        <tr><th>お名前<span class="req">必須</span></th>
+          <td><div class="inline"><span>姓</span><input type="text" class="w-name" name="name_sei"><span>名</span><input type="text" class="w-name" name="name_mei"></div></td></tr>
+        <tr><th>フリガナ（全角カタカナ）<span class="req">必須</span></th>
+          <td><div class="inline"><span>セイ</span><input type="text" class="w-name" name="kana_sei"><span>メイ</span><input type="text" class="w-name" name="kana_mei"></div></td></tr>
+        <tr><th>郵便番号<span class="req">必須</span></th>
+          <td><div class="inline"><span>〒</span><input type="text" class="w-zip3" name="zip1" maxlength="3" inputmode="numeric"><span>-</span><input type="text" class="w-zip4" name="zip2" maxlength="4" inputmode="numeric"></div></td></tr>
+        <tr><th>都道府県<span class="req">必須</span></th><td><select name="pref" id="prefSelect"></select></td></tr>
+        <tr><th>市区町村<span class="req">必須</span></th><td><input type="text" class="w-full" name="city"></td></tr>
+        <tr><th>番地<span class="req">必須</span></th><td><input type="text" class="w-full" name="address1"></td></tr>
+        <tr><th>建物名・部屋番号</th><td><input type="text" class="w-full" name="address2"></td></tr>
+        <tr><th>電話番号（ハイフンなし）<span class="req">必須</span></th><td><input type="tel" class="w-full" name="tel"></td></tr>
+        <tr><th>メールアドレス<span class="req">必須</span></th><td><input type="email" class="w-full" name="mail"></td></tr>
+        <tr><th>メールアドレス（確認用）<span class="req">必須</span></th><td><input type="email" class="w-full" name="mail_confirm"></td></tr>
+        <tr><th>生年月日<span class="req">必須</span></th>
+          <td><div class="inline"><select name="birth_y" id="by"></select><span>年</span><select name="birth_m" id="bm"></select><span>月</span><select name="birth_d" id="bd"></select><span>日</span></div></td></tr>
+        <tr><th>性別</th>
+          <td class="radio"><label><input type="radio" name="gender" value="male">男性</label><label><input type="radio" name="gender" value="female">女性</label><label><input type="radio" name="gender" value="none">回答しない</label></td></tr>
+      </table>
+    </section>
+
+    <section class="box">
+      <h2>応募内容</h2>
+      <table class="ftable">
+        <tr><th>受け取り店舗<span class="req">必須</span></th>
+          <td><select name="shop"><option value="">選択してください</option><option>見本ホビー 駅前店</option><option>見本ホビー 港町店</option><option>見本ホビー 山手店</option></select></td></tr>
+      </table>
+    </section>
+
+    <section class="box">
+      <h2>注意事項</h2>
+      <ul class="notes">
+        <li>応募はお1人様1回までです。重複した応募は無効になります。</li>
+        <li>当選のご連絡はメールのみです。受け取りの際に本人確認書類を拝見します。</li>
+      </ul>
+      <label class="check"><input type="checkbox" name="agree" value="1"><span>注意事項を確認し、同意しました。<span class="req">必須</span></span></label>
+    </section>
+
+    <section class="box">
+      <h2>お知らせの受け取り</h2>
+      <label class="check"><input type="checkbox" name="magazine" value="1"><span>見本ホビーのメールマガジンを受け取る</span></label>
+    </section>
+
+    <div class="submit"><button type="submit">この内容で応募する</button></div>
+    <p id="sent" role="status" hidden></p>
+  </form>
+
+  <p class="foot">このページはポートフォリオ用の見本です。実在のお店・商品ではありません。</p>
+</main>
+
+<script src="filler.js"></script>
+<script src="profile.js"></script>
+<script>
+(function () {
+  // 都道府県（デモ用の「見本県」を先頭に足す）
+  var PREFS = ['見本県','北海道','青森県','岩手県','宮城県','秋田県','山形県','福島県','茨城県','栃木県','\u7fa4\u99ac県','埼玉県','千葉県','東京都','神奈川県','新潟県','富山県','石川県','福井県','山梨県','長野県','岐阜県','静岡県','愛知県','三重県','滋賀県','京都府','大阪府','兵庫県','奈良県','和歌山県','鳥取県','島根県','岡山県','広島県','山口県','徳島県','香川県','愛媛県','高知県','福岡県','佐賀県','長崎県','熊本県','大分県','宮崎県','鹿児島県','沖縄県'];
+  var pref = document.getElementById('prefSelect');
+  pref.add(new Option('選択してください', ''));
+  PREFS.forEach(function (p) { pref.add(new Option(p, p)); });
+  var fillNum = function (id, from, to, unit) {
+    var s = document.getElementById(id);
+    s.add(new Option('--', ''));
+    for (var n = from; n <= to; n++) s.add(new Option(String(n), String(n)));
+  };
+  fillNum('by', 1940, 2012); fillNum('bm', 1, 12); fillNum('bd', 1, 31);
+
+  var form = document.getElementById('entry');
+  var sent = document.getElementById('sent');
+  var clear = function () {
+    form.reset();
+    document.querySelectorAll('[data-kmf]').forEach(function (e) { e.style.outline = ''; e.style.outlineOffset = ''; e.style.backgroundColor = ''; e.removeAttribute('data-kmf'); });
+    var t = document.getElementById('kmf-toast'); if (t) t.remove();
+    sent.hidden = true;
+  };
+  document.getElementById('clearForm').addEventListener('click', clear);
+
+  // 本物のブックマークと同じ関数を、設定ページで保存した情報（なければ見本 花子さん）で動かす
+  document.getElementById('oneTap').addEventListener('click', function () {
+    clear();
+    var d = window.ONETAP_DEMO.load();
+    return kmFill(d.P, d.O);
+  });
+
+  // 送信はしない（本物でも送信は人が確かめてから押す）
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    sent.textContent = 'デモなので送信しません';
+    sent.hidden = false;
+  });
+})();
+</script>
+</body>
+</html>

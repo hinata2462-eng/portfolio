@@ -1,0 +1,22 @@
+このフォルダのデモ用庭園画像は、Wikimedia Commons のフリーライセンス写真です。
+（プロトタイプ確認用。正式リリース時は独自制作またはライセンス購入画像への差し替えを推奨します）
+
+■ western.jpg（西洋庭園）
+  元画像: Garden lavender path with rose trellis at Goodnestone Park Kent England
+  撮影者: Acabashi
+  ライセンス: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  出典: https://commons.wikimedia.org/wiki/File:Garden_lavender_path_with_rose_trellis_at_Goodnestone_Park_Kent_England.jpg
+
+■ japanese.jpg（日本庭園）
+  元画像: Hisagoike Pond, Midori Waterfall and Kaisekito Tower in Kenroku Garden 2（兼六園 瓢池）
+  撮影者: そらみみ
+  ライセンス: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+  出典: https://commons.wikimedia.org/wiki/File:Hisagoike_Pond,_Midori_Waterfall_and_Kaisekito_Tower_in_Kenroku_Garden_2.jpg
+
+■ chinese.jpg（中華庭園）
+  元画像: Master of Nets Garden 1（蘇州 網師園）
+  撮影者: Chinatravelsavvy
+  ライセンス: CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)
+  出典: https://commons.wikimedia.org/wiki/File:Master_of_Nets_Garden_1.jpg
+
+※ いずれも縮小・再圧縮のみ行っています。

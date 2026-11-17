@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>設計書のレビュー｜作品ページ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap">
+<link rel="stylesheet" href="../../assets/case.css">
+<style>
+section h3.sub { font-size: 17px; margin: 26px 0 10px; }
+.targets .card { border-top: 3px solid var(--line); }
+.targets .card .k { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.sev { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.sev > div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 6px; align-content: start; }
+.sev p { font-size: 13.5px; color: var(--muted); }
+.sev .chip { justify-self: start; }
+.doc { font-size: 14px; }
+.doc .title { font: 700 16px/1.4 var(--display); margin-bottom: 4px; }
+.doc ol { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 6px; max-width: none; }
+.doc li { margin: 0; display: grid; grid-template-columns: 3.4em 1fr; gap: 10px; padding: 6px 0; border-top: 1px dashed var(--line); }
+.doc li span { font-family: var(--mono); font-size: 12.5px; color: var(--accent); padding-top: 2px; }
+.revtab td { vertical-align: top; }
+.revtab td.loc { font-family: var(--mono); font-size: 12.5px; white-space: nowrap; color: var(--muted); }
+.revtab td b { display: block; }
+.revtab .fix { font-size: 13px; color: var(--muted); display: block; margin-top: 4px; }
+.revtab .fix::before { content: "直し方："; font-weight: 700; color: var(--ink); }
+.good { margin-top: 14px; border-left: 4px solid var(--live); }
+.good h3 { font-size: 16px; margin-bottom: 6px; }
+.good ul { max-width: none; }
+.counts { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.counts .chip { font-size: 13px; padding: 4px 12px; }
+@media (max-width: 700px) { .sev { grid-template-columns: minmax(0, 1fr); } }
+/* mobile-stack */
+@media (max-width: 700px) {
+  .targets { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .targets .card { padding: 12px; }
+  .revtab thead { display: none; }
+  .revtab table, .revtab tbody { display: block; }
+  .revtab tr { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 10px; padding: 11px 13px; border-bottom: 1px solid var(--line); align-items: center; }
+  .revtab tr:last-child { border-bottom: 0; }
+  .revtab td { display: block; border: 0; padding: 0; }
+  .revtab td:nth-child(3) { grid-column: 1 / -1; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../../">← ポートフォリオに戻る</a>
+
+  <header class="case-head">
+    <p class="eyebrow">AIの仕組みづくり・調査 · 2026.07 – 2026.08</p>
+    <h1>設計書のレビュー</h1>
+    <p class="lead">作る前の設計書やAIのスキル（手順書）を読み、そのまま作ると後で困る欠陥やリスクを洗い出しました。指摘ごとに「どこ・なぜ困るか・どう直すか」を書き、重さの順に並べます。</p>
+    <div class="meta"><span class="tag">Claude Code</span><span class="tag">設計書・スキル 6件</span><span class="tag">セキュリティ・計算・使い勝手</span></div>
+    <span class="sample-note">見本：架空の設計書の一部と、そのレビューです</span>
+  </header>
+
+  <section>
+    <h2>困りごと</h2>
+    <p>設計書は長く、読んだ人が「よさそう」と思っても、その通りに作ると後から穴が見つかります。穴を直すのが一番安いのは、作り始める前です。ただ、書いた本人やそれを読み込んだAIは、自分の前提の穴に気づきにくいものです。</p>
+  </section>
+
+  <section>
+    <h2>仕組み</h2>
+    <ol class="flow">
+      <li><b>全部読んで、何を守る道具かを先に書く</b><span>誰が使い、何を一番守らないといけないのか。そこが崩れる指摘ほど重くなります。</span></li>
+      <li><b>「この通りに作ったら」を想像する</b><span>作った後に起きる失敗、書いてあるのに作れない約束、節どうしの矛盾、抜けている決まりを探します。</span></li>
+      <li><b>重さで3つに分ける</b><span>重大・中・軽。数え方を先に決めてから並べます（下の表）。</span></li>
+      <li><b>1件ずつ「どこ・なぜ・どう直す」</b><span>該当する節の番号、起きること、直し方、直ったかを確かめる試し方まで書きます。</span></li>
+      <li><b>良い点と、直す順番も書く</b><span>指摘だけだと判断を誤るので、残すべき良い設計も挙げます。作る順番に合わせて、どれから直すかの表を付けます。</span></li>
+    </ol>
+
+    <h3 class="sub">重さの決め方</h3>
+    <div class="sev">
+      <div><span class="chip bad">重大</span><p>そのまま作ると、道具の一番大事な目的が崩れる。お金・個人の情報・データが守れない。</p></div>
+      <div><span class="chip warn">中</span><p>直さないと、ある場面で困る。設計書の中で言っていることが食い違っている。</p></div>
+      <div><span class="chip ok">軽</span><p>書き方の揺れや小さな抜け。作る人によって受け取り方が変わる所。</p></div>
+    </div>
+
+    <h3 class="sub">見た6件</h3>
+    <div class="cards targets">
+      <div class="card"><span class="k">01</span><h3>帳簿をつけるアプリ</h3><p>お店のお金の出入りを記録するアプリの設計書。</p></div>
+      <div class="card"><span class="k">02</span><h3>売上の司令塔</h3><p>売上の数字を1画面で見るダッシュボードの設計書。</p></div>
+      <div class="card"><span class="k">03</span><h3>FXの検証ツール</h3><p>為替の売買ルールを過去のデータで確かめる道具の設計書。セキュリティと計算の両方を見ました。</p></div>
+      <div class="card"><span class="k">04</span><h3>案件をやり切るスキル</h3><p>仕事を最後まで終わらせるための、AI向けの手順書。</p></div>
+      <div class="card"><span class="k">05</span><h3>サロンのホームページ</h3><p>美容サロンのホームページの作り。</p></div>
+      <div class="card"><span class="k">06</span><h3>漫画づくりのスキル</h3><p>AIで漫画を作る手順書。レビューのあと、少年漫画の読者向けに書き直しました。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>見本</h2>
+    <div class="tabs" role="tablist" aria-label="見本の切り替え">
+      <button type="button" role="tab" id="t-doc" aria-selected="true" aria-controls="p-doc">設計書（一部）</button>
+      <button type="button" role="tab" id="t-rev" aria-selected="false" aria-controls="p-rev">レビューの表</button>
+    </div>
+
+    <div class="panel doc" id="p-doc" role="tabpanel" aria-labelledby="t-doc">
+      <p class="title">美容室の予約アプリ 設計書 v0.3（架空）</p>
+      <p class="muted small">第3章 予約／第4章 管理画面／第5章 お知らせ より</p>
+      <ol>
+        <li><span>§3-1</span><p>予約は「名前・電話番号・希望の日時」の3つで受け付ける。</p></li>
+        <li><span>§3-2</span><p>同じ時間に予約が2件入らないよう、予約画面に空いている枠だけを表示する。</p></li>
+        <li><span>§3-3</span><p>取り消しは前日まで。予約の確認メールにある「取り消す」のリンクから行う。</p></li>
+        <li><span>§4-1</span><p>管理画面には、店のパスワード1つでログインする。</p></li>
+        <li><span>§4-2</span><p>お客の電話番号は一覧で表示し、表計算の形式で書き出せる。</p></li>
+        <li><span>§5-1</span><p>新しい予約は、毎朝9時にまとめて店へメールで知らせる。</p></li>
+      </ol>
+    </div>
+
+    <div class="panel" id="p-rev" role="tabpanel" aria-labelledby="t-rev" hidden>
+      <div class="counts"><span class="chip bad">重大 2</span><span class="chip warn">中 2</span><span class="chip ok">軽 2</span></div>
+      <div class="table-wrap revtab">
+        <table>
+          <thead><tr><th>重さ</th><th>どこ</th><th>指摘と、なぜ困るか</th></tr></thead>
+          <tbody>
+            <tr><td><span class="chip bad">重大</span></td><td class="loc">§3-2</td><td><b>2人が同時に同じ枠を押すと、両方の予約が通る</b>空きの確認が画面の上だけなので、ほぼ同時に押すと二重予約になる。当日お客を断ることになる。<span class="fix">予約を保存する瞬間に、もう一度空きを確かめる（同じ枠は先に届いた1件だけ）。同時に2件送って1件だけ通るかを試す。</span></td></tr>
+            <tr><td><span class="chip bad">重大</span></td><td class="loc">§4-1・§4-2</td><td><b>パスワード1つで、全員の電話番号を見て書き出せる</b>辞めた人もログインでき、誰が書き出したかも残らない。個人の情報が漏れても気づけない。<span class="fix">スタッフごとにログインを分け、書き出しは店長だけにする。書き出した日時と人を記録する。</span></td></tr>
+            <tr><td><span class="chip warn">中</span></td><td class="loc">§3-3</td><td><b>リンクを知っていれば、誰でも予約を取り消せる</b>メールが転送されると、本人以外が取り消せてしまう。<span class="fix">リンクに推測できない番号と有効期限を付ける。取り消しの前に電話番号の下4けたを聞く。</span></td></tr>
+            <tr><td><span class="chip warn">中</span></td><td class="loc">§5-1</td><td><b>朝9時より後に入った「当日の予約」に、店が気づかない</b>まとめて知らせるのは翌朝なので、当日の予約は見落とされる。<span class="fix">当日の予約だけは、入った時にすぐ知らせる。</span></td></tr>
+            <tr><td><span class="chip ok">軽</span></td><td class="loc">§3-3</td><td><b>「前日まで」が何時までか書いていない</b>作る人によって0時にも閉店時間にもなる。<span class="fix">「前日の20時まで」のように時刻で書く。</span></td></tr>
+            <tr><td><span class="chip ok">軽</span></td><td class="loc">全体</td><td><b>「お客」「顧客」「利用者」が混ざっている</b>同じ人を指すのか、別の人なのか読み手が迷う。<span class="fix">一つの言葉にそろえ、最初の章で意味を書く。</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="panel good">
+        <h3>残すべき良い点</h3>
+        <ul>
+          <li>予約に必要な項目を3つに絞っている。入力が短く、途中でやめる人が減る。</li>
+          <li>取り消しの期限を決めている（時刻を足せばそのまま使える）。</li>
+        </ul>
+      </div>
+      <p class="muted small" style="margin-top:10px">直す順番：§3-2 と §4 を作り始める前に → §5-1 は通知を作る時 → 言葉の統一は最後にまとめて。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>工夫したこと</h2>
+    <ul>
+      <li>「危ない」とだけ言わず、どの節の、どの一文が、どんな場面で困るのかまで書きました。直す人がすぐ動けるようにするためです。</li>
+      <li>直し方には「直ったかを確かめる試し方」を付けました。直したつもりで終わらせないためです。</li>
+      <li>設計書が自分から認めている限界（「これは防げない」と書いてある所）は、良い点として残しました。できないことを正直に書いた設計は、作った後に揉めにくいからです。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>結果</h2>
+    <p>2026年7〜8月に、6件の設計書とスキルをレビューしました。FXの検証ツールの設計書では、重大5件・重い10件・中くらい20件の指摘と、残すべき良い点、作る段階に合わせた11段の直す順番の表を出しました。漫画づくりのスキルは、レビューのあと少年漫画の読者向けに書き直しています。</p>
+  </section>
+
+  <footer>見本の設計書・お店・内容はすべて架空です。実際のレビューの中身は、依頼者の設計に関わるため載せていません。</footer>
+</div>
+<script>
+(function () {
+  var tabs = document.querySelectorAll('[role="tab"]');
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      tabs.forEach(function (u) {
+        var on = u === t;
+        u.setAttribute('aria-selected', on ? 'true' : 'false');
+        document.getElementById(u.getAttribute('aria-controls')).hidden = !on;
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

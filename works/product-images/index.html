@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>新商品の商品ページ画像｜作品ページ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap">
+<link rel="stylesheet" href="../../assets/case.css">
+<style>
+section h3 { font-size: 17px; font-weight: 700; margin: 22px 0 8px; }
+.panel h3:first-child { margin-top: 0; }
+.panel ul { max-width: none; }
+.wf-wrap { display: grid; gap: 16px; }
+.wf-side { display: grid; grid-template-columns: minmax(0, 15em) minmax(0, 1fr); gap: 10px 18px; align-items: start; font-size: 14px; }
+.wf-side .read { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; background: var(--paper); line-height: 1.75; }
+.wf-side .read b { font-family: var(--mono); font-weight: 500; }
+.wf-col { width: min(var(--w, 343px), 100%); margin: 0 auto; max-height: 760px; overflow-y: auto; border: 1px solid var(--line); border-radius: 10px; background: #0A090B; }
+.frame { position: relative; width: 100%; aspect-ratio: 2 / 3; background: #2A2B2F; color: #F2F2F2; overflow: hidden; }
+.frame.sq { aspect-ratio: 1 / 1; }
+.frame .photo { position: absolute; inset: 34% 7% 9% 7%; border: 1.5px dashed rgba(255,255,255,.35); display: grid; place-items: center; text-align: center; font-size: 12px; color: rgba(255,255,255,.62); padding: 6px; line-height: 1.5; }
+.frame .copy { position: absolute; left: 7%; right: 7%; top: 7%; font-family: "Noto Serif JP", serif; }
+.frame .copy .h { display: block; font-weight: 700; line-height: 1.35; }
+.frame .copy .b { display: block; font-weight: 500; line-height: 1.6; margin-top: .6em; color: rgba(255,255,255,.82); }
+.frame .copy .pt { display: block; font-family: var(--mono); color: #D9C27A; letter-spacing: .12em; }
+.frame .logo { position: absolute; right: 3.2%; bottom: 2.2%; width: 13%; height: 5.5%; border: 1px solid rgba(255,255,255,.55); display: grid; place-items: center; font-size: 9px; color: rgba(255,255,255,.7); }
+.frame .ring { position: absolute; border: 1px solid rgba(255,255,255,.12); border-radius: 50%; pointer-events: none; }
+.frame .tag { position: absolute; left: 0; top: 0; font: 700 11px/1 var(--body); background: var(--sample); color: #1B1E24; padding: 4px 7px; }
+.sqrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+.sqrow .frame .photo { inset: 26% 8% 10% 8%; font-size: 10.5px; }
+.sqrow .frame .copy { top: 6%; }
+.sqrow .frame .logo { display: none; }
+.rules td:first-child { white-space: nowrap; font-weight: 700; }
+.chk { display: grid; gap: 8px; }
+.chk label { display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 10px; align-items: center; font-size: 14px; }
+.chk input { font: inherit; font-size: 14px; padding: 6px 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); min-width: 0; }
+.out { font-family: var(--mono); font-size: 13px; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; white-space: pre-wrap; margin-top: 12px; line-height: 1.7; }
+.out .ok { color: var(--live); } .out .ng { color: var(--bad); font-weight: 700; }
+@media (max-width: 760px) {
+  .wf-side { grid-template-columns: minmax(0, 1fr); }
+  .chk label { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../../">← ポートフォリオに戻る</a>
+
+  <header class="case-head">
+    <p class="eyebrow">Web・EC制作 · 2026.11</p>
+    <h1>新商品の商品ページ画像</h1>
+    <p class="lead">シルバーアクセサリーの楽天店の新商品について、社長が表にまとめた16行の指示書から、商品ページに並べる写真を作りました。3つの世界観で、それぞれ21枚です。</p>
+    <div class="meta"><span class="tag">Gemini</span><span class="tag">Python</span><span class="tag">HTML/CSS</span><span class="tag">Claude Code</span></div>
+    <span class="sample-note">見本：商品も文言も架空です（発売前のため、実際の画像は載せていません）</span>
+  </header>
+
+  <section>
+    <h2>困りごと</h2>
+    <p>新商品はまだ発売前で、撮影の段取りもこれからでした。それでも、商品ページに使う縦長の画像は先に用意しておきたい。しかも同じ店の既存の商品ページと雰囲気をそろえる必要があります。楽天の商品ページは縦長の画像を上から積み重ねる形で、スマホでは画像がかなり小さく縮むので、文字や余白の大きさを勘で決めると読めなくなります。</p>
+  </section>
+
+  <section>
+    <h2>仕組み</h2>
+    <ol class="flow">
+      <li><b>指示書を書き起こす</b><span>表の画面写真4枚を、1行ずつ「役割・伝えること・載せる文言」に書き起こします。読み取れない所は推測で埋めず、補った所に印を付けました。</span></li>
+      <li><b>既存のページを測る</b><span>同じ店の既存5商品の説明画像を実物で測り、画像の大きさ、スマホとパソコンでの縮み方、見出しと本文の文字の大きさ、ロゴの位置と余白を「決まり」にしました。</span></li>
+      <li><b>AIで写真を作る</b><span>画像生成AI（Gemini）への頼み文を1枚ずつ書きます。人物は同じ会話で続けて描いて同じ人に見えるように、商品の寄りは1枚ごとに新しい会話で。背景の色だけを見本の色に寄せるスクリプトも作りました。</span></li>
+      <li><b>文字を重ねて書き出す</b><span>写真の上に、HTMLとCSSで文字とロゴを重ね、決まりの大きさの画像に書き出します。スマホの幅に縮めた確認用の画像も一緒に作ります。</span></li>
+      <li><b>文言を指示書と照らす</b><span>画像に載せた文言が、指示書と一文字も違わないかをスクリプトで照合します。指示書に無い文言が混ざっても見つけます。</span></li>
+      <li><b>対応表にまとめる</b><span>指示書の1行ごとに、3つの世界観の写真を横に並べたPDFを作り、写真の下に場所の名前を入れました。</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>見本</h2>
+    <div class="tabs" role="tablist" aria-label="見本の切り替え">
+      <button type="button" role="tab" id="t-wf" aria-selected="true" aria-controls="p-wf">ページの骨組み</button>
+      <button type="button" role="tab" id="t-rule" aria-selected="false" aria-controls="p-rule">測って決めた決まり</button>
+      <button type="button" role="tab" id="t-chk" aria-selected="false" aria-controls="p-chk">文言の照合</button>
+    </div>
+
+    <div class="panel" id="p-wf" role="tabpanel" aria-labelledby="t-wf">
+      <div class="wf-wrap">
+        <div class="wf-side">
+          <div>
+            <div class="tabs" role="group" aria-label="表示の幅" style="margin:0 0 8px">
+              <button type="button" class="wbtn" data-w="343" aria-pressed="true">スマホの幅</button>
+              <button type="button" class="wbtn" data-w="910" aria-pressed="false">パソコンの幅</button>
+            </div>
+            <div class="read" id="readout"></div>
+          </div>
+          <p class="muted small">縦長の画像を上から積み重ねた、商品ページの骨組みです。灰色の箱が1枚の画像、点線の中が写真に写すもの、白い文字が後から重ねる文言、右下がロゴの場所です。枠の中をスクロールすると続きが見られます。商品と文言は架空の「見本のアクセサリー」です。</p>
+        </div>
+        <div class="wf-col" id="wfcol"><div class="wf" id="wf"></div></div>
+      </div>
+    </div>
+
+    <div class="panel" id="p-rule" role="tabpanel" aria-labelledby="t-rule" hidden>
+      <p class="small muted" style="margin-bottom:10px">同じ店の既存の商品ページを実際に開いて測った数字です。3枚目以降も同じ決まりで作れるよう、CSSの1つのファイルにまとめました。</p>
+      <div class="table-wrap">
+        <table class="rules">
+          <thead><tr><th>項目</th><th>決まり</th></tr></thead>
+          <tbody>
+            <tr><td>画像の大きさ</td><td>横1400 × 縦2100（既存の説明画像と同じ）。使い方の図は正方形 1400 × 1400</td></tr>
+            <tr><td>スマホでの見え方</td><td>横343pxに縮む（約0.245倍）。画像と画像のすき間は0なので、上下の地の色がつながって見える</td></tr>
+            <tr><td>パソコンでの見え方</td><td>横910px</td></tr>
+            <tr><td>文字</td><td>明朝体。見出しは上に置き110〜134px、本文56px、注記も42px以上（スマホで約12px）</td></tr>
+            <tr><td>色</td><td>地は黒、文字は白、差し色は金</td></tr>
+            <tr><td>ロゴ</td><td>右下に白で。右と下の余白はそろえる</td></tr>
+            <tr><td>飾り</td><td>黒い地に、画面からはみ出す大きな円の細い線を2〜3本</td></tr>
+            <tr><td>文字の量の決まり</td><td>楽天の「文字は画像の20%以下」の決まりは、検索結果に出る1枚目とSKUの画像だけが対象。説明画像には当たらないことを公開の規約で確認</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel" id="p-chk" role="tabpanel" aria-labelledby="t-chk" hidden>
+      <p class="small muted" style="margin-bottom:12px">左が指示書の文言、右が画像に載せた文言です。右を書き換えると、照合の結果が変わります（見本では、1か所わざと句点を落としています）。</p>
+      <div class="chk" id="chk"></div>
+      <div class="out" id="chk-out" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>工夫したこと</h2>
+    <ul>
+      <li>文字の大きさは、既存のページをスマホで開いて測った縮み方（約0.245倍）から逆算しました。本文56pxはスマホで約13.7pxになり、読める大きさに収まります。</li>
+      <li>途中で「文字はデザイナーが入れるので、写真だけを広めの引きで」と方針が変わりました。そこで文字を入れる場所を空けた写真に作り直し、写真ごとに「文字はどこに置くとよいか」を対応表に書き添えました。</li>
+      <li>「同じ背景で続けて撮ると単調」という指摘を受け、写真は1枚ごとに違う場所で描き直しました。場所の一覧をスクリプトで照らし、重なりが無いことを数えて確かめています。</li>
+      <li>AIが描いた商品は、形や太さが実物と違います。そのまま売り場に出すと実物より良く見せる表示になりうるため、本番の前に実物の写真と差し替えること、性能をうたう文言には根拠の資料が要ることを、社長に確かめる項目として残しました。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>結果</h2>
+    <p>3つの世界観それぞれで21枚（縦長15枚と正方形6枚）、合わせて63枚の写真を作りました。指示書の1行ごとに3案を並べた対応表のPDF（19ページ）と、世界観ごとのZIPにまとめて渡しています。発売前の商品のため、このページには写真そのものは載せていません。</p>
+  </section>
+
+  <footer>見本の商品・文言はすべて架空です。実際の商品、写真、指示書の文言は載せていません。</footer>
+</div>
+<script>
+(function () {
+  var tabs = document.querySelectorAll('[role="tab"]');
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      tabs.forEach(function (u) {
+        var on = u === t;
+        u.setAttribute('aria-selected', on ? 'true' : 'false');
+        document.getElementById(u.getAttribute('aria-controls')).hidden = !on;
+      });
+    });
+  });
+
+  // ---- ページの骨組み（架空の見本） ----
+  var H = 120, B = 56, PT = 44; // 既存ページの決まり(px, 1400幅のとき)
+  var FRAMES = [
+    { no: '01', role: '表紙', h: '朝の支度に、ひとつの楽しみを。', b: '', photo: '人物の引き。文字を置く上の4分の1は空けておく' },
+    { no: '02', role: '共感', h: '選ぶ時間も、好きでいたい。', b: '毎日使うものだから、\n手に取るたびにうれしいものを。', photo: '手元の寄り。暗めの光' },
+    { no: '03', role: 'POINT 01', pt: 'POINT 01', h: '素材を、選んだ理由。', b: '毎日触れるものだから。', photo: '素材の寄り（本番は実物の写真）' },
+    { no: '04', role: 'POINT 02', pt: 'POINT 02', h: '長く使える仕上げ。', b: '手入れは、拭くだけ。', photo: '表面の仕上げの寄り（本番は実物の写真）' },
+    { no: '05', role: '使う場面', h: 'いつもの装いに、ひとつ。', b: '', photo: '人物の場面。毎回違う場所で撮る' },
+    { no: '06', role: '贈り物', h: '贈る人のセンスまで。', b: '', photo: '贈り物を渡す手元' },
+    { no: '07', role: '仕様', h: '仕様', b: '長さ 約00cm ／ 素材 0000\n（数字は本番で入れる）', photo: '寸法を描く余白の大きい平置き' }
+  ];
+  var SQUARES = [
+    { h: '① 手順1', photo: '同じ手元を寄りで' },
+    { h: '② 手順2', photo: '同じ手元を寄りで' },
+    { h: '③ できあがり', photo: '完成形・少し引く' }
+  ];
+  var wf = document.getElementById('wf'), col = document.getElementById('wfcol');
+  function nl(s) { return String(s).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }).replace(/\n/g, '<br>'); }
+  function rings() { return '<span class="ring" style="width:150%;aspect-ratio:1;left:-25%;top:42%"></span><span class="ring" style="width:120%;aspect-ratio:1;left:30%;top:-48%"></span>'; }
+  var cur = 343;
+  function draw(w) {
+    cur = w;
+    var s = w / 1400;
+    col.style.setProperty('--w', w + 'px');
+    // 画面が狭くて実寸で並べられない時は、縮めた幅のまま同じ比率で描く
+    var rw = col.clientWidth || w;
+    var fs = function (px) { return (px * rw / 1400).toFixed(1) + 'px'; };
+    var html = FRAMES.map(function (f) {
+      return '<div class="frame">' + rings() +
+        '<span class="tag">' + f.no + ' ' + f.role + '</span>' +
+        '<div class="copy">' + (f.pt ? '<span class="pt" style="font-size:' + fs(PT) + '">' + f.pt + '</span>' : '') +
+        '<span class="h" style="font-size:' + fs(H) + '">' + nl(f.h) + '</span>' +
+        (f.b ? '<span class="b" style="font-size:' + fs(B) + '">' + nl(f.b) + '</span>' : '') + '</div>' +
+        '<div class="photo">写真：' + nl(f.photo) + '</div><div class="logo">ロゴ</div></div>';
+    }).join('');
+    html += '<div class="sqrow">' + SQUARES.map(function (q, i) {
+      return '<div class="frame sq">' + (i === 0 ? '<span class="tag">08 使い方（正方形3枚）</span>' : '') +
+        '<div class="copy" style="top:' + (i === 0 ? '16%' : '6%') + '"><span class="h" style="font-size:' + fs(B) + '">' + q.h + '</span></div>' +
+        '<div class="photo">' + q.photo + '</div></div>';
+    }).join('') + '</div>';
+    wf.innerHTML = html;
+    document.getElementById('readout').innerHTML =
+      '表示の幅 <b>' + w + 'px</b>（' + (w === 343 ? 'スマホ' : 'パソコン') + '）<br>' +
+      '縮む割合 <b>' + s.toFixed(3) + '倍</b><br>' +
+      '見出し ' + H + 'px → <b>約' + (H * s).toFixed(1) + 'px</b><br>' +
+      '本文 ' + B + 'px → <b>約' + (B * s).toFixed(1) + 'px</b><br>' +
+      '注記 42px → <b>約' + (42 * s).toFixed(1) + 'px</b>' +
+      (rw < w - 6 ? '<br><span class="muted small">この画面では幅' + Math.round(rw) + 'pxに縮めて表示しています</span>' : '');
+  }
+  var rt;
+  window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { draw(cur); }, 150); });
+  var wbtns = document.querySelectorAll('.wbtn');
+  wbtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      wbtns.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); x.style.background = x === b ? 'var(--ink)' : ''; x.style.color = x === b ? 'var(--surface)' : ''; });
+      draw(Number(b.dataset.w));
+    });
+  });
+  wbtns[0].style.background = 'var(--ink)'; wbtns[0].style.color = 'var(--surface)';
+  draw(343);
+
+  // ---- 文言の照合（架空の指示書） ----
+  var EXPECT = ['朝の支度に、ひとつの楽しみを。', '選ぶ時間も、好きでいたい。', '毎日使うものだから、手に取るたびにうれしいものを。'];
+  var GOT = ['朝の支度に、ひとつの楽しみを。', '選ぶ時間も、好きでいたい', '毎日使うものだから、手に取るたびにうれしいものを。'];
+  var box = document.getElementById('chk');
+  box.innerHTML = EXPECT.map(function (e, i) {
+    return '<label><span class="muted small">指示書 ' + (i + 1) + '：<br>' + e + '</span><input type="text" data-i="' + i + '" value="' + GOT[i] + '" aria-label="画像に載せた文言 ' + (i + 1) + '"></label>';
+  }).join('') + '<label><span class="muted small">そのほかの文言</span><input type="text" data-extra value="" placeholder="例：限定！今だけ" aria-label="画像に載せたそのほかの文言"></label>';
+  function check() {
+    var got = Array.prototype.map.call(box.querySelectorAll('input[data-i]'), function (x) { return x.value.trim(); }).filter(Boolean);
+    var extraIn = box.querySelector('input[data-extra]').value.trim();
+    if (extraIn) got.push(extraIn);
+    var ok = true, lines = ['01番の画像'];
+    EXPECT.forEach(function (e) {
+      var hit = got.indexOf(e) >= 0; ok = ok && hit;
+      lines.push('  <span class="' + (hit ? 'ok">○' : 'ng">×') + '</span> ' + e + '（' + e.length + '字）');
+    });
+    var extra = got.filter(function (g) { return EXPECT.indexOf(g) < 0; });
+    if (extra.length) { ok = false; lines.push('  <span class="ng">指示書に無い文言:</span> ' + extra.map(function (x) { return '「' + x.replace(/[<>&]/g, '') + '」'; }).join(' ')); }
+    lines.push('結果: ' + (ok ? '<span class="ok">全部一致</span>' : '<span class="ng">不一致あり</span>'));
+    document.getElementById('chk-out').innerHTML = lines.join('\n');
+  }
+  box.addEventListener('input', check);
+  check();
+})();
+</script>
+</body>
+</html>

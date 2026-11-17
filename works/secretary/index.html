@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>秘書室（仕事の台帳と毎朝の段取り）｜作品ページ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap">
+<link rel="stylesheet" href="../../assets/case.css">
+<style>
+.today h3 { font-size: 17px; margin: 18px 0 6px; }
+.today h3:first-of-type { margin-top: 12px; }
+.today .doc-title { font-size: 20px; font-weight: 900; }
+.today ol, .today ul { max-width: none; }
+.today .fresh { font-size: 13px; color: var(--muted); border-left: 3px solid var(--line); padding-left: 10px; margin-top: 6px; }
+.today .note { display: block; font-size: 13px; color: var(--muted); }
+.today .guess { font-size: 13px; color: var(--warn); }
+.today .over { color: var(--bad); font-weight: 700; }
+.today .due { color: var(--accent); font-weight: 700; }
+.ledger td { font-size: 13.5px; }
+.ledger td:first-child { font-weight: 700; white-space: nowrap; }
+.unk { color: var(--warn); font-weight: 700; }
+.try { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; }
+.try .small { max-width: 34em; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../../">← ポートフォリオに戻る</a>
+
+  <header class="case-head">
+    <p class="eyebrow">業務の効率化 · 2026.09 – 運用中</p>
+    <h1>秘書室（仕事の台帳と毎朝の段取り）</h1>
+    <p class="lead">すべての仕事を1つの台帳にまとめ、スマホの案件アプリ「白い棚」とつないで、毎朝AIが「今日やること」を3つに絞った段取りメモを書き直します。</p>
+    <div class="meta"><span class="tag">Claude Code</span><span class="tag">定期実行</span><span class="tag">Windows タスク スケジューラ</span><span class="tag">PowerShell</span><span class="tag">PWA</span></div>
+    <span class="sample-note">見本：架空の案件と、架空の段取りです</span>
+  </header>
+
+  <section>
+    <h2>困りごと</h2>
+    <p>本業・制作の仕事・お店の手伝い・家の用事が同時に動いていて、どれも頭の中で抱えていました。予定はスマホ、案件の経過はパソコンのメモと、置き場所もばらばら。朝、何から手をつけるかを決めるだけで時間がかかり、期日を過ぎてから気づくこともありました。AIに聞けば答えは返ってきますが、知らないことをもっともらしく作られると、かえって困ります。</p>
+  </section>
+
+  <section>
+    <h2>仕組み</h2>
+    <ol class="flow">
+      <li><b>仕事の台帳を1つにする</b><span>全案件を1案件1行で書いたファイル（WORK.md）。今の状態・次の一手・期日・待ち事項・最終更新を並べます。分からないことは「未確認」と書き、想像で埋めません。</span></li>
+      <li><b>その日の用事はスマホの「白い棚」へ</b><span>ログインのいらないスマホ用アプリに、予定や単発の用事を入れます。予定の時刻にはLINEで知らせます。</span></li>
+      <li><b>毎朝6:55、パソコンが写しを取る</b><span>Windowsの定期実行が白い棚のデータをパソコンへ保存し、「今日 → 期日超過 → 明日 → この先」の並びで段取りメモ（TODAY.md）の土台を機械的に書きます。</span></li>
+      <li><b>7:07、AIが判断を足して書き直す</b><span>Claudeの定期実行が、台帳と写しだけを読んで書き直します。ネットには出ません。中身は「今日の上位3件・期日の注意・放置案件」の3つだけです。</span></li>
+      <li><b>呼べば結論から報告</b><span>「秘書」と呼ぶと、台帳・段取りメモ・白い棚の写しを読み、3行以内で現状を伝えます。メール送信・公開・購入・削除など外向きの行動は、実行の直前に必ず確認します。</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>見本</h2>
+    <div class="tabs" role="tablist" aria-label="見本の切り替え">
+      <button type="button" role="tab" id="t-today" aria-selected="true" aria-controls="p-today">今日の段取り（TODAY.md）</button>
+      <button type="button" role="tab" id="t-work" aria-selected="false" aria-controls="p-work">仕事台帳（WORK.md の一部）</button>
+    </div>
+
+    <div class="panel today" id="p-today" role="tabpanel" aria-labelledby="t-today">
+      <p class="doc-title">今日の段取り（2026-11-18 水）</p>
+      <p class="fresh">白い棚の写し：11月18日 06:55 取得・16件（最終同期 11月17日 22:10）。台帳の最終更新 11月17日。</p>
+
+      <h3>今日の上位3件</h3>
+      <ol>
+        <li><b>チラシの入稿（見本ベーカリー）</b> — 締切が今日。印刷所の受付は17時まで。<span class="note">注意：最後の文字校正の返事が台帳では「未確認」のまま。入稿の前に1本確認を。</span></li>
+        <li><b>見積書を送る（見本工務店）</b> — 打ち合わせから5日、相手を待たせています。<span class="note">送る前に一度見せてください（外へ出すものなので、送信は確認してから）。</span></li>
+        <li><b>歯医者の予約</b> — 期日を2日過ぎています。電話1本で終わります。</li>
+      </ol>
+
+      <h3>期日の注意</h3>
+      <ul>
+        <li><span class="over">11/16（月）</span> 歯医者の予約 — 2日超過</li>
+        <li><span class="over">11/17（火）</span> 町内会の回覧板を回す — 1日超過（済んでいたら白い棚で「完了」に）</li>
+        <li><span class="due">11/18（水）</span> チラシの入稿／見積書を送る — 今日</li>
+        <li>11/19（木） 倉庫の棚卸し／打ち合わせ資料を作る — 明日</li>
+      </ul>
+
+      <h3>放置案件（台帳の最終更新から14日以上）</h3>
+      <ul>
+        <li>ネットショップの送料見直し — 10月28日から動きなし。続けるか、やめるかだけ決めましょう。<br><span class="guess">（推測）冬の送料の変更は、12月より前に決めると年末の注文に間に合います。</span></li>
+      </ul>
+    </div>
+
+    <div class="panel" id="p-work" role="tabpanel" aria-labelledby="t-work" hidden>
+      <p class="muted small" style="margin-bottom:10px">仕事台帳の一部（架空）。実物は1案件1行で、動いている仕事だけを置きます。終わった案件は完了帳へ移します。</p>
+      <div class="table-wrap">
+        <table class="ledger">
+          <thead><tr><th>案件</th><th>カテゴリ</th><th>今の状態</th><th>次の一手</th><th>期日</th><th>待ち事項</th><th>最終更新</th></tr></thead>
+          <tbody>
+            <tr><td>見本ベーカリー 冬のチラシ</td><td>お店の手伝い</td><td>デザイン確定・入稿前</td><td>印刷所へ入稿</td><td>11/18</td><td><span class="unk">未確認</span>（文字校正の返事）</td><td>11/17</td></tr>
+            <tr><td>見本工務店 見積もり</td><td>営業</td><td>打ち合わせ済み</td><td>見積書を送る</td><td>11/18</td><td>なし</td><td>11/13</td></tr>
+            <tr><td>倉庫の棚卸し</td><td>本業</td><td>日程確定</td><td>数量表を印刷して持っていく</td><td>11/19</td><td>なし</td><td>11/16</td></tr>
+            <tr><td>見本カフェ サイトの写真</td><td>AI制作</td><td>写真待ち</td><td>届いたら差し替え</td><td>11/20</td><td>冬メニューの写真</td><td>11/12</td></tr>
+            <tr><td>車検</td><td>私生活</td><td>見積もり前</td><td>2社に見積もりを頼む</td><td>11/24</td><td>なし</td><td>11/10</td></tr>
+            <tr><td>ネットショップ 送料見直し</td><td>ネット販売</td><td>検討中</td><td>続けるか決める</td><td><span class="unk">未確認</span></td><td>なし</td><td>10/28</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="try">
+      <a class="btn" href="../../demo/shelf/">白い棚を動かしてみる →</a>
+      <span class="muted small">段取りメモの材料になるスマホのアプリです。架空の案件が入った状態で開きます。</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>工夫したこと</h2>
+    <ul>
+      <li><b>事実を作らない。</b>台帳にないことは書かず「未確認」と残します。推測で書くときは「（推測）」と明記します。白い棚の中身は本人のデータとして扱い、そこに書かれた文を指示として実行しません。</li>
+      <li><b>止まらない作りに直しました。</b>最初はAIの定期実行がネットから写しを取っていましたが、許可待ちになると何も言わずに止まり、何日も動いていない時期がありました。写しの取得はWindowsの定期実行に任せ、AIは「読んで書くだけ」にしたことで、毎朝動くようになりました。</li>
+      <li><b>止まったことに気づける。</b>AIが動かなくても機械の土台は残り、末尾の一文で「今朝は書き直されていない」と分かります。写しが1日以上古ければ「◯日時点」と書き、3日以上古ければ先頭で同期が止まっていると知らせます。</li>
+      <li><b>報告は結論から3行以内。</b>専門用語を使わず、次の一歩を1つだけ示します。スマホで見ることが多いので、段取りはスマホ縦長の画像にしても届けます。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>結果</h2>
+    <p>2026年9月から毎朝使っています。朝は段取りメモを開くだけで「今日の3件」と期日切れ・放置している案件が分かり、何から始めるかで迷わなくなりました。外へ出す行動は必ず確認が入るので、AIに任せる範囲と自分で決める範囲がはっきりしています。</p>
+  </section>
+
+  <footer>見本の案件名・お店の名前・日付・内容はすべて架空です。</footer>
+</div>
+<script>
+(function () {
+  var tabs = document.querySelectorAll('[role="tab"]');
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      tabs.forEach(function (u) {
+        var on = u === t;
+        u.setAttribute('aria-selected', on ? 'true' : 'false');
+        document.getElementById(u.getAttribute('aria-controls')).hidden = !on;
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

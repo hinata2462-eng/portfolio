@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>通話録音の自動文字起こし｜作品ページ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap">
+<link rel="stylesheet" href="../../assets/case.css">
+<style>
+.howto { margin-bottom: 12px; max-width: 46em; }
+.book { border: 1px solid var(--line); border-radius: 10px; background: var(--surface); overflow: hidden; }
+.book-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; padding: 9px 12px; border-bottom: 1px solid var(--line); font-size: 13px; }
+.book-bar .file { font-weight: 700; display: inline-flex; align-items: center; gap: 8px; }
+.book-bar .file::before { content: ""; width: 14px; height: 18px; border-radius: 2px; background: var(--live); box-shadow: inset 0 0 0 3px var(--live), inset 0 0 0 4px var(--surface); }
+.book-bar .upd { color: var(--muted); font-size: 12.5px; }
+.sheet { max-height: 520px; overflow: auto; }
+.sheet[hidden] { display: none; }
+.grid { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 760px; font-size: 13.5px; }
+.grid th, .grid td { padding: 6px 10px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); vertical-align: top; line-height: 1.6; text-align: left; }
+.grid thead th { background: var(--paper); text-align: center; font-family: var(--mono); font-weight: 500; font-size: 11.5px; color: var(--muted); padding: 2px 8px; }
+.grid thead tr.cap th { position: sticky; top: 0; z-index: 2; font-family: var(--body); font-weight: 700; font-size: 12.5px; color: var(--ink); text-align: left; padding: 6px 10px; white-space: nowrap; }
+.grid .rn { position: sticky; left: 0; z-index: 1; width: 32px; min-width: 32px; background: var(--paper); color: var(--muted); font-family: var(--mono); font-size: 11.5px; text-align: center; padding: 6px 4px; }
+.grid thead .rn { z-index: 3; text-align: center; }
+.grid td.t { font-family: var(--mono); font-size: 12.5px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.grid td.who { white-space: nowrap; }
+.grid .est { display: block; font-size: 11.5px; color: var(--warn); white-space: nowrap; line-height: 1.4; }
+.grid .unk { color: var(--warn); background: var(--warn-soft); border-radius: 4px; padding: 0 4px; white-space: nowrap; }
+.grid td.none { color: var(--muted); }
+.grid tr.done td { color: var(--muted); }
+.grid tr.done td.task { text-decoration: line-through; }
+.grid td.ck { text-align: center; width: 44px; }
+.grid td.ck input { width: 17px; height: 17px; accent-color: var(--live); cursor: pointer; margin: 2px 0 0; }
+.grid .me { color: var(--accent); font-weight: 700; }
+.sheet-tabs { display: flex; flex-wrap: wrap; border-top: 1px solid var(--line); background: var(--paper); padding: 0 6px; }
+.sheet-tabs button { font: inherit; font-size: 13px; border: 0; border-right: 1px solid var(--line); background: transparent; color: var(--muted); padding: 7px 14px 6px; cursor: pointer; border-bottom: 3px solid transparent; }
+.sheet-tabs button[aria-selected="true"] { background: var(--surface); color: var(--live); font-weight: 700; border-bottom-color: var(--live); }
+.sheet-tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.sheet-tabs .n { font-family: var(--mono); font-size: 11.5px; margin-left: 4px; color: var(--muted); font-weight: 400; }
+.sheet-note { padding: 7px 12px; border-bottom: 1px solid var(--line); font-size: 12.5px; color: var(--muted); }
+.grid td.pt { min-width: 17em; }
+.grid td.td { min-width: 11em; }
+.grid td.task { min-width: 15em; }
+.grid td.say { min-width: 22em; }
+@media (max-width: 700px) {
+  .grid { min-width: 0; font-size: 13px; }
+  .grid th, .grid td { padding: 5px 7px; }
+  .grid td.t, .grid .est { white-space: normal; }
+  .grid td.pt { min-width: 12em; }
+  .grid td.td { min-width: 8em; }
+  .grid td.task { min-width: 10em; }
+  .grid td.say { min-width: 13em; }
+}
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 10px; font-size: 12.5px; color: var(--muted); }
+.legend .unk { color: var(--warn); background: var(--warn-soft); border-radius: 4px; padding: 0 4px; }
+.legend .est { color: var(--warn); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../../">← ポートフォリオに戻る</a>
+
+  <header class="case-head">
+    <p class="eyebrow">業務の効率化 · 2026.11</p>
+    <h1>通話録音の自動文字起こし</h1>
+    <p class="lead">毎日の通話の録音をパソコンの中で文字にして、相手ごとにスプレッドシートへ記録します。毎朝、自動で動きます。</p>
+    <div class="meta"><span class="tag">faster-whisper</span><span class="tag">Googleスプレッドシート</span><span class="tag">定時タスク</span><span class="tag">Claude Code</span></div>
+    <span class="sample-note">見本：架空の相手との、架空の通話です</span>
+  </header>
+
+  <section>
+    <h2>困りごと</h2>
+    <p>スマホの通話の録音は、毎日Googleドライブのフォルダにたまっていきます。でも、聞き直す時間はありません。だれと何を話し、何を頼まれたのかを文字で見返せるようにしたい、相手は勤務先・取引先・家族に分けて見たい、という依頼でした。</p>
+  </section>
+
+  <section>
+    <h2>仕組み</h2>
+    <ol class="flow">
+      <li><b>録音がドライブにたまる</b><span>スマホの録音アプリが、通話の録音をGoogleドライブのフォルダに上げます。</span></li>
+      <li><b>毎朝、新しい録音だけを取ってくる</b><span>決まった時刻に自動で動き、まだ文字にしていない録音を探します。朝の処理の後に上がった分は、次の朝に拾います。</span></li>
+      <li><b>同じ録音を1本にまとめる</b><span>同じファイルが2回上がることがあります。名前ではなく中身を比べて、重なりを落とします。</span></li>
+      <li><b>パソコンの中で文字にする</b><span>faster-whisperを使い、音声は外のサービスへ送りません。無音の所に勝手に入る決まり文句（「ご視聴ありがとうございました」など）は消します。</span></li>
+      <li><b>相手ごとに分けて、要点とやることを書く</b><span>名前の一覧と話の中身から相手を決めます。名前が出てこない時は「推定」と書き、理由も残します。</span></li>
+      <li><b>表に足して、読み戻して確かめる</b><span>勤務先・取引先・家族のタブに1通話1行、「やること」と「全文」のタブにも足します。書いた後に表を読み戻し、手元の記録と一致するか確かめます。</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>見本</h2>
+    <p class="howto">下のタブで、相手ごとのシート・やること・全文を切り替えられます。「やること」の□を押すと、済みにできます。</p>
+
+    <div class="book">
+      <div class="book-bar"><span class="file">通話の記録（見本）</span><span class="upd">最終更新 11/18（水）5:29　毎朝自動で追記</span></div>
+      <div class="sheet" id="s-work" role="tabpanel" aria-labelledby="t-work"></div>
+      <div class="sheet" id="s-client" role="tabpanel" aria-labelledby="t-client" hidden></div>
+      <div class="sheet" id="s-family" role="tabpanel" aria-labelledby="t-family" hidden></div>
+      <div class="sheet" id="s-todo" role="tabpanel" aria-labelledby="t-todo" hidden></div>
+      <div class="sheet" id="s-full" role="tabpanel" aria-labelledby="t-full" hidden></div>
+      <div class="sheet-tabs" role="tablist" aria-label="シートの切り替え">
+        <button type="button" role="tab" id="t-work" aria-selected="true" aria-controls="s-work">勤務先<span class="n">6</span></button>
+        <button type="button" role="tab" id="t-client" aria-selected="false" aria-controls="s-client">取引先<span class="n">6</span></button>
+        <button type="button" role="tab" id="t-family" aria-selected="false" aria-controls="s-family">家族<span class="n">6</span></button>
+        <button type="button" role="tab" id="t-todo" aria-selected="false" aria-controls="s-todo">やること<span class="n" id="todo-n"></span></button>
+        <button type="button" role="tab" id="t-full" aria-selected="false" aria-controls="s-full">全文</button>
+      </div>
+    </div>
+    <div class="legend">
+      <span><span class="unk">聞き取り不明</span>＝聞き取れなかった所。推測で埋めません</span>
+      <span><span class="unk">不明</span>＝録音の中に担当・期限が出てこなかった</span>
+      <span><span class="est">推定</span>＝名前が出てこないため、話の中身から当てた相手</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>工夫したこと</h2>
+    <ul>
+      <li>通話は個人的な内容が多いので、音声はパソコンの外へ出しません。文字にするのも手元のパソコンです。</li>
+      <li>聞き取れない所は推測で埋めず「聞き取り不明」、担当や期限が分からなければ「不明」と書きます。</li>
+      <li>全文は省略しません。1つのセルに入りきらない長さは、続きの行に分けて残します。</li>
+      <li>元の録音は消したり動かしたりせず、そのまま残します。</li>
+      <li>文字起こしの道具が、無音の所に決まり文句を勝手に足す癖を見つけ、自動で消すようにしました。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>結果</h2>
+    <p>初日は録音13ファイルのうち、同じ中身が2回上がっていた2本を除いた11本、計128分を文字にしました。かかった時間はパソコンのCPUだけで30〜40分ほどです。11月14日の朝からは、毎朝の定時タスクとして自動で動いています。</p>
+  </section>
+
+  <footer>見本の相手・会社名・通話の内容はすべて架空です。</footer>
+</div>
+<script>
+(function () {
+  'use strict';
+  var U = '\u0001'; // 「聞き取り不明」の印
+  // [日付, 時刻, 長さ, 相手, 推定の理由, 要点, やること]
+  var CALLS = {
+    work: [
+      ['11/16（月）', '08:12', '1分', '佐藤課長', '', '朝の会議を9時から10時に変更。資料は9時半までに共有フォルダへ。先週の数字の表も1枚入れる。', '会議資料（先週の数字の表も）を9時半までに置く'],
+      ['11/16（月）', '10:47', '4分', '伊藤さん', '', '見本商事さんへの見積りで、数量を200から250に直したい。単価はそのまま。', '見積書を作り直して送る（今日中）'],
+      ['11/16（月）', '13:05', '1分', '小林さん', '推定：倉庫の担当の話から', '倉庫の鍵の場所の確認。事務所の棚の2段目と答えた。', ''],
+      ['11/16（月）', '15:30', '6分', '佐藤課長', '', '来週の出張は水曜の朝に出発で決定。宿は課長が手配する。', '出張の申請書を出す'],
+      ['11/17（火）', '09:02', '3分', '加藤さん', '', 'コピー機の調子が悪く、業者が明日の午前に来る。来る時刻は' + U + '。', '明日の午前、業者に立ち会う'],
+      ['11/17（火）', '16:40', '2分', '伊藤さん', '', '見積りを先方が受け取ったと連絡。返事は金曜までにもらえる。', '金曜に先方へ確認の電話']
+    ],
+    client: [
+      ['11/16（月）', '09:20', '5分', '見本デザイン 木村さん', '', 'チラシの色を2か所直したいとの相談。初稿は水曜に届く。', '直してほしい所をメールで送る'],
+      ['11/16（月）', '11:15', '3分', '見本印刷 松本さん', '', '印刷を500部から800部に増やせるか。納期は変わらない。', '800部で正式に注文する'],
+      ['11/16（月）', '14:02', '2分', '見本デザイン 木村さん', '', '写真の差し替え用のデータがほしい。', '写真のデータを送る（今日中）'],
+      ['11/17（火）', '10:30', '7分', '見本ホーム 吉田さん', '', '来月の打ち合わせの候補日は12/2か12/4。場所は先方の事務所。', '候補日のどちらかを返事する'],
+      ['11/17（火）', '13:45', '1分', '見本印刷 松本さん', '推定：前日の注文の話から', '不在着信への折り返し。用件は明日あらためて。', '明日、こちらから電話する'],
+      ['11/17（火）', '17:10', '4分', '見本ホーム 吉田さん', '', '見積りの金額で了承。請求書は月末締めで送ってほしい。', '月末に請求書を送る']
+    ],
+    family: [
+      ['11/16（月）', '07:55', '1分', '家族', '', '帰りに牛乳と卵を買ってきてほしい。', '牛乳と卵を買う'],
+      ['11/16（月）', '12:20', '2分', '家族', '', '週末の予定。土曜は実家へ行き、日曜は家で休む。', ''],
+      ['11/16（月）', '18:05', '1分', '家族', '', '帰りが遅くなるので、夕飯は先に食べていてほしい。', ''],
+      ['11/17（火）', '08:30', '3分', '家族', '', '車の点検の予約が来週火曜に取れた。', '火曜の朝、車を店に出す'],
+      ['11/17（火）', '12:40', '2分', '家族', '', '学校の面談は12月5日の午後。', '12/5の午後の休みを取る'],
+      ['11/17（火）', '19:15', '1分', '家族', '', '年末の帰省の切符の話。だれが取るかは' + U + '。', '帰省の切符を取る']
+    ]
+  };
+  var TAB = { work: '勤務先', client: '取引先', family: '家族' };
+  // [やること, 担当, 期限, 元のタブ, 元の通話の番号]
+  var TODO = [
+    ['会議資料（先週の数字の表も）を共有フォルダに置く', 'あなた', '11/16 9:30', 'work', 0],
+    ['見積書を作り直して送る', 'あなた', '11/16', 'work', 1],
+    ['出張の申請書を出す', 'あなた', '不明', 'work', 3],
+    ['コピー機の業者に立ち会う', 'あなた', '11/18 午前', 'work', 4],
+    ['先方へ見積りの確認の電話', 'あなた', '11/20（金）', 'work', 5],
+    ['チラシの直してほしい所をメールで送る', 'あなた', '不明', 'client', 0],
+    ['800部で正式に注文する', 'あなた', '不明', 'client', 1],
+    ['写真のデータを送る', 'あなた', '11/16', 'client', 2],
+    ['打ち合わせの候補日を返事する', 'あなた', '不明', 'client', 3],
+    ['見本印刷へ電話する', 'あなた', '11/18', 'client', 4],
+    ['請求書を送る', 'あなた', '11/30', 'client', 5],
+    ['牛乳と卵を買う', 'あなた', '11/16', 'family', 0],
+    ['車を店に出す', '不明', '11/24（火）朝', 'family', 3],
+    ['12/5の午後の休みを取る', 'あなた', '不明', 'family', 4],
+    ['帰省の切符を取る', '不明', '不明', 'family', 5]
+  ];
+  // 全文（勤務先 11/16 08:12 の通話）
+  var FULL = [
+    ['00:00', '佐藤課長', 'おはようございます、佐藤です。朝からすみません。'],
+    ['00:04', 'あなた', 'おはようございます。大丈夫です。'],
+    ['00:07', '佐藤課長', '今日の会議なんですが、9時からを10時からに変えます。'],
+    ['00:13', 'あなた', '10時からですね。わかりました。'],
+    ['00:16', '佐藤課長', 'それで、資料は9時半までに共有フォルダに置いてもらえますか。'],
+    ['00:22', 'あなた', 'はい、9時半までに置いておきます。'],
+    ['00:26', '佐藤課長', 'あと、先週の数字の表も1枚入れておいてください。'],
+    ['00:31', 'あなた', '先週の分ですね。' + U + 'の表でいいですか。'],
+    ['00:37', '佐藤課長', 'それで大丈夫です。じゃあ、よろしくお願いします。'],
+    ['00:41', 'あなた', '失礼します。']
+  ];
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function txt(s) { return esc(s).split(U).join('<span class="unk">聞き取り不明</span>'); }
+  function unk(s) { return s === '不明' ? '<span class="unk">不明</span>' : esc(s); }
+  function head(letters, caps) {
+    return '<thead><tr><th class="rn"></th>' + letters.map(function (l) { return '<th>' + l + '</th>'; }).join('') + '</tr>' +
+      '<tr class="cap"><th class="rn">1</th>' + caps.map(function (c) { return '<th>' + c + '</th>'; }).join('') + '</tr></thead>';
+  }
+
+  Object.keys(CALLS).forEach(function (k) {
+    var h = '<table class="grid">' + head(['A', 'B', 'C', 'D', 'E', 'F'], ['日付', '時刻', '長さ', '相手', '要点', 'やること']) + '<tbody>';
+    CALLS[k].forEach(function (c, i) {
+      h += '<tr><th class="rn">' + (i + 2) + '</th><td class="t">' + esc(c[0]) + '</td><td class="t">' + c[1] + '</td><td class="t">' + c[2] + '</td>' +
+        '<td class="who">' + esc(c[3]) + (c[4] ? '<span class="est">' + esc(c[4]) + '</span>' : '') + '</td>' +
+        '<td class="pt">' + txt(c[5]) + '</td>' +
+        '<td class="' + (c[6] ? 'td' : 'td none') + '">' + (c[6] ? esc(c[6]) : 'なし') + '</td></tr>';
+    });
+    document.getElementById('s-' + k).innerHTML = h + '</tbody></table>';
+  });
+
+  function renderTodo() {
+    var done = 0;
+    var h = '<div class="sheet-note">3つのタブの「やること」を1か所に集めた表です。担当や期限が録音に出てこない時は「不明」と書きます。</div>' +
+      '<table class="grid" id="todo">' + head(['A', 'B', 'C', 'D', 'E'], ['済', 'やること', '担当', '期限', 'もとの通話']) + '<tbody>';
+    TODO.forEach(function (t, i) {
+      var c = CALLS[t[3]][t[4]];
+      if (t.done) done++;
+      h += '<tr' + (t.done ? ' class="done"' : '') + '><th class="rn">' + (i + 2) + '</th>' +
+        '<td class="ck"><input type="checkbox" data-i="' + i + '"' + (t.done ? ' checked' : '') + ' aria-label="' + esc(t[0]) + ' を済みにする"></td>' +
+        '<td class="task">' + esc(t[0]) + '</td><td class="who">' + unk(t[1]) + '</td><td class="t">' + unk(t[2]) + '</td>' +
+        '<td class="who">' + TAB[t[3]] + '　' + esc(c[0].slice(0, 5)) + ' ' + c[1] + '<span class="est" style="color:var(--muted)">' + esc(c[3]) + '</span></td></tr>';
+    });
+    document.getElementById('s-todo').innerHTML = h + '</tbody></table>';
+    document.getElementById('todo-n').textContent = (TODO.length - done);
+  }
+  renderTodo();
+  document.getElementById('s-todo').addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.type !== 'checkbox') return;
+    TODO[+t.getAttribute('data-i')].done = t.checked;
+    var tr = t.closest('tr');
+    tr.classList.toggle('done', t.checked);
+    var left = TODO.filter(function (x) { return !x.done; }).length;
+    document.getElementById('todo-n').textContent = left;
+  });
+
+  (function () {
+    var c = CALLS.work[0];
+    var h = '<div class="sheet-note">1つの通話を、1発言1行ですべて残します（見本は勤務先 ' + esc(c[0]) + ' ' + c[1] + ' の通話）。要約で省いた話も、ここで確かめられます。</div>' +
+      '<table class="grid">' + head(['A', 'B', 'C', 'D'], ['番号', '時刻', '話した人', '発言']) + '<tbody>';
+    FULL.forEach(function (f, i) {
+      h += '<tr><th class="rn">' + (i + 2) + '</th><td class="t">' + (i + 1) + '</td><td class="t">' + f[0] + '</td>' +
+        '<td class="who' + (f[1] === 'あなた' ? ' me' : '') + '">' + esc(f[1]) + '</td><td class="say">' + txt(f[2]) + '</td></tr>';
+    });
+    document.getElementById('s-full').innerHTML = h + '</tbody></table>';
+  })();
+
+  var tabs = document.querySelectorAll('.sheet-tabs [role="tab"]');
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      tabs.forEach(function (u) {
+        var on = u === t;
+        u.setAttribute('aria-selected', on ? 'true' : 'false');
+        document.getElementById(u.getAttribute('aria-controls')).hidden = !on;
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

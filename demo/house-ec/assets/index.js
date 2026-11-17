@@ -1,0 +1,183 @@
+// トップページ: 本物の畑の写真 → その上の一品 → よく出るもの → ハウスの写真から棚へ → 30秒診断 → 3D → 写真の中の商品
+import { CONFIG } from "./config.js";
+import { initSite, esc } from "./site.js";
+import { ICONS } from "./icons.js";
+import { SHELVES, PRODUCTS, PURPOSES, shelfOf } from "./catalog-data.js";
+import { figure } from "./figures.js";
+import { watchPhotos } from "./figures.js";
+import { SEKKI, currentSekki } from "./sekki.js";
+import { estimate, normalizeParams } from "./pricing.js";
+
+initSite();
+document.documentElement.classList.add("js");
+const $ = s => document.querySelector(s);
+document.querySelectorAll("[data-icon]").forEach(el => { el.innerHTML = ICONS[el.dataset.icon] || ""; });
+if (CONFIG.tel) { const t = $("#tel-cta"); t.href = `tel:${CONFIG.tel}`; }
+
+// ---- さがす(検索・困りごと) ----
+watchPhotos();
+$("#home-purposes").innerHTML = PURPOSES.map(x => x.link
+  ? `<a class="purpose build" href="${x.link}"><span class="ic">${ICONS[x.icon]}</span><span>${esc(x.label)}</span></a>`
+  : `<a class="purpose" href="catalog.html#purpose=${x.id}"><span class="ic">${ICONS[x.icon]}</span><span>${esc(x.label)}</span></a>`).join("");
+$("#home-search").addEventListener("submit", e => {
+  e.preventDefault();
+  const q = $("#home-q").value.trim();
+  location.href = q ? `catalog.html#q=${encodeURIComponent(q)}` : "catalog.html";
+});
+
+// ---- 冒頭のおすすめ(キャンペーン / 新商品 / 売れ筋) ----
+const FEATURES = {
+  campaign: { title: "今月のキャンペーン", tag: "キャンペーン", note: "張り替えシーズンのおすすめ" },
+  new: { title: "新商品", tag: "新商品", note: "あたらしく取り扱いを始めた品" },
+  hot: { title: "売れ筋", tag: "人気", note: "地元でよく出ているもの" }
+};
+function homeCard(p, ribbon) {
+  const shelf = shelfOf(p.cat);
+  const inc = p.price != null ? Math.round(p.price * 1.1) : null;
+  return `<article class="pcard">
+    <a class="pcard-fig" href="product.html?id=${encodeURIComponent(p.id)}" aria-label="${esc(p.name)} をくわしく見る" style="display:block">${figure(p)}${ribbon ? `<span class="hot ${ribbon.cls}">${esc(ribbon.label)}</span>` : ""}</a>
+    <div class="pcard-body">
+      <div class="pcard-maker">${esc(shelf.label)}</div>
+      <h3 class="pcard-name">${esc(p.name)}</h3>
+      <p class="pcard-use">${esc(p.use || p.spec)}</p>
+      ${inc != null ? `<div class="pcard-price"><span class="yen">¥</span>${inc.toLocaleString("ja-JP")}<small>税込</small></div>` : `<div class="pcard-price ask">金額はご相談<small>すぐお答えします</small></div>`}
+    </div>
+    <div class="pcard-acts"><a class="btn outline block" href="product.html?id=${encodeURIComponent(p.id)}">くわしく見る</a></div>
+  </article>`;
+}
+const priceHtml = (p, small) => { const inc = p.price != null ? Math.round(p.price * 1.1) : null; return inc != null ? `<span class="yen">¥</span>${inc.toLocaleString("ja-JP")}<small>${small ? "税込" : `税込 / ${esc(p.unit || "1")}あたり`}</small>` : `<span class="ask">金額はご相談</span>`; };
+function showFeature(key) {
+  const f = FEATURES[key] || FEATURES.campaign;
+  const ribbon = key === "campaign" ? { label: "キャンペーン", cls: "camp" } : key === "new" ? { label: "新商品", cls: "new" } : { label: "人気", cls: "" };
+  const list = PRODUCTS.filter(p => (p.tags || []).includes(f.tag)).slice(0, 4);
+  $("#feature-rail").innerHTML = list.map(p => homeCard(p, ribbon)).join("");
+  document.querySelectorAll("[data-feat]").forEach(b => b.setAttribute("aria-selected", String(b.dataset.feat === key)));
+}
+document.querySelectorAll("[data-feat]").forEach(b => b.addEventListener("click", () => showFeature(b.dataset.feat)));
+showFeature("campaign");
+// 冒頭の写真の上に置く一品(今月のキャンペーンの先頭)
+{
+  const top = PRODUCTS.find(p => (p.tags || []).includes("キャンペーン"));
+  if (top) {
+    const href = `product.html?id=${encodeURIComponent(top.id)}`;
+    $("#spot-fig").href = href;
+    $("#spot-shelf").textContent = `今月のキャンペーン ／ ${shelfOf(top.cat).label}`;
+    $("#spot-name").textContent = top.name;
+    $("#spot-use").textContent = top.use || top.spec;
+    $("#spot-price").innerHTML = priceHtml(top, true);
+    const img = $("#spot-img"); img.src = `assets/products/dark/${encodeURIComponent(top.id)}.jpg`; img.alt = `${top.name} のイメージ図`;
+  }
+}
+// 見せ場の写真の中に置く商品カード
+document.querySelectorAll("[data-story-product]").forEach(el => {
+  const p = PRODUCTS.find(x => x.id === el.dataset.storyProduct); if (!p) { el.hidden = true; return; }
+  el.querySelector(".fig img").src = `assets/products/dark/${encodeURIComponent(p.id)}.jpg`;
+  el.querySelector(".nm").textContent = p.name;
+  el.querySelector(".pr").innerHTML = priceHtml(p, true);
+});
+
+// ---- 棚(写真のタイル)・節気 ----
+$("#shelf-rail").innerHTML = SHELVES.map(s => `<a class="tile" href="catalog.html#shelf=${s.id}"><img src="assets/photo/shelf-${s.id}.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async"><span class="txt"><h3>${esc(s.label)}</h3><p>${esc(s.sub)}</p><span class="n">${PRODUCTS.filter(p => s.cats.includes(p.cat)).length}点</span></span></a>`).join("");
+const now = currentSekki();
+const idx = SEKKI.findIndex(t => t.name === now.name);
+$("#works").innerHTML = [0, 1, 2].map(i => { const t = SEKKI[(idx + i) % SEKKI.length]; return `<a class="work${i === 0 ? " now" : ""}" href="catalog.html"><div class="term">${esc(t.name)}</div><div class="date">${t.month}月${t.day}日ごろ${i === 0 ? " ・ いま" : ""}</div><p>${esc(t.task)}</p></a>`; }).join("");
+
+// ---- 出現 ----
+const io = new IntersectionObserver(es => { for (const e of es) if (e.isIntersecting) { e.target.classList.add("in"); e.target.classList.remove("pre"); io.unobserve(e.target); } }, { rootMargin: "0px 0px 40% 0px" });
+document.querySelectorAll(".reveal, .phone").forEach(el => io.observe(el));
+setTimeout(() => document.querySelectorAll(".reveal:not(.in), .phone.pre").forEach(el => { el.classList.add("in"); el.classList.remove("pre"); }), 1500); // 保険: 何があっても表示する
+// 数字のカウントアップ
+const cio = new IntersectionObserver(es => { for (const e of es) if (e.isIntersecting) { count(e.target); cio.unobserve(e.target); } }, { threshold: 0.4 });
+document.querySelectorAll("[data-count]").forEach(el => cio.observe(el));
+function count(el) {
+  const to = Number(el.dataset.count), small = el.querySelector("small"), t0 = performance.now(), dur = matchMedia("(prefers-reduced-motion: reduce)").matches ? 1 : 900;
+  const step = now => { const k = Math.min(1, (now - t0) / dur), v = Math.round(to * (1 - Math.pow(1 - k, 3))); el.firstChild.textContent = v.toLocaleString("ja-JP"); if (k < 1) requestAnimationFrame(step); };
+  el.firstChild.textContent = "0"; if (small) el.append(small); requestAnimationFrame(step);
+}
+
+// ---- ヒーロー ----
+const hero = $("#hero");
+const lowPower = matchMedia("(prefers-reduced-motion: reduce)").matches || (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4);
+let viewer = null, poses = null, target = 0, current = 0;
+async function setupHero() {
+  if (lowPower) { hero.classList.add("static"); $("#timebar").hidden = true; return; }
+  const { createViewer } = await import("./house3d.js");
+  viewer = createViewer($("#hero3d"), { showcase: true, transparent: true, fog: 0, fov: 32, exposure: 1.18, maxPixelRatio: 1.5, interactive: false, cameraMs: 900, zoomFactor: innerWidth > 760 ? 0.92 : 0.78 });
+  if (!viewer.ok) { hero.classList.add("static"); $("#timebar").hidden = true; return; }
+  const est = estimate(normalizeParams({ span: 6, length: 24, eave: 1.7, ridge: 3.2, pitch: 0.5, pipe: 25.4, film: "po015", doors: 2, sideVent: "both", ventDrive: "manual", insectNet: true, irrigation: "drip", curtain: "none" }));
+  viewer.update(est, { refit: false });
+  computePoses();
+  applyTime(Number($("#time").value));
+  // サンプルの3Dハウス(.glb)があれば、1棟目に差し替える
+  const sm = (CONFIG.sampleModels || [])[0];
+  if (sm && sm.file) {
+    viewer.loadModel(sm.file, { label: sm.label, width: sm.width || 0 })
+      .then(i => { if (i !== false) { computePoses(); applyTime(Number($("#time").value)); } });
+  }
+  addEventListener("resize", debounce(computePoses, 200));
+  const heroProgress = () => {
+    // 画面に入ってから出るまでを 0→1 に。真ん中あたりで軒下・内部に入る
+    const r = hero.getBoundingClientRect();
+    const p = (innerHeight - r.top) / (innerHeight + r.height);
+    return Math.min(1, Math.max(0, (p - 0.28) / 0.5));
+  };
+  addEventListener("scroll", () => { target = heroProgress(); }, { passive: true });
+  target = current = heroProgress();
+  requestAnimationFrame(tick);
+}
+function computePoses() {
+  if (!viewer) return;
+  const ext = viewer.getPose("exterior"), eave = viewer.getPose("eave"), inn = viewer.getPose("interior");
+  if (!ext) return;
+  // ヒーローでは家を画面の右上寄りに置く(文字は左下)。カメラ座標系の右方向・上方向にずらす
+  const dir = ext.target.clone().sub(ext.pos), dist = dir.length(); dir.normalize();
+  const up = ext.pos.clone().set(0, 1, 0), right = dir.clone().cross(up).normalize(), camUp = right.clone().cross(dir).normalize();
+  const kx = innerWidth > 760 ? -0.14 : 0, ky = innerWidth > 760 ? 0.12 : 0.04; // 負=カメラを左/下へ → 家は右/上へ
+  const off = right.multiplyScalar(kx * dist * 0.6).add(camUp.multiplyScalar(ky * dist * 0.6));
+  ext.pos.add(off); ext.target.add(off);
+  poses = [ext, eave, inn];
+  viewer.setPose(lerpPose(0).pos, lerpPose(0).target);
+}
+const lerpV = (a, b, t) => a.clone().lerp(b, t);
+function lerpPose(t) {
+  const [a, b, c] = poses; const s = t < 0.55 ? t / 0.55 : (t - 0.55) / 0.45; const ease = k => k * k * (3 - 2 * k);
+  const [p, q] = t < 0.55 ? [a, b] : [b, c];
+  return { pos: lerpV(p.pos, q.pos, ease(s)), target: lerpV(p.target, q.target, ease(s)) };
+}
+function tick() {
+  if (poses && Math.abs(target - current) > 0.0005) { current += (target - current) * 0.08; const p = lerpPose(current); viewer.setPose(p.pos, p.target); }
+  requestAnimationFrame(tick);
+}
+function debounce(fn, ms) { let t; return () => { clearTimeout(t); t = setTimeout(fn, ms); }; }
+
+// ---- 時刻スライダー: 空・太陽・影 ----
+const SKY = [ // [時, 5色] スタジオの背景紙。色で飾らず、明るさと光の温度だけを動かす
+  [5, ["#141619", "#1B1E22", "#24282D", "#333840", "#454B54"]],
+  [7, ["#17191D", "#1F2328", "#2B3036", "#3C424A", "#525860"]],
+  [12, ["#1B1E22", "#262A30", "#343941", "#474D56", "#5D646D"]],
+  [16.5, ["#16181C", "#1E2126", "#2B2F35", "#3C4149", "#4F545C"]],
+  [18, ["#111214", "#181A1E", "#212428", "#2D3035", "#3B3F45"]]
+];
+const hex2rgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+const mix = (a, b, t) => { const A = hex2rgb(a), B = hex2rgb(b); return `rgb(${A.map((v, i) => Math.round(v + (B[i] - v) * t)).join(",")})`; };
+function skyAt(h) {
+  let i = 0; while (i < SKY.length - 2 && h > SKY[i + 1][0]) i++;
+  const [h0, c0] = SKY[i], [h1, c1] = SKY[i + 1], t = Math.min(1, Math.max(0, (h - h0) / (h1 - h0)));
+  return c0.map((c, k) => mix(c, c1[k], t));
+}
+function applyTime(h) {
+  const sky = skyAt(h); sky.forEach((c, i) => hero.style.setProperty(`--sky${i + 1}`, c));
+  const f = (h - 5) / 13; // 0..1
+  const elevation = Math.max(0.12, Math.sin(Math.PI * f) * 1.1), azimuth = Math.PI * (1 - f) - 0.4;
+  const warm = 1 - Math.sin(Math.PI * f); // 朝夕ほど暖色
+  const color = mix("#FFF6E8", "#FFC38A", warm), intensity = 1.5 + Math.sin(Math.PI * f) * 0.9;
+  if (viewer) viewer.setLight({ color: parseInt(color.match(/\d+/g).map(v => (+v).toString(16).padStart(2, "0")).join(""), 16), intensity, azimuth, elevation });
+  const hh = Math.floor(h), mm = Math.round((h - hh) * 60);
+  $("#time-label").textContent = `${h < 10 ? "朝" : h < 15 ? "昼" : "夕"} ${hh}:${String(mm).padStart(2, "0")}`;
+}
+$("#time").addEventListener("input", e => applyTime(Number(e.target.value)));
+applyTime(10);
+setupHero();
+
+// ---------------- 30秒診断の帯 ----------------
+import("./check-lite.js").then(m => m.mountBand()).catch(err => console.warn("check band", err));

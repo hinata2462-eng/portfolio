@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>10の視点の審査パネル（G10・DECAGON）｜作品ページ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap">
+<link rel="stylesheet" href="../../assets/case.css">
+<style>
+section h3.sub { font-size: 17px; margin: 26px 0 10px; }
+.maker { border-left: 4px solid var(--accent); }
+.maker p + p { margin-top: 8px; }
+.seats td:first-child { font-family: var(--mono); font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+.seats td.nm { white-space: nowrap; }
+.seats td.nm b { display: block; }
+.seats td.nm small { color: var(--muted); font-size: 12px; }
+.seats td.voice { color: var(--muted); font-size: 13px; }
+.target { display: grid; gap: 4px; margin-bottom: 12px; }
+.target b { font-size: 15.5px; }
+.sum { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.sum .chip { font-size: 13px; padding: 4px 12px; }
+.rev td { vertical-align: middle; }
+.rev td.nm { white-space: nowrap; }
+.rev td.nm small { display: block; color: var(--muted); font-size: 11.5px; }
+.rev .was { display: block; font-size: 11.5px; color: var(--muted); margin-top: 3px; text-decoration: line-through; }
+.check { margin-top: 14px; border-left: 4px solid var(--warn); }
+.check h3, .final h3 { font-size: 16px; margin-bottom: 6px; }
+.check ul, .final ul { max-width: none; }
+.final { margin-top: 14px; border-left: 4px solid var(--live); }
+.final .dec { font: 700 18px/1.4 var(--display); margin-bottom: 6px; }
+/* mobile-stack */
+@media (max-width: 700px) {
+  .rev thead, .seats thead { display: none; }
+  .rev table, .rev tbody, .seats table, .seats tbody { display: block; }
+  .rev tr, .seats tr { display: grid; gap: 4px 10px; padding: 11px 13px; border-bottom: 1px solid var(--line); }
+  .rev tr:last-child, .seats tr:last-child { border-bottom: 0; }
+  .rev td, .seats td { display: block; border: 0; padding: 0; }
+  .rev tr { grid-template-columns: minmax(0, 1fr) auto; }
+  .rev td:nth-child(2) { text-align: right; }
+  .rev td:nth-child(3) { grid-column: 1 / -1; }
+  .seats tr { grid-template-columns: auto minmax(0, 1fr); }
+  .seats td:nth-child(3), .seats td:nth-child(4) { grid-column: 1 / -1; }
+  .seats td.nm b { display: inline; }
+  .seats td.nm small { margin-left: 6px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../../">← ポートフォリオに戻る</a>
+
+  <header class="case-head">
+    <p class="eyebrow">AIの仕組みづくり・調査 · 2026.07</p>
+    <h1>10の視点の審査パネル（G10・DECAGON）</h1>
+    <p class="lead">作った物の品質や、売り方の判断を、10人の専門家役がそれぞれの視点から別々に審査する仕組みです。G10は「完成させて売るところまで運ぶ」側、DECAGONは「止めて確かめる」側のチームです。</p>
+    <div class="meta"><span class="tag">Codex（チームの設計）</span><span class="tag">Claude Code（審査の実行）</span><span class="tag">人物図鑑</span></div>
+    <span class="sample-note">見本：架空の料理教室の、架空の申し込みページを審査した例です</span>
+  </header>
+
+  <section>
+    <h2>困りごと</h2>
+    <p>AIに「これでいい？」と聞くと、たいてい褒めるか、目についた所を少し直すだけです。何を基準に合格にしたのかも残りません。お金や公開に関わる判断ほど、思い込みや言い過ぎを、出す前に止める仕組みが必要でした。</p>
+  </section>
+
+  <section>
+    <h2>仕組み</h2>
+    <div class="panel maker">
+      <p><b>どのAIで作ったか：</b>2つのチームの人物と決まり（人物票・人物図鑑・審査の用紙）は、<b>Codex</b>（OpenAIのAI）で作りました。フォルダの常設の指示は Codex が読む決まりのファイル（AGENTS.md）で、起動の手順にも「Codexへ次のように依頼する」と書いてあります。</p>
+      <p>そのあと実際に審査を回す時は <b>Claude Code</b> を使い、審査する物に合わせた10の視点を、同時に別々のAIとして動かしました。</p>
+    </div>
+
+    <h3 class="sub">審査の進め方</h3>
+    <ol class="flow">
+      <li><b>問いを1文にする</b><span>誰に、何を、どの条件で、なぜ今やるのか。問いが2つあれば分けます。</span></li>
+      <li><b>証拠に印を付ける</b><span>確認済み／仮説／不明／古い、の4つ。分からない所を、0や当て推量で埋めません。</span></li>
+      <li><b>10人が別々に審査する</b><span>ほかの人の最初の意見を見ずに、自分の視点だけで「合格・条件つき・不合格」と理由を出します。</span></li>
+      <li><b>前提をぶつけ合う</b><span>市場と商品、広告と計測、ブランドと安全、の組で、お互いの前提・計算・証拠を突きます。人ではなく中身を攻めます。</span></li>
+      <li><b>重い指摘を確かめ直す</b><span>反証の係が、重い指摘を本当にそうか実物や計算で確かめ、外れていれば判定を下げます。</span></li>
+      <li><b>致命的な問題は点数で相殺しない</b><span>1つでも残れば進めません。まとめ役が「進める／条件つきで進める／保留／やめる」を出します。</span></li>
+    </ol>
+
+    <h3 class="sub">2つのチームの違い</h3>
+    <div class="cards">
+      <div class="card"><h3>G10（上のチーム）</h3><p>選ぶ・作る・売る・測る・直す、を利益が残るところまで運ぶ実行役。人に判断を求めるのは、おすすめ付きで3件まで。今日やることは優先順で5件まで。</p></div>
+      <div class="card"><h3>DECAGON（審査のチーム）</h3><p>大事な判断を10の独立した視点で審査し、思い込み・使いすぎ・根拠のない表現を止める役。得意は判断の質と反証、苦手は毎日の実行。</p></div>
+      <div class="card"><h3>Claude Codeでの使い方</h3><p>たとえばWebサイトなら、スマホでの見え方・速さ・使いやすさ・コードの質・計測・申し込みまでの流れ・デザイン・不具合への強さ・文章・受け入れ条件の10の視点で審査しました。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>見本</h2>
+    <div class="tabs" role="tablist" aria-label="見本の切り替え">
+      <button type="button" role="tab" id="t-rev" aria-selected="true" aria-controls="p-rev">審査の見本</button>
+      <button type="button" role="tab" id="t-g10" aria-selected="false" aria-controls="p-g10">G10の10人</button>
+      <button type="button" role="tab" id="t-dec" aria-selected="false" aria-controls="p-dec">DECAGONの10人</button>
+    </div>
+
+    <div class="panel" id="p-rev" role="tabpanel" aria-labelledby="t-rev">
+      <div class="target">
+        <span class="muted small">審査の対象（架空）</span>
+        <b>町の料理教室「体験レッスン」の申し込みページと、広告の計画</b>
+        <span class="small">問い：このページのまま、来月から広告を出してよいか。</span>
+      </div>
+      <div class="sum" aria-label="判定の数（確かめ直した後）"><span class="chip ok">合格 3</span><span class="chip warn">条件つき 5</span><span class="chip bad">不合格 2</span></div>
+      <div class="table-wrap rev">
+        <table>
+          <thead><tr><th>席（DECAGON）</th><th>判定</th><th>ひとこと理由</th></tr></thead>
+          <tbody>
+            <tr><td class="nm">D01 峰岸 遥<small>市場の耳</small></td><td><span class="chip warn">条件つき</span></td><td>「平日の昼に通いたい人がいる」の根拠が、先生の感覚だけ。問い合わせの記録を10件見たい。</td></tr>
+            <tr><td class="nm">D02 相馬 結<small>顧客の代弁者</small></td><td><span class="chip ok">合格</span></td><td>「包丁が苦手でも大丈夫」の一文が、初めての人の一番の不安に答えている。</td></tr>
+            <tr><td class="nm">D03 鷹野 玲<small>値付け審問官</small></td><td><span class="chip warn">条件つき</span><span class="was">不合格</span></td><td>1回1,500円は材料費と片付けの時間で赤字、と見た。確かめ直すと小さく黒字。定員は書くこと。</td></tr>
+            <tr><td class="nm">D04 紫藤 奏<small>記憶の編集者</small></td><td><span class="chip warn">条件つき</span></td><td>写真が素材集のよう。先生の手元と教室の実物の写真に替えたい。</td></tr>
+            <tr><td class="nm">D05 速水 鋭<small>投資判定者</small></td><td><span class="chip ok">合格</span></td><td>広告は1万円まで・2週間・申し込み0件なら止める、と損の上限が決まっている。</td></tr>
+            <tr><td class="nm">D06 七瀬 灯<small>表現の批評家</small></td><td><span class="chip warn">条件つき</span></td><td>見出しが「心を込めた料理を」で、何の教室か3秒で分からない。</td></tr>
+            <tr><td class="nm">D07 春日 透<small>導線解剖医</small></td><td><span class="chip bad">不合格</span></td><td>申し込みまでに日付・コース・人数の3つを選ばせている。体験は日付だけでよい。</td></tr>
+            <tr><td class="nm">D08 城戸 剛<small>商談の現実主義者</small></td><td><span class="chip ok">合格</span></td><td>体験のあとに「次の回の予約」を案内する流れがある。</td></tr>
+            <tr><td class="nm">D09 冬月 計<small>因果の番人</small></td><td><span class="chip warn">条件つき</span></td><td>申し込みが、どの広告から来たかを分けて数える設定がない。</td></tr>
+            <tr><td class="nm">D10 御影 律<small>境界の判事</small></td><td><span class="chip bad">不合格</span></td><td>「必ず上達します」は言い切りすぎ。食物アレルギーの注意書きもない。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel check">
+        <h3>反証の係が確かめ直したこと</h3>
+        <ul>
+          <li>D03 の「赤字」：計算をやり直すと、材料費が二重に数えられていた。片付けの時間を入れても小さく黒字 → 不合格から条件つきへ下げた。</li>
+          <li>D10 の「言い切り」：ページの文面に実際にあった → 致命的な問題として残す。</li>
+        </ul>
+      </div>
+
+      <div class="panel final">
+        <h3>まとめ役の結論</h3>
+        <p class="dec">条件つきで進める</p>
+        <ul>
+          <li><b>直すまで出さない：</b>「必ず上達します」を消し、アレルギーの注意書きを足す。</li>
+          <li><b>直してから広告：</b>申し込みで選ぶのは日付だけにする。見出しを「何の教室か」が分かる一文にする。広告ごとに申し込みを数える。</li>
+          <li><b>見直す時：</b>申し込みが10件たまった時か、2週間後。</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panel" id="p-g10" role="tabpanel" aria-labelledby="t-g10" hidden>
+      <p class="muted small" style="margin-bottom:10px">「完成させて売るところまで運ぶ」10人。ふだんは必要な2〜4人だけが前に出て、司令官がまとめます。</p>
+      <div class="table-wrap seats">
+        <table>
+          <thead><tr><th>席</th><th>名前・通り名</th><th>最初に見る所</th><th>口ぐせ</th></tr></thead>
+          <tbody>
+            <tr><td>G01</td><td class="nm"><b>神代 玲司</b><small>静かな司令官</small></td><td>今週いちばんの詰まり、同時に抱える仕事の数、最後まで責任を持つ人</td><td class="voice">「構想は残します。今週の一戦を決めます」</td></tr>
+            <tr><td>G02</td><td class="nm"><b>水城 澪</b><small>市場の探索者</small></td><td>お客の生の言葉、買うきっかけ、買わない兆し</td><td class="voice">「まだ仮説ですが、本人の言葉はこうです」</td></tr>
+            <tr><td>G03</td><td class="nm"><b>黒瀬 玄</b><small>利益の番人</small></td><td>仕事の範囲、ふつうの作業時間、確定した利益、手が回る上限</td><td class="voice">「続けられる利益を残しましょう」</td></tr>
+            <tr><td>G04</td><td class="nm"><b>白峰 詩乃</b><small>真実の物語守</small></td><td>本人の言葉、証拠、その人に頼む理由</td><td class="voice">「その言葉は、あなた自身の見解ですか」</td></tr>
+            <tr><td>G05</td><td class="nm"><b>天城 迅</b><small>戦役設計者</small></td><td>売る物・相手・お願いを1つずつに絞れているか、媒体ごとの役割</td><td class="voice">「今週はこの一戦です」</td></tr>
+            <tr><td>G06</td><td class="nm"><b>彩葉 凛</b><small>完成主義の制作監督</small></td><td>作る意図、最初の3秒、完成の条件</td><td class="voice">「直す場所は一つです」</td></tr>
+            <tr><td>G07</td><td class="nm"><b>結城 導</b><small>迷わせない設計者</small></td><td>次の一歩、お客が迷う回数、約束と中身が合っているか</td><td class="voice">「価値はそのままに、迷いを一つ減らします」</td></tr>
+            <tr><td>G08</td><td class="nm"><b>真田 拓真</b><small>誠実なクローザー</small></td><td>なぜこの会社か、なぜ今日か、次の約束</td><td class="voice">「売り込まず、決断を前へ進めます」</td></tr>
+            <tr><td>G09</td><td class="nm"><b>九条 理央</b><small>冷静な実験科学者</small></td><td>まだ分からない事、変えるのは1か所か、結果が出そろう日</td><td class="voice">「有望です。ただ、まだ再現性とは呼べません」</td></tr>
+            <tr><td>G10</td><td class="nm"><b>守谷 護</b><small>盾と回路</small></td><td>致命的な問題、承認、権利、止め方と戻し方</td><td class="voice">「このままは止めます。安全な経路を示します」</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel" id="p-dec" role="tabpanel" aria-labelledby="t-dec" hidden>
+      <p class="muted small" style="margin-bottom:10px">「止めて確かめる」10人。全員が、ほかの人の最初の意見を見ずに審査します。</p>
+      <div class="table-wrap seats">
+        <table>
+          <thead><tr><th>席</th><th>名前・通り名</th><th>最初に見る所</th><th>口ぐせ</th></tr></thead>
+          <tbody>
+            <tr><td>D01</td><td class="nm"><b>峰岸 遥</b><small>市場の耳</small></td><td>お客が実際に払った時間・お金・手間</td><td class="voice">「確認できた事実はここまでです」</td></tr>
+            <tr><td>D02</td><td class="nm"><b>相馬 結</b><small>顧客の代弁者</small></td><td>一人のお客の状況、前へ進みたい事、買わない理由</td><td class="voice">「その人は、なぜ今日動くのでしょう」</td></tr>
+            <tr><td>D03</td><td class="nm"><b>鷹野 玲</b><small>値付け審問官</small></td><td>仕事の範囲、作業時間、利益、誰が負担するか</td><td class="voice">「その追加作業は誰が負担しますか」</td></tr>
+            <tr><td>D04</td><td class="nm"><b>紫藤 奏</b><small>記憶の編集者</small></td><td>その人である理由、1年後に残る記憶</td><td class="voice">「売れそうですが、あなたである理由は残りますか」</td></tr>
+            <tr><td>D05</td><td class="nm"><b>速水 鋭</b><small>投資判定者</small></td><td>7日で分かること、損の上限、やめる条件</td><td class="voice">「上限を決めれば、動けます」</td></tr>
+            <tr><td>D06</td><td class="nm"><b>七瀬 灯</b><small>表現の批評家</small></td><td>最初の数秒、言葉の温度、伝えることは1つか</td><td class="voice">「美しい。でも誰の心を動かしますか」</td></tr>
+            <tr><td>D07</td><td class="nm"><b>春日 透</b><small>導線解剖医</small></td><td>お客が迷う回数、つまずく所、約束と中身のずれ</td><td class="voice">「ここで顧客は三つの判断を強いられます」</td></tr>
+            <tr><td>D08</td><td class="nm"><b>城戸 剛</b><small>商談の現実主義者</small></td><td>決める人、次の日付、断る条件</td><td class="voice">「次の日付がないなら、前進ではありません」</td></tr>
+            <tr><td>D09</td><td class="nm"><b>冬月 計</b><small>因果の番人</small></td><td>変えたのは1か所か、結果が出そろう日、まだ言えないこと</td><td class="voice">「それは相関です。次に測れます」</td></tr>
+            <tr><td>D10</td><td class="nm"><b>御影 律</b><small>境界の判事</small></td><td>致命的な問題、承認、止め方と戻し方、元に戻せるか</td><td class="voice">「そのままは止めます。通せる条件は二つです」</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>工夫したこと</h2>
+    <ul>
+      <li>10人は、ほかの人の最初の意見を見ずに審査します。先に強い意見を読むと、ほかの人が引っぱられてしまうからです。</li>
+      <li>致命的な問題（根拠のない実績や保証、許可のない素材、損の上限が分からない広告など）は、ほかが高得点でも相殺しません。</li>
+      <li>重い指摘ほど、別の係が確かめ直します。間違った指摘で良い物を止めないためです。</li>
+      <li>人物はすべて架空のAIの役で、経歴は「判断のくせと話し方をぶらさないための設定」と明記しています。実在の人や実績のふりはさせません。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>結果</h2>
+    <p>2026年7月31日に、Codexで2つのチームを作りました。それぞれ10人分の詳しい人物票と人物図鑑のページ、審査の用紙（G10は6種、DECAGONは3種）、自分たちで行った監査の記録3本ずつがあります。</p>
+    <p style="margin-top:10px">先に作ったDECAGONの自己監査では、判断の質は高い一方で「毎日の実行の速さ 62点」「人の負担 66点」と弱点が出ました。そこを上回るように、実行役のG10を上のチームとして作っています。8月からは Claude Code で、デモのWebサイトの公開前の審査、漫画づくりのスキルの検証、音楽動画の企画づくりに使いました。</p>
+  </section>
+
+  <footer>人物はすべて架空のAIの役です。審査の見本の料理教室・ページ・数字は架空です。</footer>
+</div>
+<script>
+(function () {
+  var tabs = document.querySelectorAll('[role="tab"]');
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      tabs.forEach(function (u) {
+        var on = u === t;
+        u.setAttribute('aria-selected', on ? 'true' : 'false');
+        document.getElementById(u.getAttribute('aria-controls')).hidden = !on;
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
