@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>みっか｜お店の顔を、3日で。AIホームページ制作 5万円から（デモ）</title>
+<meta name="description" content="AIを使って3日で納品するお店のホームページ制作。5万円から、修正2週間無制限。まず無料でトップページを試作します。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Shippori+Mincho:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#17201c;--paper:#f6f3ec;--leaf:#2f6b4f;--leaf2:#3f8a66;--amber:#d99a2b;--mute:#6b746f;--line:#e2ddd1}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Zen Kaku Gothic New",system-ui,sans-serif;color:var(--ink);background:var(--paper);line-height:1.8;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+header{position:sticky;top:0;background:rgba(246,243,236,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:10}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-family:"Shippori Mincho",serif;font-size:24px;letter-spacing:.08em;text-decoration:none}
+.logo small{font-family:"Zen Kaku Gothic New";font-size:11px;color:var(--mute);margin-left:8px;letter-spacing:.1em}
+.btn{display:inline-block;background:var(--leaf);color:#fff;text-decoration:none;padding:12px 22px;border-radius:999px;font-weight:700;font-size:15px;transition:.2s;border:0;cursor:pointer}
+.btn:hover{background:var(--leaf2);transform:translateY(-1px)}
+.btn.sm{padding:9px 16px;font-size:13px}
+.btn.ghost{background:transparent;color:var(--leaf);border:2px solid var(--leaf)}
+.hero{padding:72px 0 56px;position:relative;overflow:hidden}
+.hero h1{font-size:clamp(34px,7vw,64px);line-height:1.2;font-weight:900;letter-spacing:.02em}
+.hero h1 em{font-style:normal;color:var(--leaf)}
+.hero p.lead{margin:22px 0 30px;font-size:17px;max-width:560px}
+.days{display:flex;gap:14px;margin:26px 0 34px}
+.day{flex:1;max-width:150px;background:var(--leaf);color:#fff;border-radius:14px;padding:14px 12px;text-align:center}
+.day b{display:block;font-size:30px;line-height:1}
+.day span{font-size:12px;opacity:.9}
+.price-pill{display:inline-flex;align-items:baseline;gap:6px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 16px;margin-bottom:18px}
+.price-pill b{font-size:28px;color:var(--amber)}
+section{padding:64px 0;border-top:1px solid var(--line)}
+h2{font-size:28px;font-weight:900;margin-bottom:8px}
+.sub{color:var(--mute);margin-bottom:32px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px}
+.card h3{font-size:18px;margin-bottom:8px}
+.card p{font-size:14px;color:#3b443f}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.plan{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;position:relative}
+.plan.rec{border:2px solid var(--leaf)}
+.plan .tag{position:absolute;top:-12px;left:20px;background:var(--leaf);color:#fff;font-size:12px;padding:3px 10px;border-radius:999px}
+.plan h3{font-size:20px}
+.plan .p{font-size:34px;font-weight:900;margin:6px 0 2px}
+.plan .p small{font-size:14px;font-weight:400;color:var(--mute)}
+.plan ul{list-style:none;margin:14px 0 18px;font-size:14px}
+.plan li{padding:5px 0 5px 22px;position:relative;border-bottom:1px dashed var(--line)}
+.plan li::before{content:"✓";position:absolute;left:0;color:var(--leaf);font-weight:700}
+.note{font-size:13px;color:var(--mute);margin-top:18px}
+.work{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.work .frame{position:relative;height:420px;background:#eee}.work .frame a.tap{display:none}
+.work iframe{width:100%;height:100%;border:0}
+.work .cap{padding:18px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.work .cap b{font-size:16px}
+.work .cap span{font-size:13px;color:var(--mute)}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;counter-reset:s}
+.step{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 18px 18px;position:relative}
+.step::before{counter-increment:s;content:counter(s);position:absolute;top:-12px;left:16px;width:26px;height:26px;border-radius:50%;background:var(--amber);color:#fff;font-weight:900;font-size:13px;display:grid;place-items:center}
+.step b{display:block;margin-bottom:4px}
+.step p{font-size:13px;color:#3b443f}
+.formbox{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;max-width:620px}
+label{display:block;font-size:13px;font-weight:700;margin:14px 0 6px}
+input,textarea,select{width:100%;padding:12px;border:1px solid #cfc9bc;border-radius:10px;font:inherit;font-size:16px;background:#fbfaf7}
+textarea{min-height:90px}
+.ok{display:none;background:#eaf4ee;border:1px solid var(--leaf);border-radius:12px;padding:18px;margin-top:16px}
+.alt{font-size:13px;color:var(--mute);margin-top:12px}
+footer{padding:36px 0 60px;font-size:13px;color:var(--mute);border-top:1px solid var(--line)}
+.faq details{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:10px}
+.faq summary{font-weight:700;cursor:pointer}
+.faq p{font-size:14px;margin-top:8px;color:#3b443f}
+@media(max-width:600px){.logo small{display:none}header .btn.sm{white-space:nowrap;padding:8px 12px;font-size:12px}.price-pill{display:flex;flex-wrap:wrap;gap:4px 8px;padding:10px 14px}.price-pill b{font-size:24px}.hero{padding:36px 0 40px}.days{gap:8px}.day{padding:10px 6px}.day b{font-size:22px}.work .frame{height:300px}.work iframe{pointer-events:none}.work .frame a.tap{position:absolute;inset:0;display:block}section{padding:48px 0}}
+.demo-banner{display:flex;align-items:center;justify-content:center;gap:8px;padding:6px 14px;background:#fff7e6;border-bottom:1px solid #f0d9a8;color:#6b4d0a;font-size:12.5px;text-align:center}
+.work .frame.mock{height:auto;min-height:420px;background:#fbf7f2;display:flex;flex-direction:column;font-size:13px;overflow:hidden}
+.m-bar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#ece7de;color:#8a8478;font-size:11px}.m-bar i{width:9px;height:9px;border-radius:50%;background:#d6cfc3}.m-bar span{margin-left:8px;background:#fff;border-radius:6px;padding:1px 10px}
+.m-nav{display:flex;align-items:center;gap:16px;padding:12px 20px;border-bottom:1px solid #eee4d8;color:#7a6f63}.m-nav b{font-family:"Shippori Mincho",serif;font-size:18px;color:#5b4636;margin-right:auto;letter-spacing:.06em}.m-cta{background:#b9826a;color:#fff;border-radius:999px;padding:3px 12px}
+.m-hero{flex:1;min-height:200px;display:flex;align-items:center;padding:28px;background:linear-gradient(120deg,#f3e3d6,#e8d2c4 55%,#d9bfae)}.m-hero div{display:grid;gap:8px;color:#4d3a2c}.m-hero small{letter-spacing:.2em;color:#8a6a55}.m-hero strong{font-family:"Shippori Mincho",serif;font-size:clamp(24px,4vw,34px);line-height:1.35}.m-btn{justify-self:start;background:#06c755;color:#fff;border-radius:999px;padding:6px 16px;font-weight:700;font-size:13px}
+.m-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px 20px 18px}.m-cards div{background:#fff;border:1px solid #eee4d8;border-radius:10px;padding:10px 12px;display:grid}.m-cards b{color:#5b4636}.m-cards span{color:#9a8a7c;font-size:12px}
+.demo-tag{font-size:12px;color:#6b4d0a;background:#fff7e6;border:1px solid #f0d9a8;border-radius:999px;padding:4px 12px}
+@media(max-width:600px){.m-nav span:not(.m-cta){display:none}.m-cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="demo-banner" role="note">デモ版：運営者・実績・連絡先は架空です。申し込みフォームは送信しません。</div>
+<header><div class="wrap">
+  <a class="logo" href="#">みっか<small>AI WEB STUDIO</small></a>
+  <a class="btn sm" href="#trial">無料で試作</a>
+</div></header>
+
+<section class="hero" style="border:0"><div class="wrap">
+  <div class="price-pill"><span>ホームページ</span><b>5万円</b><span>から／修正2週間無制限</span></div>
+  <h1>お店の顔を、<br><em>3日</em>で。</h1>
+  <p class="lead">地元のお店のために、AIを使って本気のホームページを3日で作ります。先に<strong>無料でトップページを試作</strong>してお見せするので、見てから決められます。</p>
+  <div class="days">
+    <div class="day"><b>1</b><span>日目 お話を聞く</span></div>
+    <div class="day"><b>2</b><span>日目 作る</span></div>
+    <div class="day"><b>3</b><span>日目 公開</span></div>
+  </div>
+  <a class="btn" href="#trial">無料でトップページを試作してもらう</a>
+  <div class="alt">営業電話はしません。試作を見て不要なら、そのまま破棄で大丈夫です。</div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>なぜ3日・5万円でできるのか</h2>
+  <p class="sub">安いのではなく、人の手が要るところだけに人の手を使っているからです。</p>
+  <div class="grid3">
+    <div class="card"><h3>文章・構成・画像調整はAI</h3><p>お店の特徴を聞き取ったら、ページ構成、文章、写真の明るさ補正まで最新のAIが数時間で組み上げます。</p></div>
+    <div class="card"><h3>デザインと検品は人</h3><p>テンプレートの流用はしません。お店の雰囲気に合わせて一点ずつ作り、スマホ実機で表示を確認してから納品します。</p></div>
+    <div class="card"><h3>サーバー代ゼロ</h3><p>無料で使える公開の仕組みを使うので、月々のサーバー代はかかりません。ご希望なら独自ドメイン（年1,500円ほど）も設定します。</p></div>
+  </div>
+</div></section>
+
+<section id="price"><div class="wrap">
+  <h2>料金</h2>
+  <p class="sub">すべて税込・納品後のお支払い。先払いはありません。</p>
+  <div class="plans">
+    <div class="plan"><h3>ひとまず1枚</h3><div class="p">30,000<small>円</small></div>
+      <ul><li>トップページ1枚（スマホ対応）</li><li>地図・電話・LINEボタン</li><li>翌日納品</li><li>修正2週間無制限</li></ul>
+      <a class="btn ghost sm" href="#trial">試作を見る</a></div>
+    <div class="plan rec"><span class="tag">いちばん選ばれています</span><h3>お店まるごと</h3><div class="p">50,000<small>円</small></div>
+      <ul><li>5ページまで（メニュー・料金・アクセス・お店について・お問い合わせ）</li><li>Googleマップ・Instagram連携</li><li>3日納品</li><li>修正2週間無制限</li><li>検索に出る基本設定</li></ul>
+      <a class="btn sm" href="#trial">試作を見る</a></div>
+    <div class="plan"><h3>ネットで売る</h3><div class="p">80,000<small>円〜</small></div>
+      <ul><li>Shopifyなどのネットショップ開設</li><li>商品登録20点まで</li><li>決済・送料設定</li><li>楽天店からの移行も対応</li></ul>
+      <a class="btn ghost sm" href="#trial">相談する</a></div>
+  </div>
+  <p class="note">納品後の更新代行は月5,000円（月3回まで）。不要なら契約しなくて大丈夫です。</p>
+</div></section>
+
+<section id="works"><div class="wrap">
+  <h2>実績</h2>
+  <p class="sub">これまでに作ったサイトの例です。</p>
+  <div class="work">
+    <div class="frame mock" aria-label="見本サロンのホームページ（架空）">
+      <div class="m-bar"><i></i><i></i><i></i><span>mihon-salon.example</span></div>
+      <div class="m-nav"><b>Salon Mihon</b><span>メニュー</span><span>料金</span><span>アクセス</span><span class="m-cta">予約する</span></div>
+      <div class="m-hero"><div><small>まつ毛・フェイシャル</small><strong>まいにちを、<br>すこし明るく。</strong><span class="m-btn">LINEで予約</span></div></div>
+      <div class="m-cards"><div><b>まつ毛パーマ</b><span>4,400円〜</span></div><div><b>フェイシャル</b><span>6,600円〜</span></div><div><b>はじめての方</b><span>初回20%オフ</span></div></div>
+    </div>
+    <div class="cap"><div><b>見本サロン 様（見本市）</b><br><span>まつ毛・フェイシャルのプライベートサロン。12ページ、店内写真の明るさ補正込み。</span></div>
+      <span class="demo-tag">架空の見本です</span></div>
+  </div>
+  <p class="note">デモ版のため、実績は架空の見本です。ほかに、ネットショップ（Shopify）の構築など。</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>ご依頼の流れ</h2>
+  <p class="sub">お店側の作業は、質問に答えることと、写真を送ることだけです。</p>
+  <div class="flow">
+    <div class="step"><b>試作を申し込む</b><p>下のフォームから1分。お店の名前とInstagramなどがあれば十分です。</p></div>
+    <div class="step"><b>24時間以内に試作URL</b><p>トップページの試作をお送りします。見るだけ、無料です。</p></div>
+    <div class="step"><b>気に入ったらGO</b><p>3つの質問に答えて、写真を送ってください。</p></div>
+    <div class="step"><b>3日で公開</b><p>スマホで確認いただき、2週間は何度でも直します。</p></div>
+    <div class="step"><b>お支払い</b><p>公開後に請求書（振込またはカード）をお送りします。</p></div>
+  </div>
+</div></section>
+
+<section id="trial"><div class="wrap">
+  <h2>無料でトップページを試作します</h2>
+  <p class="sub">24時間以内にURLをお送りします。営業電話はしません。</p>
+  <div class="formbox">
+    <form id="f">
+      <label>お店の名前 *</label><input name="shop" required placeholder="例: 見本サロン">
+      <label>業種</label><select name="type"><option>美容・サロン</option><option>飲食・カフェ</option><option>整体・治療院</option><option>小売・雑貨</option><option>工務店・サービス</option><option>その他</option></select>
+      <label>InstagramやGoogleマップなど、お店が分かるURL（任意）</label><input name="url" placeholder="https://www.instagram.com/...">
+      <label>返信先（メール または LINE ID）*</label><input name="contact" required placeholder="sample@example.com">
+      <label>ひとこと（任意）</label><textarea name="memo" placeholder="例: 新規のお客さんに予約してほしい"></textarea>
+      <input type="text" name="_hp" style="display:none" tabindex="-1" autocomplete="off">
+      <div style="margin-top:18px"><button class="btn" type="submit" id="send">試作を申し込む（無料）</button></div>
+    </form>
+    <div class="ok" id="ok"><b>受け付けました。</b><br>24時間以内に試作URLをお送りします。届かない場合は迷惑メールフォルダもご確認ください。</div>
+    <div class="alt" id="alt"></div>
+  </div>
+</div></section>
+
+<section class="faq"><div class="wrap">
+  <h2>よくある質問</h2>
+  <details><summary>本当に3日でできますか？</summary><p>写真と質問の回答が揃ってから3日です。写真がない場合は、商用利用できる素材で仮組みし、後から差し替えます。</p></details>
+  <details><summary>公開後に自分で直せますか？</summary><p>文章や写真の差し替えは、LINEやメールで送っていただければ月5,000円の更新代行で対応します。ご自身で触る必要はありません。</p></details>
+  <details><summary>ドメインやサーバーは？</summary><p>無料の公開の仕組みで月額ゼロです。「お店名.com」のような独自ドメインは年1,500円ほどで追加できます。</p></details>
+  <details><summary>支払い方法は？</summary><p>銀行振込またはクレジットカード。納品後のお支払いです。</p></details>
+</div></section>
+
+<footer><div class="wrap">
+  <b>みっか</b>（AI WEB STUDIO）<br>
+  運営: <span id="op"></span><br>
+  対応エリア: 見本市・見本町ほか（オンラインなら全国）
+</div></footer>
+
+<script src="config.js"></script>
+<script>
+(function(){
+  var C=window.MIKKA||{};
+  document.getElementById('op').textContent=C.OPERATOR||'';
+  var alt=document.getElementById('alt');
+  var f=document.getElementById('f');
+  // デモ版: どこにも送らず、案内だけ出す
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    alt.innerHTML='<b>デモ版のため送信しません。</b> 本物は、この内容が担当者に届き、24時間以内に試作URLをお送りします。';
+  });
+})();
+</script>
+</body>
+</html>

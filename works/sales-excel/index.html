@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>サロンの売上表の作り直し｜作品ページ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap">
+<link rel="stylesheet" href="../../assets/case.css">
+<style>
+.howto { margin-bottom: 12px; max-width: 46em; }
+.book { border: 1px solid var(--line); border-radius: 10px; background: var(--surface); overflow: hidden; }
+.book-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 8px 12px; border-bottom: 1px solid var(--line); font-size: 13px; }
+.book-bar .file { font-weight: 700; }
+.book-bar .file::before { content: "X"; display: inline-block; width: 18px; height: 18px; margin-right: 6px; border-radius: 3px; background: var(--live); color: var(--surface); font: 700 11px/18px var(--mono); text-align: center; vertical-align: -3px; }
+.fx { display: grid; grid-template-columns: auto auto minmax(0, 1fr); align-items: center; gap: 0; border-bottom: 1px solid var(--line); background: var(--paper); font-size: 12.5px; min-height: 34px; }
+.fx .ref { font-family: var(--mono); padding: 6px 10px; min-width: 4.2em; border-right: 1px solid var(--line); color: var(--muted); }
+.fx .fxl { font-family: var(--mono); font-style: italic; color: var(--muted); padding: 6px 8px; border-right: 1px solid var(--line); }
+.fx .body { padding: 5px 10px; min-width: 0; display: grid; gap: 0; }
+.fx code { font-family: var(--mono); font-size: 12.5px; white-space: nowrap; overflow-x: auto; display: block; }
+.fx .say { color: var(--muted); font-size: 12px; line-height: 1.5; }
+.sheet { max-height: 470px; overflow: auto; }
+.sheet[hidden] { display: none; }
+.grid { border-collapse: separate; border-spacing: 0; width: max-content; min-width: 100%; font-size: 13px; }
+.grid th, .grid td { padding: 4px 8px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); white-space: nowrap; vertical-align: middle; line-height: 1.5; }
+.grid thead th { background: var(--paper); text-align: center; font-family: var(--mono); font-weight: 500; font-size: 11.5px; color: var(--muted); padding: 2px 8px; }
+.grid thead tr.cap th { position: sticky; top: 0; z-index: 2; font-family: var(--body); font-weight: 700; font-size: 12px; color: var(--ink); padding: 5px 8px; white-space: normal; line-height: 1.35; }
+.grid .rn { position: sticky; left: 0; z-index: 1; background: var(--paper); color: var(--muted); font-family: var(--mono); font-size: 11.5px; text-align: center; min-width: 30px; padding: 4px 4px; }
+.grid thead .rn { z-index: 3; }
+.grid td.n { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono); font-size: 12.5px; }
+.grid td.f { cursor: pointer; }
+.grid td.f:hover, .grid td.sel { outline: 2px solid var(--live); outline-offset: -2px; }
+.grid td.in { background: var(--warn-soft); background: color-mix(in srgb, var(--sample) 24%, var(--surface)); padding: 0; }
+.grid td.in input { font: inherit; font-family: var(--mono); font-size: 12.5px; width: 76px; display: block; border: 0; background: transparent; color: var(--ink); text-align: right; padding: 4px 8px; }
+.grid td.in input:focus { outline: 2px solid var(--live); outline-offset: -2px; }
+.grid td.in.wide input { width: 86px; }
+.grid tr.tot td { font-weight: 700; background: var(--paper); }
+.grid tr.tot td.in { background: var(--warn-soft); }
+.grid .skip td { color: var(--muted); font-size: 12px; text-align: center; background: var(--paper); }
+.grid .cp { display: block; font-size: 11px; color: var(--warn); line-height: 1.3; }
+.grid .lab { font-weight: 700; }
+.grid .sub { color: var(--muted); font-size: 12px; }
+#s-year { max-height: none; }
+.sumline { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 7px 12px; border-bottom: 1px solid var(--line); font-size: 13px; }
+.sumline b { font-family: var(--mono); font-weight: 500; }
+.chg { animation: chg 1.4s ease-out; }
+@keyframes chg { 0%, 35% { background: var(--live-soft); box-shadow: inset 0 0 0 2px var(--live); } 100% { box-shadow: inset 0 0 0 2px transparent; } }
+.grid td.bad, .grid tr.tot td.bad { color: var(--bad); background: var(--bad-soft); }
+.sheet-tabs { display: flex; flex-wrap: wrap; gap: 0; border-top: 1px solid var(--line); background: var(--paper); padding: 0 6px; }
+.sheet-tabs button { font: inherit; font-size: 13px; border: 0; border-right: 1px solid var(--line); background: transparent; color: var(--muted); padding: 7px 14px 6px; cursor: pointer; border-bottom: 3px solid transparent; }
+.sheet-tabs button[aria-selected="true"] { background: var(--surface); color: var(--live); font-weight: 700; border-bottom-color: var(--live); }
+.sheet-tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.yr-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 8px 12px; border-bottom: 1px solid var(--line); font-size: 13px; }
+.yr-tools .btn { font-size: 13px; padding: 4px 11px; }
+.yr-tools .btn[aria-pressed="true"] { background: var(--bad-soft); color: var(--bad); border-color: var(--bad); }
+#old-msg { color: var(--bad); font-weight: 700; }
+.after { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-top: 12px; }
+.after .reset { color: var(--muted); border-color: var(--line); font-weight: 500; }
+.legend { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--muted); }
+.legend i { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid var(--line); background: var(--warn-soft); background: color-mix(in srgb, var(--sample) 24%, var(--surface)); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../../">← ポートフォリオに戻る</a>
+
+  <header class="case-head">
+    <p class="eyebrow">業務の効率化 · 2026.08</p>
+    <h1>サロンの売上表の作り直し</h1>
+    <p class="lead">自営のサロンの売上表（Excel）を作り直しました。1日1行入力するだけで、月の集計・お客様の一覧・年間の収支が自動で出ます。</p>
+    <div class="meta"><span class="tag">Excel</span><span class="tag">Claude Code</span><span class="tag">Python</span></div>
+    <span class="sample-note">見本：架空のサロンの、架空の売上です</span>
+  </header>
+
+  <section>
+    <h2>困りごと</h2>
+    <p>売上は手書きのノートに付け、Excelにも写していました。Excelは月ごとにシートが増えていき、集計の欄には「#DIV/0!」のエラーが出たまま。年間の表の数字が古いまま残っていても、気づける仕組みがありませんでした。</p>
+  </section>
+
+  <section>
+    <h2>仕組み</h2>
+    <ol class="flow">
+      <li><b>「売上明細」に1行ずつ入れる</b><span>ノートと同じ順番（日付→お名前→メニュー→クーポン→金額）で、1年分を1枚のシートに。黄色いセルだけ入力し、白いセルは全部自動です。</span></li>
+      <li><b>税込から、税抜と消費税を出す</b><span>ノートと同じ「税込（税抜＋税）」の形で自動計算します。</span></li>
+      <li><b>「月次集計」が月ごとにまとめる</b><span>来店人数・売上・客単価を自動で集計。同じ日に商品を2つ買った方の2行目（備考「同上」）は、人数に数えません。</span></li>
+      <li><b>「顧客一覧」でお客様ごとに見る</b><span>来店回数・累計の売上・最後に来た日が自動で出ます。</span></li>
+      <li><b>「年間収支」で1年をまとめる</b><span>売上は月次集計から自動で入り、経費だけを月ごとに入力。右端の年間合計は、確定申告の科目ごとの合計にそのまま使えます。</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>見本</h2>
+    <p class="howto">黄色いセル（施術料金・店販の単価）の金額を書きかえてみてください。ほかのシートも、その場で計算し直されます。白いセルを押すと、実際の表と同じ式が上に出ます。シートは下のタブで切り替えます。</p>
+
+    <div class="book">
+      <div class="book-bar"><span class="file">売上表_見本.xlsx</span><span class="legend"><i></i>黄色＝入力するセル</span></div>
+      <div class="fx" aria-live="polite">
+        <span class="ref" id="fx-ref">—</span>
+        <span class="fxl">fx</span>
+        <span class="body"><code id="fx-f">セルを押すと、ここに式が出ます</code><span class="say" id="fx-say"></span></span>
+      </div>
+
+      <div class="sheet" id="s-sales" role="tabpanel" aria-labelledby="t-sales">
+        <div class="sumline" id="sum-line"></div>
+        <table class="grid" id="tb-sales"></table>
+      </div>
+      <div class="sheet" id="s-month" role="tabpanel" aria-labelledby="t-month" hidden>
+        <table class="grid" id="tb-month"></table>
+      </div>
+      <div class="sheet" id="s-cust" role="tabpanel" aria-labelledby="t-cust" hidden>
+        <table class="grid" id="tb-cust"></table>
+      </div>
+      <div class="sheet" id="s-year" role="tabpanel" aria-labelledby="t-year" hidden>
+        <div class="yr-tools">
+          <button type="button" class="btn" id="old-btn" aria-pressed="false">直す前の式で計算してみる</button>
+          <span id="old-msg" aria-live="polite"></span>
+        </div>
+        <table class="grid" id="tb-year"></table>
+      </div>
+
+      <div class="sheet-tabs" role="tablist" aria-label="シートの切り替え">
+        <button type="button" role="tab" id="t-sales" aria-selected="true" aria-controls="s-sales">売上明細</button>
+        <button type="button" role="tab" id="t-month" aria-selected="false" aria-controls="s-month">月次集計</button>
+        <button type="button" role="tab" id="t-cust" aria-selected="false" aria-controls="s-cust">顧客一覧</button>
+        <button type="button" role="tab" id="t-year" aria-selected="false" aria-controls="s-year">年間収支</button>
+      </div>
+    </div>
+
+    <div class="after">
+      <a class="btn" href="sample-sales.xlsx" download="売上表_見本.xlsx">見本のExcelをダウンロード（.xlsx）</a>
+      <button type="button" class="btn reset" id="reset">金額を元に戻す</button>
+      <span class="muted small">Excelの見本は、同じシート構成・本物の数式入りです（データは架空）。</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>工夫したこと</h2>
+    <ul>
+      <li>記帳の元は手書きのノートなので、ノートと同じ並び・同じ税の書き方のまま入力できるようにしました。</li>
+      <li>使う人はExcelに詳しくないため、決まりは「黄色いセルだけ入力」の1つだけ。エラー表示も出ないようにしました。</li>
+      <li>月ごとにシートを増やさず、1年1枚にしました。年が変わったら、ファイルをコピーして明細を消すだけです。</li>
+      <li>年間収支の売上は月次集計から式で引くので、古い数字が残ることがありません。</li>
+      <li>ノートでのお名前の書き方の違いはExcelの表記にそろえ、ノートでの書き方は備考に残しました。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>結果</h2>
+    <p>2025年の明細370行を、月ごとのシートから1枚にまとめ直し、12か月すべてで元の合計と一致しました。2026年1〜7月の191件は手書きノートの写真から写し、どの月もノートの月計と一致しています。</p>
+    <p style="margin-top:10px">移す途中で、前のファイルの誤りを2つ見つけました。1つは、年間の表である月の売上が古い数字のまま残っていたこと。もう1つは、経費の合計の式の範囲がずれていて、燃料代と備品費の18,038円が合計から抜けていたことです。ノートの消費税の月計にも、1円の書き間違いが1か所ありました。</p>
+  </section>
+
+  <footer>見本のお名前・メニュー・金額はすべて架空です。実際の売上の数字は載せていません。</footer>
+</div>
+<script>
+(function () {
+  'use strict';
+  var GOODS = { 'まつげ美容液': [3300, 1650], '保湿ジェル': [2750, 1300] };
+  // [月, 日, お名前, メニュー, クーポン, 施術料金(税込), 店販商品, 備考]
+  var BASE = [
+    [1,6,'花子','まつげパーマ','',5500,'',''],
+    [1,8,'さくら','フェイシャル60分','',6600,'',''],
+    [1,10,'葵','まつげパーマ＋眉ワックス','',7700,'まつげ美容液',''],
+    [1,13,'美咲','マツエク100本','初回10％オフ',5445,'',''],
+    [1,15,'結衣','フェイシャル90分','',8800,'',''],
+    [1,17,'陽菜','まつげパーマ','',5500,'まつげ美容液',''],
+    [1,17,'陽菜','','',null,'保湿ジェル','同上（同日の追加購入）'],
+    [1,20,'真央','眉ワックス','',3300,'',''],
+    [1,22,'千尋','フェイシャル60分','',6600,'',''],
+    [1,24,'理沙','マツエク100本','',6050,'',''],
+    [1,27,'早紀','まつげパーマ＋眉ワックス','',7700,'',''],
+    [1,29,'恵','フェイシャル90分','紹介500円引き',8300,'',''],
+    [1,31,'彩','まつげパーマ','初回10％オフ',4950,'',''],
+    [2,3,'花子','まつげパーマ＋眉ワックス','',7700,'',''],
+    [2,5,'さくら','フェイシャル60分','',6600,'保湿ジェル',''],
+    [2,7,'葵','まつげパーマ','',5500,'',''],
+    [2,10,'美咲','マツエク100本','',6050,'',''],
+    [2,12,'結衣','フェイシャル90分','',8800,'',''],
+    [2,14,'陽菜','まつげパーマ','',5500,'',''],
+    [2,17,'真央','眉ワックス','',3300,'まつげ美容液',''],
+    [2,19,'理沙','マツエク100本','',6050,'',''],
+    [2,21,'早紀','まつげパーマ＋眉ワックス','',7700,'',''],
+    [2,24,'恵','フェイシャル60分','',6600,'',''],
+    [2,26,'彩','まつげパーマ','',5500,'',''],
+    [2,28,'千尋','フェイシャル90分','',8800,'',''],
+    [3,3,'花子','まつげパーマ','',5500,'',''],
+    [3,5,'さくら','フェイシャル90分','',8800,'',''],
+    [3,6,'舞','まつげパーマ','初回10％オフ',4950,'',''],
+    [3,9,'葵','まつげパーマ＋眉ワックス','',7700,'まつげ美容液',''],
+    [3,11,'美咲','マツエク100本','',6050,'',''],
+    [3,13,'結衣','フェイシャル60分','',6600,'',''],
+    [3,16,'陽菜','まつげパーマ','',5500,'',''],
+    [3,18,'真央','眉ワックス','',3300,'',''],
+    [3,19,'千尋','フェイシャル60分','',6600,'保湿ジェル',''],
+    [3,23,'理沙','マツエク100本','',6050,'',''],
+    [3,25,'早紀','まつげパーマ＋眉ワックス','',7700,'',''],
+    [3,27,'恵','フェイシャル90分','',8800,'',''],
+    [3,30,'彩','まつげパーマ','',5500,'','']
+  ];
+  var CUST = [['花子','カールはJ。まぶたが敏感なので弱めの液'],['さくら','乾燥肌。保湿を多めに'],['葵','美容液を毎回購入'],['美咲','初回はクーポン利用'],['結衣','90分コースが定番'],['陽菜','土日希望'],['真央','眉の形は自然め'],['千尋','平日の夕方が多い'],['理沙',''],['早紀',''],['恵','ご紹介で来店'],['彩',''],['舞','3月から']];
+  var EXP0 = [
+    ['電気代','',[6200,7100,5800]], ['水道代','2か月ごと',[2400,0,2300]], ['通信費','携帯・インターネット',[4400,4400,4400]], ['ツール代','予約アプリ等',[1500,1500,1500]],
+    ['車両費（燃料代）','',[4800,5200,4600]], ['消耗品費','',[7300,6800,9100]], ['仕入','店販商品',[6600,0,4950]], ['備品費','',[0,3980,1200]]
+  ];
+  var MC = ['E', 'F', 'G'];
+  var SALES = '売上明細!';
+  var R1 = 5, RN = 204;
+  function rg(c) { return SALES + '$' + c + '$' + R1 + ':$' + c + '$' + RN; }
+
+  var rows, exp, other, carry0, oldMode = false;
+  function load() {
+    rows = BASE.map(function (b) {
+      var g = b[6] ? GOODS[b[6]] : null;
+      return { m: b[0], d: b[1], name: '見本　' + b[2], menu: b[3], coupon: b[4], price: b[5], goods: b[6], unit: g ? g[0] : null, cost: g ? g[1] : null, note: b[7] };
+    });
+    exp = EXP0.map(function (e) { return e[2].slice(); });
+    other = [null, null, null];
+    carry0 = 0;
+  }
+
+  function yen(v) { return (v === '' || v === null || v === undefined) ? '' : '¥' + Math.round(v).toLocaleString('ja-JP'); }
+  function num(v) { return (v === null || v === undefined) ? '' : Number(v).toLocaleString('ja-JP'); }
+  function N(v) { return typeof v === 'number' ? v : 0; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function fa(f, say) { return ' data-f="' + esc(f) + '" data-say="' + esc(say) + '"'; }
+
+  // ---------- calculation (same rules as the Excel formulas) ----------
+  function calc() {
+    var r = { line: [], month: [], cust: [], year: {} };
+    rows.forEach(function (x) {
+      var k = x.unit === null ? null : x.unit; // 数量は1
+      var o = (x.price === null && x.unit === null) ? null : N(x.price) + N(k);
+      var p = o === null ? null : Math.round(o / 1.1);
+      r.line.push({ o: o, p: p, q: o === null ? null : o - p, k: k, profit: k === null ? 0 : k - N(x.cost) });
+    });
+    for (var m = 1; m <= 3; m++) {
+      var t = { ppl: 0, svc: 0, gd: 0, all: 0, ex: 0, tax: 0, gp: 0 };
+      rows.forEach(function (x, i) {
+        if (x.m !== m) return;
+        var L = r.line[i];
+        if (x.note.indexOf('同上') !== 0) t.ppl++;
+        t.svc += N(x.price); t.gd += N(L.k); t.all += N(L.o); t.ex += N(L.p); t.tax += N(L.q); t.gp += L.profit;
+      });
+      t.avg = t.ppl ? Math.round(t.all / t.ppl) : '';
+      r.month.push(t);
+    }
+    var T = { ppl: 0, svc: 0, gd: 0, all: 0, ex: 0, tax: 0, gp: 0 };
+    r.month.forEach(function (t) { for (var key in T) T[key] += t[key]; });
+    T.avg = T.ppl ? Math.round(T.all / T.ppl) : '';
+    r.total = T;
+    CUST.forEach(function (c) {
+      var nm = '見本　' + c[0], cnt = 0, sum = 0, last = null, first = null;
+      rows.forEach(function (x, i) {
+        if (x.name !== nm) return;
+        if (x.note.indexOf('同上') !== 0) cnt++;
+        sum += N(r.line[i].o);
+        var dv = x.m * 100 + x.d;
+        if (last === null || dv > last) last = dv;
+        if (first === null || dv < first) first = dv;
+      });
+      r.cust.push({ cnt: cnt, sum: sum, last: last, first: first });
+    });
+    // 年間収支
+    var Y = { carry: [], sales: [], sumin: [], sumfix: [], sumvar: [], sumout: [], net: [], next: [], oldvar: [] };
+    for (var j = 0; j < 3; j++) {
+      Y.carry[j] = j === 0 ? N(carry0) : Y.next[j - 1];
+      Y.sales[j] = r.month[j].all;
+      Y.sumin[j] = Y.sales[j] + N(other[j]);
+      Y.sumfix[j] = N(exp[0][j]) + N(exp[1][j]) + N(exp[2][j]) + N(exp[3][j]);
+      var full = N(exp[4][j]) + N(exp[5][j]) + N(exp[6][j]) + N(exp[7][j]);
+      var shifted = N(exp[5][j]) + N(exp[6][j]);
+      Y.oldvar[j] = full - shifted;
+      Y.sumvar[j] = oldMode ? shifted : full;
+      Y.sumout[j] = Y.sumfix[j] + Y.sumvar[j];
+      Y.net[j] = Y.sumin[j] - Y.sumout[j];
+      Y.next[j] = Y.carry[j] + Y.net[j];
+    }
+    r.year = Y;
+    return r;
+  }
+
+  // ---------- render ----------
+  var tbS = document.getElementById('tb-sales'), tbM = document.getElementById('tb-month'), tbC = document.getElementById('tb-cust'), tbY = document.getElementById('tb-year');
+
+  function buildSales() {
+    var h = '<thead><tr><th class="rn"></th>' + ['A','B','D','E','G','H','I','O','P','Q','S'].map(function (c) { return '<th>' + c + '</th>'; }).join('') + '</tr>' +
+      '<tr class="cap"><th class="rn">4</th><th>No.</th><th>日付</th><th>顧客名</th><th>メニュー</th><th>施術料金<br>(税込)</th><th>店販商品</th><th>商品単価</th><th>合計金額<br>(税込)</th><th>税抜金額</th><th>消費税</th><th>備考</th></tr></thead><tbody>';
+    rows.forEach(function (x, i) {
+      var n = R1 + i;
+      h += '<tr><th class="rn">' + n + '</th>' +
+        '<td class="n f" id="sA' + i + '"' + fa('=IF($B' + n + '="","",COUNT($B$5:$B' + n + '))', '通し番号。日付が入った行だけ数えます') + '></td>' +
+        '<td class="n">' + x.m + '/' + x.d + '</td>' +
+        '<td>' + esc(x.name) + '</td>' +
+        '<td>' + esc(x.menu || '') + (x.coupon ? '<span class="cp">' + esc(x.coupon) + '</span>' : '') + '</td>' +
+        '<td class="in"><input inputmode="numeric" data-k="price" data-i="' + i + '" data-ref="G' + n + '" aria-label="' + x.m + '月' + x.d + '日 ' + esc(x.name) + ' の施術料金" value="' + num(x.price) + '"></td>' +
+        '<td>' + esc(x.goods || '') + '</td>' +
+        '<td class="in">' + (x.goods ? '<input inputmode="numeric" data-k="unit" data-i="' + i + '" data-ref="I' + n + '" aria-label="' + x.m + '月' + x.d + '日 ' + esc(x.name) + ' の店販の単価" value="' + num(x.unit) + '">' : '') + '</td>' +
+        '<td class="n f" id="sO' + i + '"' + fa('=IF(AND($G' + n + '="",$I' + n + '=""),"",N($G' + n + ')+N($K' + n + '))', '施術料金と店販の合計（K列＝単価×数量）を足します') + '></td>' +
+        '<td class="n f" id="sP' + i + '"' + fa('=IF($O' + n + '="","",ROUND($O' + n + '/1.1,0))', '税込÷1.1を四捨五入して、税抜を出します') + '></td>' +
+        '<td class="n f" id="sQ' + i + '"' + fa('=IF($O' + n + '="","",$O' + n + '-$P' + n + ')', '税込−税抜＝消費税') + '></td>' +
+        '<td class="sub">' + esc(x.note || '').replace('（', '<br>（') + '</td></tr>';
+    });
+    tbS.innerHTML = h + '</tbody>';
+  }
+
+  var MF = [
+    ['B', '来店人数', function (m) { return '=COUNTIFS(' + rg('C') + ',' + m + ',' + rg('B') + ',"<>")-COUNTIFS(' + rg('C') + ',' + m + ',' + rg('S') + ',"同上*")'; }, 'その月の行を数えます。備考が「同上」の行は数えません', 'ppl'],
+    ['C', '施術売上<br>(税込)', function (m) { return '=SUMIFS(' + rg('G') + ',' + rg('C') + ',' + m + ')'; }, 'その月の施術料金だけを足します', 'svc'],
+    ['D', '店販売上<br>(税込)', function (m) { return '=SUMIFS(' + rg('K') + ',' + rg('C') + ',' + m + ')'; }, 'その月の店販の合計を足します', 'gd'],
+    ['E', '総売上<br>(税込)', function (m) { return '=SUMIFS(' + rg('O') + ',' + rg('C') + ',' + m + ')'; }, 'その月の合計金額（税込）を足します', 'all'],
+    ['F', 'うち税抜', function (m) { return '=SUMIFS(' + rg('P') + ',' + rg('C') + ',' + m + ')'; }, 'その月の税抜金額を足します', 'ex'],
+    ['G', 'うち消費税', function (m) { return '=SUMIFS(' + rg('Q') + ',' + rg('C') + ',' + m + ')'; }, 'その月の消費税を足します', 'tax'],
+    ['H', '店販利益', function (m) { return '=SUMIFS(' + rg('M') + ',' + rg('C') + ',' + m + ')'; }, '店販の売値から仕入値を引いた利益を足します', 'gp'],
+    ['I', '客単価', function (m, r) { return '=IFERROR(ROUND($E' + r + '/$B' + r + ',0),"")'; }, '総売上÷来店人数。0人の月は空欄にしてエラーを出しません', 'avg']
+  ];
+  function buildMonth() {
+    var h = '<thead><tr><th class="rn"></th><th>A</th>' + MF.map(function (c) { return '<th>' + c[0] + '</th>'; }).join('') + '</tr>' +
+      '<tr class="cap"><th class="rn">3</th><th>月</th>' + MF.map(function (c) { return '<th>' + c[1] + '</th>'; }).join('') + '</tr></thead><tbody>';
+    for (var m = 1; m <= 3; m++) {
+      var r = 3 + m;
+      h += '<tr><th class="rn">' + r + '</th><td class="lab">' + m + '月</td>' + MF.map(function (c) {
+        return '<td class="n f" id="m' + c[4] + m + '"' + fa(c[2](m, r), c[3]) + '></td>';
+      }).join('') + '</tr>';
+    }
+    h += '<tr class="skip"><th class="rn">…</th><td colspan="9">4月〜12月（見本ではまだ入力がないため省略）</td></tr>';
+    h += '<tr class="tot"><th class="rn">16</th><td>合計</td>' + MF.map(function (c) {
+      var f = c[0] === 'I' ? '=IFERROR(ROUND($E16/$B16,0),"")' : '=SUM(' + c[0] + '4:' + c[0] + '15)';
+      return '<td class="n f" id="mT' + c[4] + '"' + fa(f, c[0] === 'I' ? '1年の総売上÷来店人数' : '1月〜12月を足します') + '></td>';
+    }).join('') + '</tr>';
+    tbM.innerHTML = h + '</tbody>';
+  }
+
+  function buildCust() {
+    var h = '<thead><tr><th class="rn"></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr>' +
+      '<tr class="cap"><th class="rn">3</th><th>顧客名</th><th>来店回数</th><th>累計売上<br>(税込)</th><th>最終来店日</th><th>初回来店日</th><th>メモ（好み・注意点など）</th></tr></thead><tbody>';
+    var D = rg('D');
+    CUST.forEach(function (c, i) {
+      var n = 4 + i;
+      h += '<tr><th class="rn">' + n + '</th><td>見本　' + esc(c[0]) + '</td>' +
+        '<td class="n f" id="cB' + i + '"' + fa('=IF($A' + n + '="","",COUNTIFS(' + D + ',$A' + n + ')-COUNTIFS(' + D + ',$A' + n + ',' + rg('S') + ',"同上*"))', 'このお客様の行を数えます（「同上」の行は除く）') + '></td>' +
+        '<td class="n f" id="cC' + i + '"' + fa('=IF($A' + n + '="","",SUMIFS(' + rg('O') + ',' + D + ',$A' + n + '))', 'このお客様の合計金額を足します') + '></td>' +
+        '<td class="n f" id="cD' + i + '"' + fa('=IF(OR($A' + n + '="",N($B' + n + ')=0),"",MAXIFS(' + rg('B') + ',' + D + ',$A' + n + '))', 'このお客様のいちばん新しい日付') + '></td>' +
+        '<td class="n f" id="cE' + i + '"' + fa('=IF(OR($A' + n + '="",N($B' + n + ')=0),"",MINIFS(' + rg('B') + ',' + D + ',$A' + n + '))', 'このお客様のいちばん古い日付') + '></td>' +
+        '<td class="sub">' + esc(c[1]) + '</td></tr>';
+    });
+    tbC.innerHTML = h + '</tbody>';
+  }
+
+  // 年間収支の行： [行番号, 科目, メモ, 種類]
+  var YR = [
+    [3, '前月繰越', '1月は期首の残高', 'carry'],
+    [4, '売上', '月次集計から自動', 'sales'],
+    [5, '雑収入', '', 'other'],
+    [6, '経常収入計', '', 'sumin'],
+    [7, '電気代', '', 0], [8, '水道代', '2か月ごと', 1], [9, '通信費', '携帯・インターネット', 2], [10, 'ツール代', '予約アプリ等', 3],
+    [11, '固定費計', '', 'sumfix'],
+    [12, '車両費（燃料代）', '', 4], [13, '消耗品費', '', 5], [14, '仕入', '店販商品', 6], [15, '備品費', '', 7],
+    [16, '変動費計', '', 'sumvar'],
+    [17, '経常支出計', '', 'sumout'],
+    [18, '当月収支', '', 'net'],
+    [19, '次月繰越', '', 'next']
+  ];
+  var YSAY = { carry: '前の月の「次月繰越」をそのまま持ってきます', sales: '月次集計の総売上を引いてきます（手で写さない）', sumin: '売上＋雑収入', sumfix: '固定費の4行を足します', sumvar: '変動費の4行（燃料代〜備品費）を足します', sumout: '固定費計＋変動費計', net: '経常収入計−経常支出計', next: '前月繰越＋当月収支' };
+  function yF(kind, c, prev) {
+    switch (kind) {
+      case 'carry': return prev ? '=' + prev + '19' : null;
+      case 'sales': return '=月次集計!$E$' + (4 + MC.indexOf(c));
+      case 'sumin': return '=SUM(' + c + '4:' + c + '5)';
+      case 'sumfix': return '=SUM(' + c + '7:' + c + '10)';
+      case 'sumvar': return oldMode ? '=SUM(' + c + '13:' + c + '14)' : '=SUM(' + c + '12:' + c + '15)';
+      case 'sumout': return '=' + c + '11+' + c + '16';
+      case 'net': return '=' + c + '6-' + c + '17';
+      case 'next': return '=' + c + '3+' + c + '18';
+    }
+    return null;
+  }
+  function buildYear() {
+    var h = '<thead><tr><th class="rn"></th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>Q</th></tr>' +
+      '<tr class="cap"><th class="rn">2</th><th>科目</th><th>メモ</th><th>1月</th><th>2月</th><th>3月</th><th>年間合計</th></tr></thead><tbody>';
+    YR.forEach(function (y) {
+      var r = y[0], kind = y[3], isTot = typeof kind === 'string' && kind !== 'other' && kind !== 'sales';
+      h += '<tr' + (isTot ? ' class="tot"' : '') + '><th class="rn">' + r + '</th><td class="lab">' + y[1] + '</td><td class="sub">' + y[2] + '</td>';
+      MC.forEach(function (c, j) {
+        var ref = c + r;
+        if (typeof kind === 'number' || kind === 'other' || (kind === 'carry' && j === 0)) {
+          var v = typeof kind === 'number' ? exp[kind][j] : (kind === 'other' ? other[j] : 0);
+          h += '<td class="in wide"><input inputmode="numeric" data-k="' + (typeof kind === 'number' ? 'exp' : kind) + '" data-e="' + kind + '" data-j="' + j + '" data-ref="' + ref + '" aria-label="' + (j + 1) + '月の' + y[1] + '" value="' + num(v) + '"></td>';
+        } else {
+          h += '<td class="n f" id="y' + r + c + '"' + fa(yF(kind, c, MC[j - 1]), YSAY[kind] || '') + '></td>';
+        }
+      });
+      var qf = kind === 'carry' ? '=E3' : kind === 'next' ? '=P19' : '=SUM(E' + r + ':P' + r + ')';
+      h += '<td class="n f" id="y' + r + 'Q"' + fa(qf, kind === 'next' ? '12月の次月繰越＝年末の残高' : kind === 'carry' ? '1月の前月繰越＝年のはじめの残高' : '1月〜12月を足します（確定申告の科目別合計）') + '></td></tr>';
+    });
+    tbY.innerHTML = h + '</tbody>';
+  }
+
+  var prev = {};
+  function put(id, text, cls) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    if (el.textContent !== text) {
+      el.textContent = text;
+      if (prev.ready) { el.classList.remove('chg'); void el.offsetWidth; el.classList.add('chg'); }
+    }
+    if (cls !== undefined) el.classList.toggle('bad', !!cls);
+  }
+  function md(v) { return v === null ? '' : Math.floor(v / 100) + '/' + (v % 100); }
+
+  function render() {
+    var r = calc();
+    rows.forEach(function (x, i) {
+      var L = r.line[i];
+      put('sA' + i, String(i + 1));
+      put('sO' + i, yen(L.o)); put('sP' + i, yen(L.p)); put('sQ' + i, yen(L.q));
+    });
+    document.getElementById('sum-line').innerHTML = '<span class="muted">年間合計 →</span><span>来店人数 <b>' + r.total.ppl + '人</b></span><span>総売上(税込) <b>' + yen(r.total.all) + '</b></span><span class="muted">（税抜 <b>' + yen(r.total.ex) + '</b> ＋ 消費税 <b>' + yen(r.total.tax) + '</b>）</span>';
+    MF.forEach(function (c) {
+      var key = c[4];
+      for (var m = 1; m <= 3; m++) put('m' + key + m, key === 'ppl' ? String(r.month[m - 1][key]) : yen(r.month[m - 1][key]));
+      put('mT' + key, key === 'ppl' ? String(r.total[key]) : yen(r.total[key]));
+    });
+    r.cust.forEach(function (c, i) {
+      put('cB' + i, String(c.cnt)); put('cC' + i, yen(c.sum)); put('cD' + i, md(c.last)); put('cE' + i, md(c.first));
+    });
+    var Y = r.year;
+    var hit = ['sumvar', 'sumout', 'net', 'next', 'carry'];
+    YR.forEach(function (y) {
+      var row = y[0], kind = y[3];
+      var sum = 0;
+      MC.forEach(function (c, j) {
+        var v;
+        if (typeof kind === 'number') v = N(exp[kind][j]);
+        else if (kind === 'other') v = N(other[j]);
+        else v = Y[kind][j];
+        sum += v;
+        var isInput = typeof kind === 'number' || kind === 'other' || (kind === 'carry' && j === 0);
+        if (!isInput) put('y' + row + c, yen(v), oldMode && hit.indexOf(kind) >= 0);
+      });
+      var q = kind === 'carry' ? Y.carry[0] : kind === 'next' ? Y.next[2] : sum;
+      put('y' + row + 'Q', yen(q), oldMode && kind !== 'carry' && hit.indexOf(kind) >= 0);
+    });
+    var lost = Y.oldvar[0] + Y.oldvar[1] + Y.oldvar[2];
+    document.getElementById('old-msg').textContent = oldMode ? '燃料代と備品費が合計から抜けて、3か月で ' + yen(lost) + ' の経費が消えました（赤いセル）。' : '';
+    prev.ready = true;
+  }
+
+  function showFx(td) {
+    var cur = document.querySelector('.grid td.sel');
+    if (cur) cur.classList.remove('sel');
+    var ref = document.getElementById('fx-ref'), f = document.getElementById('fx-f'), say = document.getElementById('fx-say');
+    var inp = td.querySelector('input');
+    if (inp) {
+      ref.textContent = inp.getAttribute('data-ref');
+      f.textContent = inp.value ? inp.value.replace(/,/g, '') : '（空欄）';
+      say.textContent = '入力するセル（黄色）。書きかえると、関係するセルが全部計算し直されます。';
+      return;
+    }
+    if (!td.hasAttribute('data-f')) return;
+    td.classList.add('sel');
+    var row = td.parentNode.querySelector('.rn').textContent;
+    var col = td.closest('table').querySelector('thead tr').children[td.cellIndex].textContent;
+    ref.textContent = col + row;
+    f.textContent = td.getAttribute('data-f');
+    say.textContent = td.getAttribute('data-say');
+  }
+
+  function parse(v) {
+    var s = String(v).replace(/[０-９]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); }).replace(/[^0-9]/g, '');
+    return s === '' ? null : Math.min(Number(s), 9999999);
+  }
+
+  function wire() {
+    var book = document.querySelector('.book');
+    book.addEventListener('click', function (e) {
+      var td = e.target.closest('td');
+      if (td) showFx(td);
+    });
+    book.addEventListener('focusin', function (e) {
+      if (e.target.tagName === 'INPUT') showFx(e.target.parentNode);
+    });
+    book.addEventListener('input', function (e) {
+      var t = e.target;
+      if (t.tagName !== 'INPUT') return;
+      var v = parse(t.value), k = t.getAttribute('data-k');
+      if (k === 'price' || k === 'unit') rows[+t.getAttribute('data-i')][k] = v;
+      else if (k === 'exp') exp[+t.getAttribute('data-e')][+t.getAttribute('data-j')] = v;
+      else if (k === 'other') other[+t.getAttribute('data-j')] = v;
+      else if (k === 'carry') carry0 = v;
+      document.getElementById('fx-f').textContent = v === null ? '（空欄）' : String(v);
+      render();
+    });
+    book.addEventListener('focusout', function (e) {
+      var t = e.target;
+      if (t.tagName === 'INPUT') { var v = parse(t.value); t.value = v === null ? '' : num(v); }
+    });
+    var tabs = document.querySelectorAll('.sheet-tabs [role="tab"]');
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () {
+        tabs.forEach(function (u) {
+          var on = u === t;
+          u.setAttribute('aria-selected', on ? 'true' : 'false');
+          document.getElementById(u.getAttribute('aria-controls')).hidden = !on;
+        });
+        var cur = document.querySelector('.grid td.sel');
+        if (cur) cur.classList.remove('sel');
+        document.getElementById('fx-ref').textContent = '—';
+        document.getElementById('fx-f').textContent = 'セルを押すと、ここに式が出ます';
+        document.getElementById('fx-say').textContent = '';
+      });
+    });
+    var ob = document.getElementById('old-btn');
+    ob.addEventListener('click', function () {
+      oldMode = !oldMode;
+      ob.setAttribute('aria-pressed', oldMode ? 'true' : 'false');
+      ob.textContent = oldMode ? '正しい式に戻す' : '直す前の式で計算してみる';
+      MC.forEach(function (c) {
+        var td = document.getElementById('y16' + c);
+        td.setAttribute('data-f', yF('sumvar', c));
+        td.setAttribute('data-say', oldMode ? '直す前の式：範囲がずれて、燃料代（12行目）と備品費（15行目）が入っていません' : YSAY.sumvar);
+      });
+      showFx(document.getElementById('y16E'));
+      render();
+    });
+    document.getElementById('reset').addEventListener('click', function () {
+      load(); oldMode = false; ob.setAttribute('aria-pressed', 'false'); ob.textContent = '直す前の式で計算してみる';
+      prev.ready = false; buildSales(); buildYear(); render();
+      document.getElementById('fx-ref').textContent = '—';
+      document.getElementById('fx-f').textContent = '金額を元に戻しました';
+      document.getElementById('fx-say').textContent = '';
+    });
+  }
+
+  load(); buildSales(); buildMonth(); buildCust(); buildYear(); render(); wire();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>吸音材の効果の見える化｜作品ページ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap">
+<link rel="stylesheet" href="../../assets/case.css">
+<style>
+.players { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.player { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: grid; gap: 8px; min-width: 0; }
+.player h3 { font-size: 16px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.player .no { font: 500 12px/1 var(--mono); color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 3px 6px; }
+.player audio { width: 100%; }
+.player p { font-size: 13.5px; color: var(--muted); }
+.player.after { border-color: var(--accent); }
+.hint { margin-top: 12px; font-size: 13.5px; color: var(--muted); max-width: 46em; }
+.big { display: grid; grid-template-columns: auto 1fr; gap: 4px 18px; align-items: baseline; }
+.big .pct { font: 700 clamp(40px, 7vw, 60px)/1 var(--display); color: var(--accent); font-variant-numeric: tabular-nums; }
+.big .pct small { font-size: .4em; margin-left: 2px; }
+.big p { color: var(--muted); font-size: 14px; }
+.bar { height: 10px; border-radius: 999px; background: var(--paper); border: 1px solid var(--line); overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
+td .bar { min-width: 90px; margin-top: 7px; }
+.figs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; margin-top: 16px; }
+.figs a { display: block; }
+.figs img { width: 100%; }
+.graph { margin-top: 16px; }
+@media (max-width: 700px) {
+  .players, .figs { grid-template-columns: minmax(0, 1fr); }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../../">← ポートフォリオに戻る</a>
+
+  <header class="case-head">
+    <p class="eyebrow">AIの仕組みづくり・調査 · 2026.11</p>
+    <h1>吸音材の効果の見える化</h1>
+    <p class="lead">吸音材を貼る前と後の部屋の音をスマホで録り、聞き比べの音声と、音の高さごとのグラフ、イラストの説明図にしました。「シャー」「キーン」という耳ざわりな高い音は、約8割減っていました。</p>
+    <div class="meta"><span class="tag">Python（音声の切り出し・分析）</span><span class="tag">ffmpeg</span><span class="tag">Gemini（絵）</span><span class="tag">Claude Code</span></div>
+    <span class="sample-note">実際の録音です（2026年11月9日・同じ部屋、同じスマホ）</span>
+  </header>
+
+  <section>
+    <h2>困りごと</h2>
+    <p>商品調査の一つとして、吸音材の効き目を確かめました。ただ、吸音材の効果は「静かになった気がする」で終わりがちです。数字だけを並べても、音に詳しくない人には何が変わったのか伝わりません。</p>
+  </section>
+
+  <section>
+    <h2>仕組み</h2>
+    <ol class="flow">
+      <li><b>同じ条件で2回録る</b><span>吸音材なし／ありを、同じ部屋・同じスマホ・扉を閉じた状態で録音しました。</span></li>
+      <li><b>安定した15秒だけを切り出す</b><span>話し声や操作の音を除き、音が落ち着いている15秒ずつにそろえました。</span></li>
+      <li><b>2つを同じ倍率で大きくする</b><span>元の録音はとても小さいので、どちらも同じ +32.3dB だけ音量を上げました。差はそのまま残るので、比べても公平です。雑音を消すような加工はしていません。</span></li>
+      <li><b>音の高さごとに比べる</b><span>低い唸り（〜150Hz）、中くらいの音（150〜1,000Hz）、耳障りな高い音（1,000〜5,000Hz）に分けて、どれだけ減ったかを計算しました。</span></li>
+      <li><b>ひと目で分かる絵にする</b><span>グラフに数字を書き込み、Geminiで描いた絵に文字を重ねて説明図にしました。4コマ、文章多め、絵だけで分かる版など、見せる相手に合わせて作り分けています。</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>見本</h2>
+    <p class="muted small" style="margin-bottom:12px">イヤホンで聞くと差が分かりやすいです。「あり」では「シャー」という音が減り、「ブーン」という低い唸りだけが残ります。</p>
+    <div class="players">
+      <div class="player">
+        <h3><span class="no">01</span>吸音材なし</h3>
+        <audio controls preload="metadata" src="01_nashi.mp3">お使いのブラウザは音声の再生に対応していません。</audio>
+        <p>15秒。部屋の機械の唸りと、高い「シャー」という音が重なっています。</p>
+      </div>
+      <div class="player after">
+        <h3><span class="no">02</span>吸音材あり</h3>
+        <audio controls preload="metadata" src="02_ari.mp3">お使いのブラウザは音声の再生に対応していません。</audio>
+        <p>15秒。同じ場所・同じ倍率。高い音が減って、低い唸りが残ります。</p>
+      </div>
+    </div>
+    <p class="hint">2つは同じ倍率で音量を上げているので、聞こえる大きさの差はそのまま本物の差です。</p>
+
+    <figure class="graph">
+      <a href="graph.jpg"><img src="graph.jpg" width="1400" height="788" loading="lazy" alt="音の高さごとの比較グラフ。低い音ではなし・ありの線がほぼ重なり、1,000〜5,000Hzの高い音では吸音材ありの線が大きく下に離れている。耳障りな高い音は83%カット、中くらいの音は46%、低い唸りは19%、音全体は29%カット。"></a>
+      <figcaption>音の高さごとの比較。左の低い音では2本の線がほぼ重なり、右の高い音で大きく離れています（クリックで拡大）。</figcaption>
+    </figure>
+
+    <div class="figs">
+      <figure>
+        <a href="explainer-hitome.jpg"><img src="explainer-hitome.jpg" width="1400" height="2590" loading="lazy" alt="説明図「吸音材で、耳ざわりな音だけやわらぐ」。音に敏感な子、耳が聞こえにくい方、録音や配信をする人の3つの場面で、貼る前と貼った後の部屋を絵で比べている。"></a>
+        <figcaption>人に見せる用の説明図。どの音が減り、どの音は残るのかを絵で見せています。</figcaption>
+      </figure>
+      <figure>
+        <a href="explainer-manga.jpg"><img src="explainer-manga.jpg" width="960" height="2324" loading="lazy" alt="4コママンガ「マンガでわかる！吸音材の効果」。うるさい部屋、吸音材を貼る、静かになって83%カット、結論として高い音には効き低い唸りは残る、の4コマ。"></a>
+        <figcaption>同じ結果を4コママンガにした版。絵はGeminiで描き、文字と数字は後から重ねました。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>工夫したこと</h2>
+    <ul>
+      <li>2つの録音を必ず同じ倍率で大きくしました。片方だけ大きくすると、「効いた」ように見せられてしまうからです。</li>
+      <li>「何％減った」だけでなく、減らなかった音も正直に書きました。低い唸りは吸音材が苦手な音で、耳ではほぼ同じに聞こえます。</li>
+      <li>絵はGeminiに描かせ、文字と数字は後から別に重ねました。AIに文字まで描かせると、数字や言葉を間違えやすいからです。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>結果</h2>
+    <div class="panel big" style="margin-bottom:14px">
+      <span class="pct">83<small>%</small></span>
+      <p>耳障りな高い音（1,000〜5,000Hz）が減った割合。音の大きさでは約 −7.7dB です。</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>音の種類</th><th class="num">変化</th><th>減った割合</th></tr></thead>
+        <tbody>
+          <tr><td>耳障りな高い音「シャー」「キーン」<br><span class="muted small">1,000〜5,000Hz</span></td><td class="num">−7.7dB</td><td>約83%<div class="bar"><i style="width:83%"></i></div></td></tr>
+          <tr><td>中くらいの音<br><span class="muted small">150〜1,000Hz</span></td><td class="num">−2.7dB</td><td>約46%<div class="bar"><i style="width:46%"></i></div></td></tr>
+          <tr><td>低い唸り「ブーン」<br><span class="muted small">〜150Hz</span></td><td class="num">−0.9dB</td><td>約19%<div class="bar"><i style="width:19%"></i></div></td></tr>
+          <tr><td>音全体</td><td class="num">−1.5dB</td><td>約29%<div class="bar"><i style="width:29%"></i></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:14px">部屋の音の大部分は低い唸りなので、音全体では控えめな数字になります。また、スマホを置く位置や向きが2回で少し違うと結果も変わるため、次に測る時は同じ場所に置いて録るよう、注意書きに残しました。</p>
+  </section>
+
+  <footer>音声とグラフは実際の測定です。絵はイメージで、実際の部屋ではありません。「減った割合」は音のエネルギーの減り方で、感じ方には個人差があります。</footer>
+</div>
+</body>
+</html>

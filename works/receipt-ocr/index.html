@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>帳簿アプリのレシート読み取り改修｜作品ページ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap">
+<link rel="stylesheet" href="../../assets/case.css">
+<style>
+.howto { margin-bottom: 12px; max-width: 46em; }
+.cmp { display: grid; grid-template-columns: 250px repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.photo { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 18px 16px 24px; }
+.photo figcaption { margin: 0 0 10px; }
+.receipt { position: relative; background: var(--surface); color: var(--ink); font-family: var(--mono); font-size: 12px; line-height: 1.6; padding: 16px 14px 18px; transform: rotate(-1deg); box-shadow: 0 0 0 1px var(--line); margin-bottom: 8px; }
+.receipt::after { content: ""; position: absolute; left: 0; right: 0; bottom: -7px; height: 7px;
+  background: linear-gradient(135deg, var(--surface) 33%, transparent 34%) 0 0 / 10px 7px repeat-x, linear-gradient(225deg, var(--surface) 33%, transparent 34%) 0 0 / 10px 7px repeat-x; }
+.r-shop { text-align: center; font-family: var(--body); font-weight: 700; font-size: 14px; letter-spacing: .04em; }
+.r-c { text-align: center; color: var(--muted); font-size: 11px; }
+.r-l { display: flex; justify-content: space-between; gap: 8px; }
+.r-l.big { font-weight: 700; font-size: 13.5px; }
+.r-hr { border-top: 1px dashed var(--muted); margin: 6px 0; }
+.faded { opacity: .22; filter: blur(.8px); }
+.crease { position: relative; }
+.crease::before { content: ""; position: absolute; left: -16px; right: -16px; top: 44%; height: 3px; background: var(--muted); opacity: .45; transform: rotate(-3deg); }
+.blurry { filter: blur(1.1px); }
+.read { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; min-width: 0; }
+.read > h3 { font-size: 15px; padding: 10px 14px; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; align-items: center; }
+.read.before > h3 { background: var(--bad-soft); }
+.read.after > h3 { background: var(--live-soft); }
+.read dl { margin: 0; display: grid; grid-template-columns: 6.6em minmax(0, 1fr); }
+.read dt, .read dd { margin: 0; padding: 8px 12px; border-bottom: 1px solid var(--line); font-size: 14px; min-width: 0; }
+.read dt { color: var(--muted); font-size: 12.5px; padding-top: 10px; }
+.read dl > :nth-last-child(-n+2) { border-bottom: 0; }
+.val { font-family: var(--mono); font-size: 13.5px; overflow-wrap: anywhere; }
+.val.bad { color: var(--bad); background: var(--bad-soft); border-radius: 4px; padding: 1px 6px; font-weight: 500; }
+.note { display: block; font-size: 12px; color: var(--muted); line-height: 1.55; margin-top: 3px; }
+.fill { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.fill input { font: inherit; font-family: var(--mono); font-size: 13.5px; border: 1.5px dashed var(--warn); background: var(--warn-soft); color: var(--ink); border-radius: 6px; padding: 3px 8px; width: 100%; max-width: 12.5em; }
+.fill input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.fill input.ok { border-style: solid; border-color: var(--live); background: var(--live-soft); }
+.fill input.ng { border-style: solid; border-color: var(--bad); background: var(--bad-soft); }
+.foot { padding: 9px 14px; font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--line); line-height: 1.6; }
+h3.sub { font-size: 17px; margin: 28px 0 10px; }
+.table-wrap td b { font-weight: 700; }
+@media (max-width: 860px) {
+  .cmp { grid-template-columns: minmax(0, 1fr); }
+  .photo { max-width: 340px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../../">← ポートフォリオに戻る</a>
+
+  <header class="case-head">
+    <p class="eyebrow">業務の効率化 · 2026.08</p>
+    <h1>帳簿アプリのレシート読み取り改修</h1>
+    <p class="lead">レシートの写真から帳簿をつけるアプリが、読めない所に「ありもしない金額」を書き込んでいました。読み取りの仕組みを作り直し、分からない所は空欄で人に渡すようにしました。</p>
+    <div class="meta"><span class="tag">LLM</span><span class="tag">Cloudflare Workers</span><span class="tag">Claude Code</span></div>
+    <span class="sample-note">見本：架空のお店の、架空のレシートです</span>
+  </header>
+
+  <section>
+    <h2>困りごと</h2>
+    <p>サロン向けの帳簿アプリ（以前ChatGPTで作ったもの）は、ブラウザの中の文字認識でレシートを読んでいました。この読み取りは、読めなくても必ず何かの値を返す作りで、実在しない「¥935,510」という金額や、意味をなさない店名がそのまま帳簿に入っていました。今回直したのは、このレシート読み取りの部分です。</p>
+  </section>
+
+  <section>
+    <h2>仕組み</h2>
+    <ol class="flow">
+      <li><b>レシートを撮る</b><span>1枚の写真に何枚写っていても大丈夫です。まず伝票ごとに切り分けます。</span></li>
+      <li><b>AIが読む</b><span>店名・日付・金額などを読みます。読めない所は「読めない」と答えさせ、推測で埋めさせません。</span></li>
+      <li><b>金額を検算する</b><span>品目を足した額と合計が合うかなどを確かめます。合わなければ、AIが「自信あり」と答えていても採用しません。</span></li>
+      <li><b>空欄は人が入れる</b><span>読めなかった項目は空欄のまま残し、画面で「要確認」「要修正」とひと目で分かるようにしました。</span></li>
+      <li><b>前の読み取りは保険に</b><span>AIが使えない時だけ、前からある文字認識を使います。</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>見本</h2>
+    <p class="howto">同じレシートを、直す前と直した後で読んだ結果です。黄色い点線の欄は、人が入力する所です。数字を入れてみてください。</p>
+    <div class="tabs" role="tablist" aria-label="見本の切り替え">
+      <button type="button" role="tab" id="t-a" aria-selected="true" aria-controls="p-a">レシートA：かすれた所がある</button>
+      <button type="button" role="tab" id="t-b" aria-selected="false" aria-controls="p-b">レシートB：合計が合わない</button>
+    </div>
+
+    <!-- レシートA -->
+    <div class="panel" id="p-a" role="tabpanel" aria-labelledby="t-a">
+      <div class="cmp">
+        <figure class="photo">
+          <figcaption>撮った写真（見本）</figcaption>
+          <div class="receipt" aria-label="見本ストアのレシート">
+            <div class="r-shop">見本ストア 駅前店</div>
+            <div class="r-c">見本市中央1-2-3</div>
+            <div class="r-c">登録番号 T<span class="faded">1234567890123</span></div>
+            <div class="r-hr"></div>
+            <div>2026年8月3日(月) 14:32</div>
+            <div class="r-hr"></div>
+            <div class="r-l"><span>コットン 100枚</span><span>¥330</span></div>
+            <div class="r-l"><span>ハンドソープ 詰替</span><span>¥418</span></div>
+            <div class="r-l"><span>ゴム手袋 M</span><span>¥550</span></div>
+            <div class="r-l"><span>マスク 50枚</span><span>¥660</span></div>
+            <div class="r-hr"></div>
+            <div class="r-l"><span>小計</span><span>¥1,958</span></div>
+            <div class="r-l"><span>(内消費税 10%)</span><span>¥178</span></div>
+            <div class="r-l big"><span>合計</span><span>¥1,958</span></div>
+            <div class="r-l"><span>お預り</span><span>¥2,000</span></div>
+            <div class="r-l"><span>お釣り</span><span>¥42</span></div>
+          </div>
+        </figure>
+
+        <div class="read before">
+          <h3>直す前の読み取り <span class="chip bad">そのまま帳簿へ</span></h3>
+          <dl>
+            <dt>店名</dt><dd><span class="val bad">ーー ヨ本スト了ー -</span></dd>
+            <dt>日付</dt><dd><span class="val bad">2028/03/08</span></dd>
+            <dt>合計</dt><dd><span class="val bad">¥935,510</span></dd>
+            <dt>消費税</dt><dd><span class="val bad">¥17,800</span></dd>
+            <dt>登録番号</dt><dd><span class="val bad">T1Z3A5B</span></dd>
+          </dl>
+          <p class="foot">読めなくても、必ず何かの値を入れていました。赤い所はどれもレシートにない値です。</p>
+        </div>
+
+        <div class="read after">
+          <h3>直した後 <span class="chip warn" id="a-state">要確認 1件</span></h3>
+          <dl>
+            <dt>店名</dt><dd><span class="val">見本ストア 駅前店</span></dd>
+            <dt>日付</dt><dd><span class="val">2026/08/03</span></dd>
+            <dt>合計</dt><dd><span class="val">¥1,958</span> <span class="chip ok">検算OK</span><span class="note">品目を足すと ¥1,958。合計と一致します。</span></dd>
+            <dt>消費税</dt><dd><span class="val">¥178</span></dd>
+            <dt>登録番号</dt><dd>
+              <div class="fill"><input id="a-reg" placeholder="人が入力" aria-label="登録番号（人が入力）" maxlength="20"><span class="chip warn" id="a-chip">人が入力</span></div>
+              <span class="note">かすれて読めないため、空欄のまま渡します。</span></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+
+    <!-- レシートB -->
+    <div class="panel" id="p-b" role="tabpanel" aria-labelledby="t-b" hidden>
+      <div class="cmp">
+        <figure class="photo">
+          <figcaption>撮った写真（見本）</figcaption>
+          <div class="receipt" aria-label="見本ドラッグのレシート">
+            <div class="r-shop">見本ドラッグ 本町店</div>
+            <div class="r-c">登録番号 T9876543210987</div>
+            <div class="r-hr"></div>
+            <div>2026年8月12日(水) 18:05</div>
+            <div class="r-hr"></div>
+            <div class="r-l"><span>目薬</span><span>¥1,078</span></div>
+            <div class="r-l"><span>絆創膏</span><span>¥548</span></div>
+            <div class="r-l"><span>洗剤 詰替</span><span>¥398</span></div>
+            <div class="r-l"><span>ティッシュ 5箱</span><span>¥458</span></div>
+            <div class="r-l"><span>ハンドクリーム</span><span>¥998</span></div>
+            <div class="r-hr"></div>
+            <div class="r-l big crease"><span>合計</span><span class="blurry">¥3,480</span></div>
+            <div class="r-l"><span>(内消費税 10%)</span><span>¥316</span></div>
+            <div class="r-l"><span>お預り</span><span>¥5,000</span></div>
+            <div class="r-l"><span>お釣り</span><span>¥1,520</span></div>
+          </div>
+        </figure>
+
+        <div class="read before">
+          <h3>直す前の読み取り <span class="chip bad">そのまま帳簿へ</span></h3>
+          <dl>
+            <dt>店名</dt><dd><span class="val bad">見本ド ラッ ク゛ 本</span></dd>
+            <dt>日付</dt><dd><span class="val bad">2026/18/12</span></dd>
+            <dt>合計</dt><dd><span class="val bad">¥348,015</span></dd>
+            <dt>消費税</dt><dd><span class="val bad">¥316,500</span></dd>
+          </dl>
+          <p class="foot">折り目の上の数字も、読めたことにして書き込んでいました。</p>
+        </div>
+
+        <div class="read after">
+          <h3>直した後 <span class="chip bad" id="b-state">要修正 1件</span></h3>
+          <dl>
+            <dt>店名</dt><dd><span class="val">見本ドラッグ 本町店</span></dd>
+            <dt>日付</dt><dd><span class="val">2026/08/12</span></dd>
+            <dt>品目の合計</dt><dd><span class="val">¥3,480</span><span class="note">5品目の金額を足した額（検算用）</span></dd>
+            <dt>合計</dt><dd>
+              <div class="fill"><input id="b-total" inputmode="numeric" placeholder="人が入力" aria-label="合計（人が入力）" maxlength="12"><span class="chip warn" id="b-chip">人が入力</span></div>
+              <span class="note">AIの答えは「¥3,840（自信：高）」。品目を足すと ¥3,480 で合わないため、採用しませんでした。</span></dd>
+            <dt>消費税</dt><dd><span class="val">¥316</span></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub">実際のレシートで測った結果</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th>直す前</th><th>直した後</th></tr></thead>
+        <tbody>
+          <tr><td>読み方</td><td>ブラウザの中の文字認識だけ</td><td>AIが読む（文字認識は保険）</td></tr>
+          <tr><td>写真1枚にかかる時間</td><td>約9分</td><td>約23秒（伝票4枚が写った写真）</td></tr>
+          <tr><td>読めた項目</td><td>ほとんど無し</td><td>自動で埋まった割合 <b>90.6%</b></td></tr>
+          <tr><td>実在しない金額・日付</td><td><span class="chip bad">帳簿に入っていた</span></td><td><span class="chip ok">0件</span></td></tr>
+          <tr><td>伝票の切り分け</td><td>—</td><td>32枚中31枚</td></tr>
+          <tr><td>読めない項目</td><td>でたらめな値で埋める</td><td>空欄にして人が入力</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted small" style="margin-top:8px">自動で埋まった割合・実在しない金額と日付・切り分けは、実際のレシート10枚（伝票32枚）で測った値です。このページのレシートと読み取り結果は、説明のための見本です。</p>
+  </section>
+
+  <section>
+    <h2>工夫したこと</h2>
+    <ul>
+      <li>「空欄のほうが、うその数字よりずっとまし」という考えで作りました。読めない所は空けて、人に渡します。</li>
+      <li>AIのモデルを、同じレシートで比べてから選びました。あるモデルは、実在しない店名を1枚で3件、「自信あり」と答えながら作りました。そのため、AIが自分で言う「自信」は当てにしていません。</li>
+      <li>金額は、品目の合計などレシートの中の数字と照らし合わせて確かめます。合わない数字は使いません。</li>
+      <li>前の文字認識は消さずに保険として残し、AIが使えない時でもアプリが止まらないようにしました。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>結果</h2>
+    <p>実際のレシート10枚（伝票32枚）で、自動で埋まった割合は90.6%、実在しない金額・日付は0件になりました。空欄になったのは手書きのものや見積書・納品書などで、どれも「読めない」と正直に空けたか、検算で外したものです。</p>
+    <p style="margin-top:10px">店名だけは、金額のように数字で照らし合わせることができません。実測でも店名の読み違いが2件あり、次の課題として残しています。</p>
+  </section>
+
+  <footer>見本のお店・レシート・金額はすべて架空です。</footer>
+</div>
+<script>
+(function () {
+  var tabs = document.querySelectorAll('[role="tab"]');
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      tabs.forEach(function (u) {
+        var on = u === t;
+        u.setAttribute('aria-selected', on ? 'true' : 'false');
+        document.getElementById(u.getAttribute('aria-controls')).hidden = !on;
+      });
+    });
+  });
+
+  function chip(el, cls, text) { el.className = 'chip ' + cls; el.textContent = text; }
+  function digits(v) {
+    return String(v).replace(/[０-９]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); }).replace(/[^0-9]/g, '');
+  }
+
+  // レシートA：登録番号を人が入れる
+  var reg = document.getElementById('a-reg'), aChip = document.getElementById('a-chip'), aState = document.getElementById('a-state');
+  reg.addEventListener('input', function () {
+    var filled = reg.value.trim() !== '';
+    reg.className = filled ? 'ok' : '';
+    chip(aChip, filled ? 'ok' : 'warn', filled ? '入力済み' : '人が入力');
+    chip(aState, filled ? 'ok' : 'warn', filled ? '確定できます' : '要確認 1件');
+  });
+
+  // レシートB：合計を人が入れる → 品目の合計で検算
+  var ITEMS = 3480;
+  var tot = document.getElementById('b-total'), bChip = document.getElementById('b-chip'), bState = document.getElementById('b-state');
+  tot.addEventListener('input', function () {
+    var d = digits(tot.value);
+    if (d === '') {
+      tot.className = '';
+      chip(bChip, 'warn', '人が入力');
+      chip(bState, 'bad', '要修正 1件');
+      return;
+    }
+    var ok = Number(d) === ITEMS;
+    tot.className = ok ? 'ok' : 'ng';
+    chip(bChip, ok ? 'ok' : 'bad', ok ? '検算OK' : '品目の合計 ¥3,480 と合いません');
+    chip(bState, ok ? 'ok' : 'bad', ok ? '確定できます' : '要修正 1件');
+  });
+  tot.addEventListener('blur', function () {
+    var d = digits(tot.value);
+    if (d !== '') tot.value = '¥' + Number(d).toLocaleString('ja-JP');
+  });
+})();
+</script>
+</body>
+</html>

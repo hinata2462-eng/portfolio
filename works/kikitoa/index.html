@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI音楽のMV「kikitoa」｜作品ページ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap">
+<link rel="stylesheet" href="../../assets/case.css">
+<style>
+section h3 { font-size: 17px; font-weight: 700; margin: 26px 0 10px; }
+.lede { max-width: 46em; margin-bottom: 14px; }
+.who { width: 7.5em; }
+.time { font-family: var(--mono); font-size: 13px; white-space: nowrap; }
+.human { border-left: 4px solid var(--warn); }
+.human ul { max-width: none; }
+.human h3 { margin-top: 0; }
+.gates td:first-child { font-weight: 700; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0; }
+.stat b { display: block; font-family: var(--display); font-size: 24px; line-height: 1.25; }
+.stat span { display: block; font-size: 13px; color: var(--muted); margin-top: 4px; }
+.learn li { margin-top: 8px; }
+.src { font-size: 12.5px; color: var(--muted); margin-top: 10px; max-width: 46em; }
+.links { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.media { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 300px)); gap: 18px 24px; align-items: start; }
+.media figure { min-width: 0; }
+.media .wide { grid-column: 1 / -1; }
+.v916, .v169 { position: relative; width: 100%; border-radius: 10px; overflow: hidden; background: var(--line); border: 1px solid var(--line); }
+.v916 { max-width: 300px; aspect-ratio: 9 / 16; }
+.v169 { max-width: 720px; aspect-ratio: 16 / 9; }
+.v916 iframe, .v169 iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../../">← ポートフォリオに戻る</a>
+
+  <header class="case-head">
+    <p class="eyebrow">SNSの自動運用 · 2026.09 –（運用中）</p>
+    <h1>AI音楽のMV「kikitoa」</h1>
+    <p class="lead">AIで作った曲に、場面ごとに新しく描いた絵と、歌声に合わせた歌詞をのせた縦のミュージックビデオを作り、YouTube・Instagram・X に毎晩予約しています。TikTok には、人が投稿ボードからアプリで出します。</p>
+    <div class="meta"><span class="chip ok">運用中</span><span class="tag">Suno</span><span class="tag">Gemini</span><span class="tag">faster-whisper</span><span class="tag">Python（ffmpeg）</span><span class="tag">Claude Code</span><span class="tag">ブラウザの自動操作</span></div>
+  </header>
+
+  <section>
+    <h2>何をしているか</h2>
+    <p class="lede">「Kiki Toa」というアーティスト名で、YouTube・TikTok・Instagram・X に出しています。歌っているのは絵の中の女の子「ミオ」で、顔はいつも同じに保ちます。曲は人が Suno（有料プラン）で作り、AIはその曲から、毎日1本のショート動画を作って出します。新しい曲は、先に横長のフル版（本編）を出し、次の日からショートで聴きどころを切り出します。</p>
+    <p class="lede">前からあったチャンネルを、2026年9月からこの作り方に切り替えました。9月の形は「歌詞1行に絵1枚」（17カットすべて別の絵）。今は1本20秒前後で、絵は4〜6枚とストーリーズ用の1枚を、毎回すべて新しく描きます。11/13〜12/25 はクリスマスの4曲を日替わりで出し、曲ごとに色・場所・字幕の書体を変えています。</p>
+  </section>
+
+  <section>
+    <h2>自動化の仕組み</h2>
+    <p class="lede">制作は、毎日のAIとの作業の回の中で進めます。作る・検品する・予約するまでをAIが一続きで行い、人の「出していい？」の返事は待ちません。予約した時刻になると、各サービスが自動で公開します。</p>
+
+    <h3>1本ができるまで</h3>
+    <ol class="flow">
+      <li><b>「前回より1つ良くする点」を書く</b><span>作る前に、台帳（LEVEL.md）の一番上に「前回の反応（人の言葉そのまま）・上がった点・次に良くできる所・今回上げる点（1つ）・品質の物差し（5項目を前回と比べて ↑→↓）」を書きます。空欄があると、作る道具が止まります。</span></li>
+      <li><b>切る所を音で決める</b><span>曲の音の強さを0.5秒刻みで測り、候補を3つ並べて選びます。サビ1回分を切り貼りせず、歌い出しから歌が着地する言葉まで。1秒目から歌声が鳴る所を選びます。</span></li>
+      <li><b>歌詞の時刻を測る</b><span>歌詞の正は、Suno が曲のファイルに入れている歌詞です。音声認識（faster-whisper）で語ごとの時刻を出し、歌詞の行と照らします。伴奏の厚い所では音声認識が無い言葉を作るので、時刻だけを使います。</span></li>
+      <li><b>場面を書き、絵を描く</b><span>1枚ごとに「その行の気分・寄りか引きか・いちばん近い物と遠い物・見える動作と物」を書き、Gemini で1枚1会話で描きます。ミオの顔は毎回、見本の絵を添えて固定します。</span></li>
+      <li><b>絵の検品</b><span>AIの目を2段通します（絵だけを見る目 → 意図を知っている目）。AIの目が迷った絵のある回は、人の○が無いと先へ進めない作りです。</span></li>
+      <li><b>組み立てる</b><span>Python と ffmpeg で縦1080×1920に。描き出す前に関門が2つあり、字幕の歌詞が元の歌詞と一字でも違う時と、ほかの投稿で使った絵が入っている時は止まります。</span></li>
+      <li><b>仕上がりのコマを検品</b><span>字幕・最初の一言・終わりの札が、TikTok や Instagram が上に重ねる名前や説明文の帯にかかっていないかを、コマを並べた一覧でAIの目2つが見ます。×が付いたら位置を直して作り直します。</span></li>
+      <li><b>投稿ボードに載せる</b><span>動画・表紙・ストーリーズ用の1枚・TikTok の本文を、人だけが開けるボード（claude.ai のページ）に載せます。一番上に「今夜やること」が1行で出ます。</span></li>
+      <li><b>3か所に予約</b><span>YouTube Studio・Meta Business Suite（Instagram）・X を、ブラウザの操作で予約します。出す直前に、各場所の直近の投稿を読みます（同じ動画を二重に出さないため）。</span></li>
+      <li><b>結果を書く</b><span>公開から24時間後の数字と、人の感想をそのまま台帳の「結果」に書き、次の回の「前回の反応」になります。</span></li>
+    </ol>
+
+    <h3>1日の時刻表</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>時刻</th><th>やること</th><th class="who">担い手</th></tr></thead>
+        <tbody>
+          <tr><td class="time">前の日</td><td>明日の分を作り、予約まで済ませる。新曲の準備や調べ物など別の仕事は、明日の分が終わってから</td><td><span class="chip ok">AI</span></td></tr>
+          <tr><td class="time">前の日の夜</td><td>次に出す回の絵（手の部分を切り出した1枚）を見て○×を付ける（クリスマスの回。1〜2分）</td><td><span class="chip warn">人</span></td></tr>
+          <tr><td class="time">当日 20:00</td><td>この時刻に、予約の入っていない当日分が残っていたら「事故」として、その場で公開する</td><td><span class="chip ok">AI</span></td></tr>
+          <tr><td class="time">20:30</td><td>YouTube ショートと Instagram リールが公開される</td><td><span class="chip ok">自動（予約）</span></td></tr>
+          <tr><td class="time">20:35</td><td>Instagram ストーリーズが公開される</td><td><span class="chip ok">自動（予約）</span></td></tr>
+          <tr><td class="time">21:00</td><td>X が公開される</td><td><span class="chip ok">自動（予約）</span></td></tr>
+          <tr><td class="time">夜</td><td>ボードから動画を保存して TikTok とTikTok のストーリーズに出し、「出した」を押す</td><td><span class="chip warn">人</span></td></tr>
+          <tr><td class="time">翌朝 8:30</td><td>前の夜の分の数字を記録表に書く定時タスク（下の注意を参照）</td><td><span class="chip ok">自動</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="src">時刻は、10月に「21:00」と「20:30」を比べる試験を始め、今は YouTube・Instagram が 20:30、X が 21:00 です。Instagram の予約は約20分先からしか選べないので、早めに入れます。</p>
+
+    <div class="panel human" style="margin-top:18px">
+      <h3>人の手が残っている所と、その理由</h3>
+      <ul>
+        <li><b>曲を作る</b>：Suno で人が作ります。新しい曲の最初の本編だけは、公開の前に人の「OK」を待ちます。</li>
+        <li><b>TikTok に出す</b>：TikTok は人がアプリから出す決まりです（ストーリーズはアプリからしか出せません）。AIはボードに載せるところまでで、「出した」の印は人が付けます。</li>
+        <li><b>絵の最後の判断</b>：手や小物の不自然さを、AIの目が見逃した事がありました（11/13 の絵で、手が見る人の側から出ていたのを人が先に見つけた。AI1つの目は14枚中8枚を通していた）。人の×がいちばん強い決まりです。</li>
+        <li><b>プロフィールの文</b>：AIが案を出し、人の「保存して」を待ってから保存します。</li>
+      </ul>
+    </div>
+
+    <h3>大きな動画のアップロード</h3>
+    <p class="lede">ブラウザの拡張で渡せるファイルは1回10MBまでです。3分33秒の本編「SLOW ORBIT」（約128MB）は、9.5MBずつ14個に分け、1個ずつ渡してから、ページの中で1つのファイルに戻し、YouTube Studio の受け口に渡しました（11/1 に成功）。分けた物を合わせた時に、元のファイルと同じかも確かめています。</p>
+
+    <h3>注意：数字の記録の定時タスク</h3>
+    <p class="lede">前の夜の分の数字を毎朝記録する定時タスクを置いていますが、ブラウザの操作の許可待ちで止まる日が多く、11/14〜11/17 の朝は、数字がほとんど取れていませんでした（読めなかった数字は推測で埋めず「未取得」と書く決まりです）。伸ばし方を決める時は、作業の回で YouTube Studio を開き、全期間を月ごと・本編とショートに分けて読んでいます。</p>
+  </section>
+
+  <section>
+    <h2>媒体ごとの作り分け</h2>
+    <p class="lede">同じ物を3か所に置いても、見る人が場所を移る理由がありません。場所ごとに役を決めています。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>場所</th><th>役</th><th>今の形</th></tr></thead>
+        <tbody>
+          <tr><td>YouTube ショート</td><td>聴く</td><td>曲のいちばん強い所から始める。題は「一言｜曲名 / Kiki Toa【クリスマス #n】」。曲ごとの棚と全曲の棚、2つの再生リストに入れる。「動画の主役の音楽をAIで作ったか」の質問には毎回「はい」と答える</td></tr>
+          <tr><td>YouTube 本編</td><td>聴き込む</td><td>横16:9のフル版。ショートを長くした物ではなく、別の作品として横長の絵を描き下ろす（SLOW ORBIT は46枚）</td></tr>
+          <tr><td>Instagram</td><td>送る・選ぶ</td><td>リールに2択の投票を付ける（例「平気なふり、得意？」）。本文の1行目は「この一行、誰に送る？」。タグは5個まで、自分の名前ではなく歌の種類と場面の言葉に。ストーリーズは動画の流用でなく専用の1枚</td></tr>
+          <tr><td>X</td><td>作り方</td><td>その回の制作で本当にあった事を1つ（描き直した理由・捨てた物など）。作り話はしない。本文にリンクを入れない。X の数え方で270以内</td></tr>
+          <tr><td>TikTok</td><td>決める</td><td>10月末には、2択の絵から始めて夜へ巻き戻す TikTok 専用の版も作った。今は人がボードから出す</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul style="margin-top:14px">
+      <li><b>毎日、雰囲気を変える。</b>10月末からは型を3つ用意して日替わり（物語／歌詞が主役／人を出さない場所と物）。クリスマスの回は、4曲を日替わりにして、曲ごとに別の世界（雪の夜の青と銀／暖炉の絵本の金と深緑／イルミネーションの赤と白／包み紙のパステル）で描いています。</li>
+      <li><b>機械が読む名札をそろえる。</b>曲名とアーティスト名を、題・説明・音源名で同じ「曲名 / Kiki Toa」の表記にしています。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>品質の関門（出す前の検品・決まりごと）</h2>
+    <p class="lede">関門の多くは、実際に起きた失敗から足したものです。</p>
+    <div class="table-wrap">
+      <table class="gates">
+        <thead><tr><th>関門・決まり</th><th>中身</th><th>きっかけ</th></tr></thead>
+        <tbody>
+          <tr><td>前回より1つ</td><td>台帳の4行が空だと、作る道具が止まる</td><td>「常に前回より高い物を」と頼まれ、仕組みにした（9/26）</td></tr>
+          <tr><td>歌詞は一字一句</td><td>字幕の各行を元の歌詞と一字ずつ照らし、違えば描き出しを止める</td><td>字幕の一語を「〇〇」に空けたら「そんな歌詞はない」と指摘された（11/9）。見る人には作品の偽りに見える</td></tr>
+          <tr><td>絵の使い回し禁止</td><td>使った絵の一覧と照らし、ほかの投稿で使った絵があれば止める</td><td>予告と第1話とストーリーズが同じ絵だった（11/2）。新しい曲のフォルダに関門が引き継がれていなかった</td></tr>
+          <tr><td>文字の安全域</td><td>下は y1400 より上、右は x940 より左、上は y230 より下。静止画に赤枠を重ねて確かめる</td><td>歌詞の下の4行が TikTok の説明文の帯に隠れていた（11/2）</td></tr>
+          <tr><td>顔は見本で固定</td><td>顔の説明文は変えず、見本の絵を毎回添える。変えてよいのは衣装・小物・色・背景</td><td>顔の説明を書き換えたら別人になった（10/14）</td></tr>
+          <tr><td>絵の検品2段＋人の目</td><td>絵だけを見る目 → 意図を知る目。迷いのある回は人の○が要る。手は腕1本ごとに形を書いてから描く</td><td>手の不自然さをAIの目1つが見逃した（11/13）</td></tr>
+          <tr><td>直前に読む</td><td>出す直前に各場所の直近の投稿を実物で読む</td><td>Instagram に同じリールを重ねて出した（9/28）</td></tr>
+          <tr><td>予約の前に役を照らす</td><td>場所ごとの役・タグの数・リンクの有無を照らしてから予約する</td><td>X を他と同じ文＋リンクにしていて役から外れ、表示の真ん中が10月の約60回から11〜27回に落ちた（11/2〜6）</td></tr>
+          <tr><td>聞かずに出す</td><td>毎日の分は返事を待たずに予約し、聞くのは出した後の報告だけ</td><td>「出していい？」と聞いて返事待ちにし、公開の時刻を3回逃した（10/6・10/15・10/16）</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>数字と学んだこと</h2>
+    <div class="stats">
+      <div class="stat"><b>約73回</b><span>今月のショート1本の再生の真ん中（11/13 時点）。「視聴を継続」は 14.7%</span></div>
+      <div class="stat"><b>237人</b><span>YouTube の登録者。そのうちショートから来たのは、全期間で39人</span></div>
+      <div class="stat"><b>1,581円 → 7人</b><span>TikTok の広告。視聴1,159回・フォロー7人</span></div>
+      <div class="stat"><b>9〜26人</b><span>Instagram のリールが届いた人数（平均の視聴 2〜4秒）</span></div>
+    </div>
+    <ul class="learn">
+      <li><b>目標の「毎回1,000回」には、どの時期も届いていません。</b>いちばん良かった時期でも、1本の真ん中は約350回でした。11/2〜11/11 のショート10本は 21〜234回、「視聴を継続」は 8〜30% です。</li>
+      <li><b>最初の1秒ばかり直していた。</b>6週間で最初の1秒の形を7回変えても、月の「視聴を継続」は 14.7〜16.6% のままでした。その間、登録者が来ていた入口（本編）が2週間に1本まで細っていたことに気づいていませんでした。→ 数字は28日分だけでなく、全期間を月ごと・本編とショートに分けて読んでから決める。11/17 からの予定で、本編を1曲ずつ週1本で足す試しを決めた（1本目が7日で50回未満ならやめる・判定は12/22）。</li>
+      <li><b>「曲が悪い」とは言わない。</b>「何を聴きに来る人に、どう出すか」で考えます。</li>
+      <li><b>人の指摘から関門が増えた。</b>歌詞の書き換え、絵の使い回し、帯に隠れる字幕は、どれも人が先に見つけました。今は道具が止めます。</li>
+    </ul>
+    <p class="src">数字は YouTube Studio・TikTok・Instagram の画面で読んだ記録（11/2〜11/13）から。フォロワーは 11/12 時点で TikTok 1,014・YouTube 237・Instagram 11・X 30。</p>
+  </section>
+
+  <section>
+    <h2>見てみる</h2>
+    <div class="links">
+      <a class="btn" href="https://www.youtube.com/@kikitoa_official" target="_blank" rel="noopener">YouTube ↗</a>
+      <a class="btn" href="https://www.tiktok.com/@kikitoa_official" target="_blank" rel="noopener">TikTok ↗</a>
+      <a class="btn" href="https://www.instagram.com/kiki_toa.axive/" target="_blank" rel="noopener">Instagram ↗</a>
+      <a class="btn" href="https://x.com/kiki_toa_axive" target="_blank" rel="noopener">X ↗</a>
+    </div>
+    <div class="media">
+      <figure>
+        <div class="v916"><iframe loading="lazy" src="https://www.youtube-nocookie.com/embed/VFosuRkvyuw" title="平気なふりが上手な人へ｜Almost Fine / Kiki Toa" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+        <figcaption>クリスマス #3「平気なふりが上手な人へ」（11/15）。別れた相手は描かず、食べかけのケーキの数で居ないことを見せた回。</figcaption>
+      </figure>
+      <figure>
+        <div class="v916"><iframe loading="lazy" src="https://www.youtube-nocookie.com/embed/5exvowL5aWQ" title="秘密を知った大人へ｜Wide Awake Christmas / Kiki Toa" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+        <figcaption>クリスマス #5「秘密を知った大人へ」（11/17）。最初の一言で問いを置き、1秒以内に歌と絵で答える形。</figcaption>
+      </figure>
+      <figure class="wide">
+        <div class="v169"><iframe loading="lazy" src="https://www.youtube-nocookie.com/embed/xEuFs8D_IIE" title="SLOW ORBIT（Full）｜Kiki Toa 歌詞動画" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+        <figcaption>本編「SLOW ORBIT」（11/1・3分33秒）。ショートとは別に、横長の絵を46枚描き下ろした回。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <footer>数字はどれも運用の記録にある実測で、記録した時点のものです。曲は人が Suno の有料プランで作っています。</footer>
+</div>
+</body>
+</html>

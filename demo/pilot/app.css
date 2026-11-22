@@ -1,0 +1,442 @@
+/*
+  1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+  2. Remove default margins and padding
+  3. Reset all borders.
+*/
+
+*,
+::after,
+::before,
+::backdrop,
+::file-selector-button {
+  box-sizing: border-box; /* 1 */
+  margin: 0; /* 2 */
+  padding: 0; /* 2 */
+  border: 0 solid; /* 3 */
+}
+
+/*
+  1. Use a consistent sensible line-height in all browsers.
+  2. Prevent adjustments of font size after orientation changes in iOS.
+  3. Use a more readable tab size.
+  4. Use the user's configured `sans` font-family by default.
+  5. Use the user's configured `sans` font-feature-settings by default.
+  6. Use the user's configured `sans` font-variation-settings by default.
+  7. Disable tap highlights on iOS.
+*/
+
+html,
+:host {
+  line-height: 1.5; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+  tab-size: 4; /* 3 */
+  font-family: --theme(
+    --default-font-family,
+    ui-sans-serif,
+    system-ui,
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    'Noto Color Emoji'
+  ); /* 4 */
+  font-feature-settings: --theme(--default-font-feature-settings, normal); /* 5 */
+  font-variation-settings: --theme(--default-font-variation-settings, normal); /* 6 */
+  -webkit-tap-highlight-color: transparent; /* 7 */
+}
+
+/*
+  1. Add the correct height in Firefox.
+  2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
+  3. Reset the default border style to a 1px solid border.
+*/
+
+hr {
+  height: 0; /* 1 */
+  color: inherit; /* 2 */
+  border-top-width: 1px; /* 3 */
+}
+
+/*
+  Add the correct text decoration in Chrome, Edge, and Safari.
+*/
+
+abbr:where([title]) {
+  -webkit-text-decoration: underline dotted;
+  text-decoration: underline dotted;
+}
+
+/*
+  Remove the default font size and weight for headings.
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/*
+  Reset links to optimize for opt-in styling instead of opt-out.
+*/
+
+a {
+  color: inherit;
+  -webkit-text-decoration: inherit;
+  text-decoration: inherit;
+}
+
+/*
+  Add the correct font weight in Edge and Safari.
+*/
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+/*
+  1. Use the user's configured `mono` font-family by default.
+  2. Use the user's configured `mono` font-feature-settings by default.
+  3. Use the user's configured `mono` font-variation-settings by default.
+  4. Correct the odd `em` font sizing in all browsers.
+*/
+
+code,
+kbd,
+samp,
+pre {
+  font-family: --theme(
+    --default-mono-font-family,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    'Liberation Mono',
+    'Courier New',
+    monospace
+  ); /* 1 */
+  font-feature-settings: --theme(--default-mono-font-feature-settings, normal); /* 2 */
+  font-variation-settings: --theme(--default-mono-font-variation-settings, normal); /* 3 */
+  font-size: 1em; /* 4 */
+}
+
+/*
+  Add the correct font size in all browsers.
+*/
+
+small {
+  font-size: 80%;
+}
+
+/*
+  Prevent `sub` and `sup` elements from affecting the line height in all browsers.
+*/
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+/*
+  1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
+  2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
+  3. Remove gaps between table borders by default.
+*/
+
+table {
+  text-indent: 0; /* 1 */
+  border-color: inherit; /* 2 */
+  border-collapse: collapse; /* 3 */
+}
+
+/*
+  Use the modern Firefox focus style for all focusable elements.
+*/
+
+:-moz-focusring {
+  outline: auto;
+}
+
+/*
+  Add the correct vertical alignment in Chrome and Firefox.
+*/
+
+progress {
+  vertical-align: baseline;
+}
+
+/*
+  Add the correct display in Chrome and Safari.
+*/
+
+summary {
+  display: list-item;
+}
+
+/*
+  Make lists unstyled by default.
+*/
+
+ol,
+ul,
+menu {
+  list-style: none;
+}
+
+/*
+  1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
+  2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
+      This can trigger a poorly considered lint error in some tools but is included by design.
+*/
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block; /* 1 */
+  vertical-align: middle; /* 2 */
+}
+
+/*
+  Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
+*/
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/*
+  1. Inherit font styles in all browsers.
+  2. Remove border radius in all browsers.
+  3. Remove background color in all browsers.
+  4. Ensure consistent opacity for disabled states in all browsers.
+*/
+
+button,
+input,
+select,
+optgroup,
+textarea,
+::file-selector-button {
+  font: inherit; /* 1 */
+  font-feature-settings: inherit; /* 1 */
+  font-variation-settings: inherit; /* 1 */
+  letter-spacing: inherit; /* 1 */
+  color: inherit; /* 1 */
+  border-radius: 0; /* 2 */
+  background-color: transparent; /* 3 */
+  opacity: 1; /* 4 */
+}
+
+/*
+  Restore default font weight.
+*/
+
+:where(select:is([multiple], [size])) optgroup {
+  font-weight: bolder;
+}
+
+/*
+  Restore indentation.
+*/
+
+:where(select:is([multiple], [size])) optgroup option {
+  padding-inline-start: 20px;
+}
+
+/*
+  Restore space after button.
+*/
+
+::file-selector-button {
+  margin-inline-end: 4px;
+}
+
+/*
+  Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
+*/
+
+::placeholder {
+  opacity: 1;
+}
+
+/*
+  Set the default placeholder color to a semi-transparent version of the current text color in browsers that do not
+  crash when using `color-mix(…)` with `currentcolor`. (https://github.com/tailwindlabs/tailwindcss/issues/17194)
+*/
+
+@supports (not (-webkit-appearance: -apple-pay-button)) /* Not Safari */ or
+  (contain-intrinsic-size: 1px) /* Safari 17+ */ {
+  ::placeholder {
+    color: color-mix(in oklab, currentcolor 50%, transparent);
+  }
+}
+
+/*
+  Prevent resizing textareas horizontally by default.
+*/
+
+textarea {
+  resize: vertical;
+}
+
+/*
+  Remove the inner padding in Chrome and Safari on macOS.
+*/
+
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/*
+  1. Ensure date/time inputs have the same height when empty in iOS Safari.
+  2. Ensure text alignment can be changed on date/time inputs in iOS Safari.
+*/
+
+::-webkit-date-and-time-value {
+  min-height: 1lh; /* 1 */
+  text-align: inherit; /* 2 */
+}
+
+/*
+  Prevent height from changing on date/time inputs in macOS Safari when the input is set to `display: block`.
+*/
+
+::-webkit-datetime-edit {
+  display: inline-flex;
+}
+
+/*
+  Remove excess padding from pseudo-elements in date/time inputs to ensure consistent height across browsers.
+*/
+
+::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+
+::-webkit-datetime-edit,
+::-webkit-datetime-edit-year-field,
+::-webkit-datetime-edit-month-field,
+::-webkit-datetime-edit-day-field,
+::-webkit-datetime-edit-hour-field,
+::-webkit-datetime-edit-minute-field,
+::-webkit-datetime-edit-second-field,
+::-webkit-datetime-edit-millisecond-field,
+::-webkit-datetime-edit-meridiem-field {
+  padding-block: 0;
+}
+
+/*
+  Center dropdown marker shown on inputs with paired `<datalist>`s in Chrome. (https://github.com/tailwindlabs/tailwindcss/issues/18499)
+*/
+
+::-webkit-calendar-picker-indicator {
+  line-height: 1;
+}
+
+/*
+  Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
+*/
+
+:-moz-ui-invalid {
+  box-shadow: none;
+}
+
+/*
+  Correct the inability to style the border radius in iOS Safari.
+*/
+
+button,
+input:where([type='button'], [type='reset'], [type='submit']),
+::file-selector-button {
+  appearance: button;
+}
+
+/*
+  Correct the cursor style of increment and decrement buttons in Safari.
+*/
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/*
+  Make elements with the HTML hidden attribute stay hidden by default.
+*/
+
+[hidden]:where(:not([hidden='until-found'])) {
+  display: none !important;
+}
+
+
+
+:root{--ink:#132033;--muted:#748092;--line:#e5e8e4;--paper:#f5f6f2;--card:#fff;--navy:#0b1728;--blue:#2d6bea;--blue-dark:#1f55c4;--blue-soft:#eaf1ff;--green:#198660;--green-soft:#e8f5ef;--amber:#b96b0e;--amber-soft:#fff3df;--red:#c34848;--shadow:0 14px 35px rgba(20,35,55,.08)}
+*{box-sizing:border-box}
+html{margin:0;min-height:100%;overflow-x:hidden;background:var(--paper);-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100%;overflow-x:hidden;background:var(--paper);color:var(--ink);font-family:var(--font-geist-sans),"Yu Gothic UI",sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.pilot-shell{min-height:100vh;min-height:100dvh;background:linear-gradient(180deg,#fbfcf9 0,#f4f5f1 300px);padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+.app-header{height:calc(72px + env(safe-area-inset-top));padding:env(safe-area-inset-top) max(18px,env(safe-area-inset-right)) 0 max(18px,env(safe-area-inset-left));display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20;background:rgba(251,252,249,.92);backdrop-filter:blur(18px);border-bottom:1px solid rgba(229,232,228,.75)}
+.header-brand{display:flex;align-items:center;gap:10px}.header-brand>span{display:grid;place-items:center;width:35px;height:35px;border-radius:11px;color:#fff;background:linear-gradient(145deg,#397df5,#164daa);font-weight:850;box-shadow:0 6px 16px rgba(45,107,234,.25)}.header-brand div{display:grid}.header-brand strong{font-size:15px;letter-spacing:.14em;line-height:1.1}.header-brand small{font-size:8px;color:#8691a1;letter-spacing:.08em;margin-top:4px}
+.scope-select{height:40px;display:flex;align-items:center;gap:7px;padding:0 10px;border:1px solid var(--line);border-radius:12px;background:#fff}.scope-select select{max-width:112px;border:0;appearance:none;background:transparent;outline:0;color:#39465a;font-size:12px;font-weight:700}.scope-select i{font-style:normal;color:#8c96a4;font-size:11px}.sync-dot{width:7px;height:7px;border-radius:50%;background:#c7cdd4}.sync-dot.online{background:#27a879;box-shadow:0 0 0 3px #e4f5ee}
+.app-content{width:min(100%,700px);margin:0 auto;padding:24px max(16px,env(safe-area-inset-right)) 26px max(16px,env(safe-area-inset-left))}
+.page-title{display:flex;align-items:center;justify-content:space-between;margin:1px 2px 18px}.page-title p{margin:0 0 4px;color:#8a94a2;font-size:10px;font-weight:750;letter-spacing:.08em;text-transform:uppercase}.page-title h1{margin:0;font-size:28px;line-height:1.2;letter-spacing:-.035em}.round-action{width:42px;height:42px;border:1px solid var(--line);border-radius:50%;background:#fff;color:#758194;font-size:18px}
+.daily-summary{display:grid;grid-template-columns:1fr auto 1px 1fr auto 1px 1fr auto;align-items:center;gap:8px;padding:13px 14px;margin-bottom:14px;border:1px solid var(--line);border-radius:15px;background:#fff}.daily-summary>span{font-size:9px;color:#7d8897}.daily-summary>strong{font-size:17px}.daily-summary strong small{font-size:9px;margin-left:2px;color:#8b95a3;font-weight:600}.daily-summary>i{width:1px;height:24px;background:var(--line)}
+.focus-card{position:relative;overflow:hidden;padding:21px;border-radius:22px;background:linear-gradient(145deg,#0b1728 0,#102b4e 68%,#194f9a 130%);color:#fff;box-shadow:0 20px 50px rgba(11,23,40,.2)}.focus-card:after{content:"";position:absolute;width:190px;height:190px;border:1px solid rgba(255,255,255,.08);border-radius:50%;right:-98px;top:-92px;box-shadow:0 0 0 38px rgba(255,255,255,.025)}.focus-top{position:relative;z-index:1;display:flex;align-items:center;gap:7px}.focus-rank,.case-workspace,.focus-stage{display:inline-flex;align-items:center;min-height:25px;padding:0 9px;border-radius:20px;font-size:9px;font-weight:800}.focus-rank{background:#fff;color:#13243a}.case-workspace{background:rgba(255,255,255,.1);color:#d9e8ff}.focus-stage{margin-left:auto;background:#183d69;color:#9ec7ff}.focus-card h2{position:relative;z-index:1;margin:20px 0 4px;font-size:25px;letter-spacing:-.035em}.focus-client{margin:0;color:#aabbd0;font-size:11px}.ai-reason{display:flex;align-items:center;gap:10px;margin:18px 0 0;padding:11px 12px;border:1px solid rgba(122,172,232,.24);border-radius:12px;background:rgba(255,255,255,.06)}.ai-reason>b{flex:0 0 29px;height:29px;display:grid;place-items:center;border-radius:9px;background:#2e73e7;font-size:10px}.ai-reason p{display:grid;gap:2px;margin:0;font-size:11px;font-weight:650}.ai-reason small{color:#83a8d4;font-size:8px;letter-spacing:.08em}.next-block{display:grid;gap:5px;padding:20px 1px 18px}.next-block small{font-size:9px;color:#86a1c0;letter-spacing:.12em;font-weight:750}.next-block strong{font-size:16px;line-height:1.45}.next-block span{color:#9fb0c5;font-size:10px}.focus-cta,.sheet-primary{width:100%;min-height:52px;border:0;border-radius:13px;background:var(--blue);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:space-between;padding:0 18px;box-shadow:0 8px 22px rgba(45,107,234,.3)}.focus-cta:hover,.sheet-primary:hover{background:var(--blue-dark)}.focus-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:9px}.focus-actions button{min-height:43px;border:0;border-radius:10px;background:rgba(255,255,255,.07);color:#b8c6d8;font-size:10px;font-weight:650}
+.stack-section{margin-top:27px}.section-title{display:flex;align-items:center;justify-content:space-between;margin:0 2px 10px}.section-title h2{margin:0;font-size:17px;letter-spacing:-.02em}.section-title button{border:0;background:transparent;color:var(--blue);font-size:10px;font-weight:750}.section-title>span{font-size:10px;color:#8a94a2}
+.compact-case{width:100%;min-height:94px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;text-align:left;padding:15px;margin-bottom:9px;border:1px solid var(--line);border-radius:16px;background:#fff;color:var(--ink);box-shadow:0 5px 15px rgba(20,35,55,.025)}.case-rank{align-self:start;width:29px;height:29px;display:grid;place-items:center;border-radius:9px;background:#edf2f8;color:#586a7f;font:750 10px var(--font-geist-mono)}.compact-case>div{min-width:0;display:grid;gap:3px}.compact-case small{color:#7e8a99;font-size:9px}.compact-case strong{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.compact-case p{margin:0;color:#5f6c7d;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.compact-case time{margin-top:3px;color:#929ba8;font-size:9px}.compact-case>b{color:#91a0b0;font-size:24px;font-weight:400}
+.revenue-card{display:grid;grid-template-columns:1fr 1px 1fr;gap:15px;padding:18px;border:1px solid var(--line);border-radius:17px;background:#fff}.revenue-card>div:not(.revenue-divider){display:grid;gap:4px}.revenue-card small{font-size:9px;color:#7c8796}.revenue-card strong{font-size:19px;letter-spacing:-.04em}.revenue-card span{font-size:8px;color:#9aa2ad}.revenue-divider{width:1px;background:var(--line)}.attention-card{width:100%;display:grid;grid-template-columns:36px 1fr auto;align-items:center;gap:11px;text-align:left;margin-top:9px;padding:12px;border:1px solid #f2d5a9;border-radius:14px;background:var(--amber-soft);color:#6f4a15}.attention-card>span{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:#f9dfb4;color:var(--amber);font-weight:900}.attention-card>div{display:grid;gap:2px}.attention-card strong{font-size:11px}.attention-card small{font-size:9px;color:#927144}.attention-card>b{font-size:18px}
+.waiting-row{width:100%;min-height:66px;display:grid;grid-template-columns:38px 1fr auto;align-items:center;gap:11px;text-align:left;padding:10px 6px;border:0;border-top:1px solid var(--line);background:transparent;color:var(--ink)}.waiting-row:first-of-type{border-top:0}.waiting-row>span,.waiting-person>span{width:38px;height:38px;display:grid;place-items:center;border-radius:50%;background:#e9eef5;color:#48627f;font-size:12px;font-weight:800}.waiting-row>div{display:grid;gap:4px}.waiting-row strong{font-size:12px}.waiting-row small{font-size:9px;color:#7c8797}.waiting-row>b{font-size:22px;color:#96a1ad;font-weight:400}
+.chip-row{display:flex;gap:7px;overflow-x:auto;margin:0 -16px 17px;padding:0 16px 2px;scrollbar-width:none}.chip-row::-webkit-scrollbar{display:none}.chip-row button{flex:0 0 auto;min-height:39px;padding:0 15px;border:1px solid var(--line);border-radius:20px;background:#fff;color:#687587;font-size:11px;font-weight:700}.chip-row button.active{border-color:var(--navy);background:var(--navy);color:#fff}.case-list{display:grid;gap:11px}.work-card{padding:17px;border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:0 7px 20px rgba(20,35,55,.035)}.work-card-top{display:flex;align-items:center;gap:7px}.work-card-top>span,.work-card-top>em{display:inline-flex;align-items:center;min-height:24px;padding:0 8px;border-radius:15px;font-size:8px;font-style:normal;font-weight:800}.work-card-top>span{background:#edf1f5;color:#52647a}.work-card-top>em{background:var(--blue-soft);color:#2d63c7}.work-card-top button{margin-left:auto;width:32px;height:32px;border:0;border-radius:50%;background:#f4f6f8;color:#7e8996;font-size:19px}.work-card h2{margin:13px 0 4px;font-size:18px;letter-spacing:-.025em}.work-card>p{margin:0;color:#8b95a1;font-size:10px}.work-next{display:grid;gap:4px;margin:15px 0;padding:11px 12px;border-radius:11px;background:#f5f7f8}.work-next small{color:#8b96a4;font-size:8px;letter-spacing:.08em}.work-next strong{font-size:11px}.work-card footer{display:flex;justify-content:space-between;align-items:center}.work-card time{font-size:9px;color:#7b8795}.work-card footer b{font-size:12px}
+.segmented{display:grid;grid-template-columns:1fr 1fr;padding:3px;margin-bottom:16px;border-radius:13px;background:#e8ebe8}.segmented button{min-height:42px;border:0;border-radius:10px;background:transparent;color:#718092;font-size:11px;font-weight:750}.segmented button.active{background:#fff;color:var(--ink);box-shadow:0 3px 10px rgba(20,35,55,.08)}.money-hero{padding:21px;border-radius:20px;background:linear-gradient(145deg,#11243c,#173f6c);color:#fff}.money-hero>small{color:#91abc8;font-size:9px}.money-hero>strong{display:block;margin:7px 0 19px;font-size:32px;letter-spacing:-.05em}.money-hero>div{display:flex;justify-content:space-between;padding-top:14px;border-top:1px solid rgba(255,255,255,.13)}.money-hero span{font-size:9px;color:#9cb1ca}.money-hero b{font-size:13px}.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}.metric-grid>div{display:grid;grid-template-columns:1fr auto;align-items:end;gap:3px;padding:14px;border:1px solid var(--line);border-radius:14px;background:#fff}.metric-grid small{grid-column:1/-1;color:#7c8796;font-size:9px}.metric-grid strong{font-size:22px}.metric-grid span{font-size:9px;color:#687689}.invoice-row{width:100%;display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;text-align:left;padding:14px 5px;border:0;border-top:1px solid var(--line);background:transparent;color:var(--ink)}.invoice-row>div{display:grid;gap:4px}.invoice-row small{color:#8792a0;font-size:8px}.invoice-row strong{font-size:12px}.invoice-row>b{font-size:11px}.invoice-row>i{font-style:normal;color:#94a0ad;font-size:20px}.invoice-state{width:max-content;padding:3px 7px;border-radius:12px;background:#edf1f5;color:#687789;font-size:8px}.state-ready,.state-overdue{background:var(--amber-soft);color:var(--amber)}.state-paid{background:var(--green-soft);color:var(--green)}.stage-list{display:grid;gap:13px}.stage-list>section{overflow:hidden;border:1px solid var(--line);border-radius:17px;background:#fff}.stage-list header{display:flex;justify-content:space-between;align-items:center;padding:13px 15px;background:#f4f6f5}.stage-list header>div{display:flex;gap:8px;align-items:center}.stage-list header span{font-size:11px;font-weight:800}.stage-list header div b{min-width:21px;height:21px;display:grid;place-items:center;border-radius:12px;background:#e2e7e9;font-size:9px}.stage-list header>strong{font-size:11px}.stage-list .compact-case{margin:0;border:0;border-top:1px solid var(--line);border-radius:0;box-shadow:none}
+.page-lead{margin:-8px 2px 17px;color:#7a8696;font-size:11px;line-height:1.7}.waiting-list{display:grid;gap:11px}.waiting-card{padding:17px;border:1px solid var(--line);border-radius:18px;background:#fff}.waiting-person{display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center}.waiting-person>div{display:grid;gap:2px}.waiting-person small{font-size:8px;color:#8b96a4}.waiting-person strong{font-size:11px}.waiting-person em{font-style:normal;padding:5px 8px;border-radius:12px;background:#eef2f5;color:#607186;font-size:8px;font-weight:750}.waiting-card h2{margin:15px 0 12px;font-size:17px}.waiting-date{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:10px;background:#f5f7f8}.waiting-date small{font-size:8px;color:#8a95a3}.waiting-date strong{font-size:11px}.waiting-card>p{margin:12px 1px;color:#738092;font-size:10px}.waiting-card>button{width:100%;min-height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border:1px solid #cbdaf1;border-radius:11px;background:#f5f9ff;color:#2a62c6;font-size:11px;font-weight:800}
+.blank-card{text-align:center;padding:38px 20px;border:1px solid var(--line);border-radius:18px;background:#fff}.blank-card>b{width:44px;height:44px;display:grid;place-items:center;margin:0 auto 12px;border-radius:50%;background:var(--green-soft);color:var(--green);font-size:20px}.blank-card h2{margin:0;font-size:16px}.blank-card p{margin:7px 0 0;color:#7d8997;font-size:10px}
+.bottom-nav{position:fixed;left:50%;bottom:0;z-index:40;width:min(100%,700px);height:calc(76px + env(safe-area-inset-bottom));transform:translateX(-50%);display:grid;grid-template-columns:repeat(5,1fr);padding:0 max(6px,env(safe-area-inset-right)) env(safe-area-inset-bottom) max(6px,env(safe-area-inset-left));border-top:1px solid var(--line);background:rgba(255,255,255,.96);backdrop-filter:blur(20px);box-shadow:0 -10px 28px rgba(25,39,56,.08)}.bottom-nav button{position:relative;min-width:52px;min-height:56px;border:0;background:transparent;color:#8994a2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}.bottom-nav button>b{font-size:19px;line-height:1;font-weight:600}.bottom-nav button>span{font-size:8px;font-weight:750}.bottom-nav button.active{color:var(--blue)}.bottom-nav button.active:after{content:"";position:absolute;top:0;width:22px;height:3px;border-radius:0 0 4px 4px;background:var(--blue)}.bottom-nav button>i{position:absolute;top:10px;right:calc(50% - 18px);min-width:16px;height:16px;display:grid;place-items:center;padding:0 4px;border-radius:9px;background:var(--red);color:#fff;font:700 8px var(--font-geist-mono)}.bottom-nav .capture-button{align-self:start;width:58px;height:58px;min-width:58px;min-height:58px;justify-self:center;margin-top:-18px;border-radius:50%;background:var(--blue);color:#fff;box-shadow:0 9px 23px rgba(45,107,234,.35)}.bottom-nav .capture-button>b{font-size:29px;font-weight:300}.bottom-nav .capture-button>span{position:absolute;top:61px;color:#657386}.bottom-nav .capture-button:after{display:none}
+.sheet-backdrop{position:fixed;inset:0;z-index:60;display:grid;align-items:end;background:rgba(7,17,31,.58);backdrop-filter:blur(3px)}.bottom-sheet{position:relative;width:min(100%,700px);max-height:calc(94dvh - env(safe-area-inset-top));overflow:auto;margin:0 auto;padding:14px max(20px,env(safe-area-inset-right)) calc(22px + env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left));border-radius:24px 24px 0 0;background:#fff;box-shadow:0 -25px 70px rgba(0,0,0,.25)}.sheet-handle{width:39px;height:4px;margin:0 auto 17px;border-radius:4px;background:#d9dee3}.sheet-close{position:absolute;right:max(12px,env(safe-area-inset-right));top:13px;width:42px;height:42px;border:0;border-radius:50%;background:#f2f4f5;color:#6d7988;font-size:22px}.sheet-kicker{margin:0 0 5px;color:var(--blue);font-size:9px;font-weight:800;letter-spacing:.12em}.bottom-sheet h2{margin:0;font-size:24px;letter-spacing:-.035em}.sheet-copy{margin:7px 45px 20px 0;color:#758293;font-size:11px;line-height:1.65}.bottom-sheet label{display:grid;gap:7px;margin:14px 0}.bottom-sheet label>span{font-size:9px;color:#5f6d7f;font-weight:750}.bottom-sheet label span b{color:var(--red);font-size:8px}.bottom-sheet input,.bottom-sheet select{width:100%;height:52px;border:1px solid #dce1e6;border-radius:12px;background:#f9faf9;padding:0 13px;outline:0;font-size:16px}.bottom-sheet input:focus,.bottom-sheet select:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(45,107,234,.1)}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.money-input{position:relative}.money-input>b{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#738092}.money-input input{padding-left:35px}.form-error{color:var(--red);font-size:10px}.bottom-sheet .sheet-primary{margin-top:18px}.flow-sheet{padding-bottom:calc(18px + env(safe-area-inset-bottom))}.flow-head{display:flex;gap:7px;margin:0 45px 12px 0}.flow-head span,.flow-head em{padding:5px 9px;border-radius:15px;font-size:8px;font-style:normal;font-weight:800}.flow-head span{background:#edf1f5;color:#52647a}.flow-head em{background:var(--blue-soft);color:#2b61c4}.flow-client{margin:5px 0 16px;color:#84909e;font-size:10px}.flow-recommend{padding:16px;border-radius:16px;background:var(--navy);color:#fff}.flow-recommend>div{display:flex;align-items:center;gap:8px}.flow-recommend>div b{width:28px;height:28px;display:grid;place-items:center;border-radius:8px;background:var(--blue);font-size:9px}.flow-recommend>div span{color:#99acc2;font-size:9px}.flow-recommend>strong{display:block;margin:13px 0 7px;font-size:15px}.flow-recommend time{color:#91a5bd;font-size:9px}.evidence-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:10px 0}.evidence-grid>div{padding:12px;border:1px solid var(--line);border-radius:12px}.evidence-grid small,.message-draft small{color:var(--blue);font-size:8px;font-weight:800;letter-spacing:.08em}.evidence-grid p{margin:5px 0 0;color:#5e6c7c;font-size:10px;line-height:1.55}.message-draft{padding:14px;border-radius:13px;background:#f4f6f7}.message-draft p{margin:7px 0;color:#4f5f70;font-size:10px;line-height:1.7}.message-draft span{color:var(--amber);font-size:8px;font-weight:700}.human-note{margin:12px 1px;color:#8a704b;font-size:9px}.flow-actions{display:grid;grid-template-columns:1fr 2fr;gap:9px}.flow-actions>button:first-child{min-height:52px;border:1px solid var(--line);border-radius:13px;background:#fff;color:#647284;font-size:11px;font-weight:750}.flow-actions .sheet-primary{margin:0}
+.toast{position:fixed;left:50%;bottom:calc(91px + env(safe-area-inset-bottom));z-index:90;transform:translateX(-50%);display:flex;align-items:center;gap:8px;max-width:calc(100vw - 30px);padding:12px 16px;border-radius:13px;background:#142337;color:#fff;box-shadow:0 12px 30px rgba(0,0,0,.2);white-space:nowrap;font-size:10px}.toast span{color:#5ce0ad}
+.pin-page{min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:calc(18px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) calc(18px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));background:radial-gradient(circle at 75% 20%,#173b65 0,transparent 36%),linear-gradient(145deg,#07111f,#0d2035);position:relative;overflow:hidden}.pin-card{width:min(430px,100%);padding:31px 23px;border-radius:22px;background:#fff;box-shadow:0 28px 80px rgba(0,0,0,.3)}.pin-brand{display:flex;align-items:center;gap:11px;margin-bottom:35px}.pin-brand>span{width:38px;height:38px;display:grid;place-items:center;border-radius:11px;background:var(--blue);color:#fff;font-weight:850}.pin-brand strong{font-size:16px;letter-spacing:.12em}.pin-brand small{display:block;margin-top:3px;color:#84909e;font-size:8px}.pin-card>.eyebrow{margin:0;color:var(--blue);font-size:9px;font-weight:800;letter-spacing:.12em}.pin-card h1{margin:5px 0 0;font-size:26px}.pin-copy{margin:8px 0 24px;color:#758293;font-size:11px}.pin-card form>label{display:block;margin-bottom:7px;color:#657184;font-size:9px;font-weight:750}.pin-input-wrap{height:66px;border:1px solid #d9e1ea;border-radius:13px;background:#f7f9fb;position:relative;cursor:text}.pin-input-wrap:focus-within{border-color:var(--blue);box-shadow:0 0 0 4px rgba(45,107,234,.1);background:#fff}.pin-input-wrap input{position:absolute;inset:0;width:100%;opacity:0;font-size:16px}.pin-dots{height:100%;display:flex;align-items:center;justify-content:center;gap:15px}.pin-dots i{width:11px;height:11px;border-radius:50%;border:1.5px solid #9ca8b7;background:#fff}.pin-dots i.filled{background:var(--blue);border-color:var(--blue);box-shadow:0 0 0 4px rgba(45,107,234,.1)}.pin-error{margin:9px 0 0;color:var(--red);font-size:10px}.pin-submit{width:100%;height:54px;display:flex;align-items:center;justify-content:space-between;margin-top:18px;padding:0 18px;border:0;border-radius:13px;background:var(--blue);color:#fff;font-weight:800}.pin-submit:disabled{opacity:.5}.pin-note{text-align:center;color:#7c8897;font-size:8px;margin:16px 0 0}.pin-note span{color:var(--green)}.pin-footer{position:absolute;bottom:calc(12px + env(safe-area-inset-bottom));width:90%;text-align:center;color:#6f829a;font-size:8px}
+@media(max-width:380px){.app-content{padding-left:13px;padding-right:13px}.daily-summary{gap:5px;padding-left:10px;padding-right:10px}.daily-summary>span{font-size:8px}.page-title h1{font-size:25px}.focus-card{padding:18px}.focus-card h2{font-size:22px}.form-grid{grid-template-columns:1fr}.scope-select select{max-width:88px}}
+@media(min-width:760px){body{background:#e8ebe7}.pilot-shell{width:700px;margin:0 auto;box-shadow:0 0 60px rgba(22,34,48,.12)}.app-header{padding-left:26px;padding-right:26px}.app-content{padding-left:25px;padding-right:25px}.bottom-nav{border-right:1px solid var(--line);border-left:1px solid var(--line)}.sheet-backdrop{place-items:end center}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+/* G10 usability and trust pass */
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid rgba(45,107,234,.38);outline-offset:2px}
+button:disabled{cursor:not-allowed;opacity:.55}
+.scope-select{min-height:44px}.scope-select select{font-size:14px}
+.sync-alert{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px;border:1px solid #efc5c5;border-radius:15px;background:#fff2f2;color:#7e3030}.sync-alert>div{display:grid;gap:4px}.sync-alert strong{font-size:14px}.sync-alert span{font-size:12px}.sync-alert button{min-height:44px;padding:0 15px;border:0;border-radius:10px;background:#9f3f3f;color:#fff;font-size:13px;font-weight:800}.loading-card{padding:28px;text-align:center;border:1px solid var(--line);border-radius:16px;background:#fff;color:#657386;font-size:14px}
+.focus-actions{grid-template-columns:repeat(2,1fr)}.focus-actions button{min-height:46px;font-size:12px}.ai-reason p{font-size:13px}.ai-reason small,.next-block small{font-size:11px}.next-block span{font-size:12px}
+.section-title button,.section-title>span,.compact-case small,.compact-case time,.work-card>p,.work-next small,.work-card time,.waiting-row small,.revenue-card small,.revenue-card span,.attention-card small{font-size:12px}.compact-case p,.work-next strong,.waiting-card>p,.invoice-row strong{font-size:13px}
+.case-search{height:48px;display:flex;align-items:center;gap:9px;margin-bottom:12px;padding:0 14px;border:1px solid var(--line);border-radius:13px;background:#fff}.case-search span{color:#7b8795;font-size:18px}.case-search input{width:100%;border:0;background:transparent;outline:0;font-size:16px}
+.chip-row button{min-height:44px;font-size:13px}.work-card{width:100%;display:block;text-align:left;color:var(--ink)}.work-card-top i{margin-left:auto;width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:#f4f6f8;color:#7e8996;font-size:19px;font-style:normal}
+.segmented button{min-height:44px;font-size:13px}.money-disclaimer{margin:10px 2px 0;color:#6f7c8d;font-size:12px;line-height:1.6}.invoice-row>b small{font-size:10px;color:#7e8997}
+.edit-trigger{width:100%;min-height:46px;margin-top:9px;border:1px solid #cbdaf1;border-radius:11px;background:#f5f9ff;color:#2a62c6;font-size:13px;font-weight:800}.edit-form{margin-top:16px;padding-top:5px;border-top:1px solid var(--line)}.edit-actions{display:grid;grid-template-columns:1fr 2fr;gap:9px;margin-top:14px}.edit-actions>button:first-child{min-height:52px;border:1px solid var(--line);border-radius:13px;background:#fff;color:#647284;font-size:13px;font-weight:750}.edit-actions .sheet-primary{margin:0}
+.message-draft p{font-size:13px}.message-draft>button{min-height:42px;margin:2px 10px 5px 0;padding:0 13px;border:1px solid #cbdaf1;border-radius:10px;background:#fff;color:#2a62c6;font-size:12px;font-weight:800}.message-draft span{font-size:11px}.human-note{font-size:12px}.flow-actions>button:first-child{font-size:13px}
+.toast{font-size:12px}.toast button{min-height:34px;margin-left:8px;padding:0 10px;border:1px solid rgba(255,255,255,.28);border-radius:8px;background:transparent;color:#fff;font-size:12px;font-weight:800}
+.bottom-nav button>span{font-size:11px}.bottom-nav .capture-button>span{font-size:11px}.page-title p{font-size:11px}.focus-rank,.case-workspace,.focus-stage,.work-card-top>span,.work-card-top>em,.waiting-person em,.invoice-state{font-size:11px}.flow-client,.flow-recommend>div span,.flow-recommend time,.evidence-grid p,.bottom-sheet label>span{font-size:12px}.sheet-kicker{font-size:10px}.sheet-copy{font-size:13px}
+
+:root{--font-geist-sans:Arial;--font-geist-mono:monospace}.portfolio-notice{position:relative;background:#17344e;color:#fff;padding:12px 18px;font:13px/1.65 system-ui,sans-serif;display:flex;gap:8px 16px;align-items:center;flex-wrap:wrap}.portfolio-notice a{color:#fff;text-decoration:underline}.portfolio-notice strong{font-weight:700}.portfolio-notice button{background:#fff;color:#17344e;border:0;border-radius:6px;padding:5px 12px;font:inherit}.portfolio-notice small{width:100%;font-size:12px}

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>登録情報の取り扱い｜見本資材 ハウスEC</title>
+<meta name="description" content="ハウスカルテでお預かりする情報と使い方の説明。">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0D0E10">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+
+</head>
+<body>
+<div class="demo-banner" role="note" style="background:#F2C230;color:#1B1E24;font:700 13px/1.5 'Noto Sans JP',sans-serif;text-align:center;padding:6px 12px;position:relative;z-index:80">デモ版：会社名・価格・連絡先は架空です</div>
+<div class="sekki" id="sekki" aria-label="二十四節気"><b>—</b><span></span><span class="proto">試作版・価格はめやす</span></div>
+<header class="site-header">
+  <div class="container inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 20V11a9 9 0 0 1 18 0v9"/><path d="M3 20h18M12 2.2V20M7 20V6.2M17 20V6.2"/></svg></span>
+      <span class="brand-text"><span class="name">見本資材</span><span class="sub">Mihon Shizai</span></span>
+    </a>
+    <form class="hsearch" id="hsearch" role="search">
+      <input type="search" id="hsearch-q" placeholder="資材をさがす(例: ビニール、パイプ、くるふぁみ)" aria-label="資材をさがす" autocomplete="off" enterkeyhint="search">
+      <button type="submit" aria-label="さがす"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg></button>
+    </form>
+    <button class="text-size" type="button" data-textsize aria-pressed="false" title="文字を大きくする"><span aria-hidden="true">あ</span><span class="lbl">文字大</span></button>
+    <a class="hmy" href="mypage.html"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg><span class="lbl">マイページ</span></a>
+    <button class="nav-toggle" type="button" aria-label="メニューを開く" aria-expanded="false">☰</button>
+    <nav class="nav" aria-label="メイン" hidden>
+      <a href="catalog.html">資材をさがす</a>
+      <a href="check.html">30秒診断</a>
+      <a href="simulator.html">3Dで見積る</a>
+      <a href="mypage.html">マイページ</a>
+      <a href="library.html">ハウス図鑑</a>
+      <a href="case.html">施工事例から見積る</a>
+      <a href="quote.html">見積依頼</a>
+      <a href="partners.html">事業者の方へ</a>
+    </nav>
+  </div>
+  <div class="shelfnav">
+    <div class="container inner">
+      <a href="catalog.html#shelf=frame">骨組み</a>
+      <a href="catalog.html#shelf=cover">張る</a>
+      <a href="catalog.html#shelf=air">風を通す</a>
+      <a href="catalog.html#shelf=temp">あたためる・冷やす</a>
+      <a href="catalog.html#shelf=water">水をやる</a>
+      <a href="catalog.html#shelf=guard">まもる</a>
+      <a href="simulator.html">3Dで見積る</a>
+      <a class="em" href="check.html">30秒診断</a>
+    </div>
+  </div>
+</header>
+<main>
+<section class="container page-head">
+  <div class="breadcrumb"><a href="index.html">トップ</a> › 登録情報の取り扱い</div>
+  <h1>登録情報の取り扱い</h1>
+  <p>ハウスカルテでお預かりする情報と、その使い方をわかりやすくまとめました。</p>
+</section>
+<section class="container" style="padding-bottom:48px;max-width:860px">
+  <div class="card">
+    <h3>お預かりする情報</h3>
+    <ul>
+      <li>お名前、農園名・法人名、電話番号、住所、ご担当者名</li>
+      <li>圃場の名前と位置(地図のピン)</li>
+      <li>ハウスの仕様(大きさ・骨組・被覆材・設備)、建てた年、被覆材を張った年、写真、メモ</li>
+      <li>お見積り・ご注文・修理の記録、お電話やご訪問でうかがった内容</li>
+    </ul>
+
+    <h3 class="mt-3">使う目的</h3>
+    <ul>
+      <li>ハウスカルテの作成と表示、お見積り・ご注文・修理のご案内</li>
+      <li>張り替え時期、台風・降雪前の点検、季節のお手入れのお知らせ</li>
+      <li>災害時の優先対応(どこに何棟あるかを把握して、資材の確保と修理の順番を決めます)</li>
+      <li>個人がわからない形にした集計(みんなのハウス図鑑)</li>
+    </ul>
+
+    <h3 class="mt-3">JA・提携する資材店・メーカーへの提供</h3>
+    <p>ご同意をいただいた方についてのみ、次のとおりお渡しすることがあります。<strong>ご同意は任意です。お断りになっても、当社のサービスは今までどおりお使いいただけます。</strong></p>
+    <div class="table-wrap">
+      <table class="table">
+        <tr><th style="width:9rem">お渡しする先</th><td>JA、当社と提携する資材店・施工店・資材メーカー</td></tr>
+        <tr><th>お渡しする項目</th><td>お名前、農園名・法人名、ご連絡先、住所(市町村まで)、ハウスの仕様と設置場所</td></tr>
+        <tr><th>目的</th><td>ご要望に合わせた共同でのご提案、資材の手配、災害時の復旧支援</td></tr>
+        <tr><th>お渡ししないもの</th><td>ご注文の金額、お支払いの状況、お電話でうかがった個別のご相談内容</td></tr>
+      </table>
+    </div>
+    <p class="small muted">ご同意はいつでも取り消せます。取り消し後は、新たにお渡しすることをやめます。</p>
+
+    <h3 class="mt-3">みんなのハウス図鑑での扱い</h3>
+    <ul>
+      <li>お名前・農園名・住所・圃場の位置・写真は載せません。</li>
+      <li>市町村の単位で、同じ条件が5棟以上あるときだけ集計を表示します。</li>
+      <li>「事例として掲載してもよい」にご同意いただいた方だけ、農園名や写真を掲載します。いつでも取り下げできます。</li>
+    </ul>
+
+    <h3 class="mt-3">変更・取り消し・削除</h3>
+    <p>登録内容の変更や削除、上記それぞれのご同意の取り消しは、担当者へお申し付けください。速やかに対応します。カルテの画面でも、いまのご同意の状態をご確認いただけます。</p>
+
+    <h3 class="mt-3">保管</h3>
+    <p>情報は見本資材 株式会社が管理するデータベースに保管し、業務に必要な担当者だけが閲覧します。名簿としての販売は行いません。</p>
+
+    <h3 class="mt-3">事業を引き継ぐ場合</h3>
+    <p>合併や事業譲渡などで当社の事業が引き継がれる場合、この取り扱いをそのまま引き継ぐことを条件に、お預かりした情報も引き継ぐことがあります。</p>
+
+    <p class="small muted mt-3">この文面は試作版の下書きです。公開前に内容をご確認・確定ください。</p>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="grid">
+      <div>
+        <div class="f-brand"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 20V11a9 9 0 0 1 18 0v9"/><path d="M3 20h18M12 2.2V20M7 20V6.2M17 20V6.2"/></svg></span><span><span class="name">見本資材 株式会社</span><span class="sub">Mihon Shizai</span></span></div>
+        <p>見本県見本市（デモ版のため、住所・電話番号は載せていません）<br>ビニールハウス・パイプハウスの資材販売と施工。ハウス関連資材全般を取り扱っています。</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="catalog.html">資材をさがす</a></li>
+          <li><a href="check.html">30秒診断</a></li>
+          <li><a href="case.html">施工事例から見積る</a></li>
+          <li><a href="simulator.html">3Dハウスシミュレーター</a></li>
+          <li><a href="quote.html">見積依頼・お問い合わせ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>My House</h4>
+        <ul>
+          <li><a href="mypage.html">マイページ</a></li>
+          <li><a href="library.html">みんなのハウス図鑑</a></li>
+          <li><a href="privacy.html">登録情報の取り扱い</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Business</h4>
+        <ul>
+          <li><a href="partners.html">出店・パートナー募集</a></li>
+          <li><a href="staff.html">担当者用: カルテ登録</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy">
+      <span>© <span data-year>2026</span> 見本資材 株式会社</span>
+      <span>試作版です。表示の金額はめやすで、正式な金額は担当がお見積りします。</span>
+    </div>
+  </div>
+</footer>
+<script type="module">import { initSite } from "./assets/site.js"; initSite();</script>
+</body>
+</html>

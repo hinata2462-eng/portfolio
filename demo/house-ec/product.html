@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>商品｜見本資材 ハウスEC</title>
+<meta name="description" content="商品の詳細。寸法図と3Dで使う場所を確認して、1個からかごに入れられます。">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0D0E10">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/catalog.css">
+<link rel="stylesheet" href="assets/product.css">
+<script type="importmap">{"imports":{"three":"./vendor/three/three.module.min.js","three/addons/":"./vendor/three/"}}</script>
+
+</head>
+<body>
+<div class="demo-banner" role="note" style="background:#F2C230;color:#1B1E24;font:700 13px/1.5 'Noto Sans JP',sans-serif;text-align:center;padding:6px 12px;position:relative;z-index:80">デモ版：会社名・価格・連絡先は架空です</div>
+<div class="sekki" id="sekki" aria-label="二十四節気"><b>—</b><span></span><span class="proto">試作版・価格はめやす</span></div>
+<header class="site-header">
+  <div class="container inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 20V11a9 9 0 0 1 18 0v9"/><path d="M3 20h18M12 2.2V20M7 20V6.2M17 20V6.2"/></svg></span>
+      <span class="brand-text"><span class="name">見本資材</span><span class="sub">Mihon Shizai</span></span>
+    </a>
+    <form class="hsearch" id="hsearch" role="search">
+      <input type="search" id="hsearch-q" placeholder="資材をさがす(例: ビニール、パイプ、くるふぁみ)" aria-label="資材をさがす" autocomplete="off" enterkeyhint="search">
+      <button type="submit" aria-label="さがす"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg></button>
+    </form>
+    <button class="text-size" type="button" data-textsize aria-pressed="false" title="文字を大きくする"><span aria-hidden="true">あ</span><span class="lbl">文字大</span></button>
+    <a class="hmy" href="mypage.html"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg><span class="lbl">マイページ</span></a>
+    <button class="nav-toggle" type="button" aria-label="メニューを開く" aria-expanded="false">☰</button>
+    <nav class="nav" aria-label="メイン" hidden>
+      <a href="catalog.html">資材をさがす</a>
+      <a href="check.html">30秒診断</a>
+      <a href="simulator.html">3Dで見積る</a>
+      <a href="mypage.html">マイページ</a>
+      <a href="library.html">ハウス図鑑</a>
+      <a href="case.html">施工事例から見積る</a>
+      <a href="quote.html">見積依頼</a>
+      <a href="partners.html">事業者の方へ</a>
+    </nav>
+  </div>
+  <div class="shelfnav">
+    <div class="container inner">
+      <a href="catalog.html#shelf=frame">骨組み</a>
+      <a href="catalog.html#shelf=cover">張る</a>
+      <a href="catalog.html#shelf=air">風を通す</a>
+      <a href="catalog.html#shelf=temp">あたためる・冷やす</a>
+      <a href="catalog.html#shelf=water">水をやる</a>
+      <a href="catalog.html#shelf=guard">まもる</a>
+      <a href="simulator.html">3Dで見積る</a>
+      <a class="em" href="check.html">30秒診断</a>
+    </div>
+  </div>
+</header>
+<main>
+<section class="container pd" id="pd">
+  <div class="breadcrumb" id="pd-crumb"><a href="index.html">トップ</a> › <a href="catalog.html">資材をさがす</a></div>
+  <div class="pd-grid" id="pd-grid">
+    <div class="pd-left">
+      <div class="pd-head pd-head-sp" id="head-sp"></div>
+      <div class="pd-visual">
+        <div class="tabs" role="tablist" aria-label="見え方"><button role="tab" type="button" aria-selected="true" data-tab="spin" id="tab-spin">3Dで回す</button><button role="tab" type="button" aria-selected="false" data-tab="fig" id="tab-fig">写真</button><button role="tab" type="button" aria-selected="false" data-tab="3d" id="tab-3d">使う場所</button></div>
+        <div class="pane spin paper" id="pane-spin" role="tabpanel"><div id="pdspin" style="position:absolute;inset:0"></div><img class="spin-fallback" id="spin-fallback" alt="" width="1200" height="900" decoding="async" hidden><span class="fig-note dark" id="spin-note">イメージ図</span><div class="hint3d dark" id="spin-hint">指で回せます</div></div>
+        <div class="pane fig" id="pane-fig" role="tabpanel" hidden></div>
+        <div class="pane v3d" id="pane-3d" role="tabpanel" hidden><div id="pd3d" style="position:absolute;inset:0"></div><div class="where" id="where"></div><div class="hint3d">ドラッグで回せます</div></div>
+      </div>
+      <div id="karte-band"></div>
+      <section class="pd-block reveal" id="blk-use"></section>
+      <section class="pd-block reveal" id="blk-spec"></section>
+      <section class="pd-block reveal" id="blk-fit"></section>
+      <section class="pd-block reveal" id="blk-with"></section>
+      <section class="pd-block reveal" id="blk-tip"></section>
+      <section class="pd-block reveal faq" id="blk-faq"></section>
+    </div>
+    <aside class="pd-buy" id="buy"></aside>
+  </div>
+  <section class="pd-block reveal" id="blk-related"></section>
+  <div class="phone-band reveal" id="phone-band"><div><h2>わからないことは、そのまま聞いてください</h2><p>品名がわからなくても大丈夫。壊れたところの写真を送っていただければ、担当が部品を特定してお見積りします。</p></div><a class="btn light lg" id="pb-tel" href="quote.html">担当に聞く</a></div>
+</section>
+<div class="sticky-cta" id="sticky" aria-hidden="true"></div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="grid">
+      <div>
+        <div class="f-brand"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 20V11a9 9 0 0 1 18 0v9"/><path d="M3 20h18M12 2.2V20M7 20V6.2M17 20V6.2"/></svg></span><span><span class="name">見本資材 株式会社</span><span class="sub">Mihon Shizai</span></span></div>
+        <p>見本県見本市（デモ版のため、住所・電話番号は載せていません）<br>ビニールハウス・パイプハウスの資材販売と施工。ハウス関連資材全般を取り扱っています。</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="catalog.html">資材をさがす</a></li>
+          <li><a href="check.html">30秒診断</a></li>
+          <li><a href="case.html">施工事例から見積る</a></li>
+          <li><a href="simulator.html">3Dハウスシミュレーター</a></li>
+          <li><a href="quote.html">見積依頼・お問い合わせ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>My House</h4>
+        <ul>
+          <li><a href="mypage.html">マイページ</a></li>
+          <li><a href="library.html">みんなのハウス図鑑</a></li>
+          <li><a href="privacy.html">登録情報の取り扱い</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Business</h4>
+        <ul>
+          <li><a href="partners.html">出店・パートナー募集</a></li>
+          <li><a href="staff.html">担当者用: カルテ登録</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy">
+      <span>© <span data-year>2026</span> 見本資材 株式会社</span>
+      <span>試作版です。表示の金額はめやすで、正式な金額は担当がお見積りします。</span>
+    </div>
+  </div>
+</footer>
+<script type="module" src="assets/product.js"></script>
+</body>
+</html>

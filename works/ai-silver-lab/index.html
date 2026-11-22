@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>InstagramのAI運用の実証「ai.silver.lab」｜作品ページ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap">
+<link rel="stylesheet" href="../../assets/case.css">
+<style>
+section h3 { font-size: 17px; font-weight: 700; margin: 26px 0 10px; }
+.lede { max-width: 46em; margin-bottom: 14px; }
+.who { width: 7.5em; }
+.time { font-family: var(--mono); font-size: 13px; white-space: nowrap; }
+.human { border-left: 4px solid var(--warn); }
+.human ul { max-width: none; }
+.human h3 { margin-top: 0; }
+.gates td:first-child { font-weight: 700; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0; }
+.stat b { display: block; font-family: var(--display); font-size: 24px; line-height: 1.25; }
+.stat span { display: block; font-size: 13px; color: var(--muted); margin-top: 4px; }
+.learn li { margin-top: 8px; }
+.src { font-size: 12.5px; color: var(--muted); margin-top: 10px; max-width: 46em; }
+.outlook { border-left: 4px solid var(--accent); margin-top: 16px; }
+.outlook ul { max-width: none; }
+.outlook h3 { margin-top: 0; }
+.links { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.media { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 300px)); gap: 18px 24px; align-items: start; }
+.media figure { min-width: 0; }
+.v916 { position: relative; width: 100%; max-width: 300px; aspect-ratio: 9 / 16; border-radius: 10px; overflow: hidden; background: var(--line); border: 1px solid var(--line); }
+.v916 video { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: contain; background: var(--ink); }
+.prompt { font-family: var(--mono); font-size: 12.5px; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-wrap: anywhere; max-width: 46em; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../../">← ポートフォリオに戻る</a>
+
+  <header class="case-head">
+    <p class="eyebrow">SNSの自動運用 · 2026.10 –（実証中）</p>
+    <h1>InstagramのAI運用の実証「ai.silver.lab」</h1>
+    <p class="lead">「AIだけでInstagramは伸ばせるか」を取引先の社長に数字で見せるため、新しいアカウントを作り、企画・映像・文字入れ・事実の確認・予約・数字の記録までをAIで回しています。良くない数字も、そのまま報告しています。</p>
+    <div class="meta"><span class="chip warn">実証中</span><span class="tag">Gemini（Veo・音楽）</span><span class="tag">Python（ffmpeg）</span><span class="tag">Metricool</span><span class="tag">Claude Code</span><span class="tag">複数のAIによる検品</span></div>
+  </header>
+
+  <section>
+    <h2>何をしているか</h2>
+    <p class="lede">取引先は、シルバーアクセサリーを扱う会社です。同じ分野で、取引先とは関係のない新しいアカウント「AIシルバーラボ」を 2026年10月29日に始めました。中身は、シルバーアクセサリーの「買う前・使う時」の10秒のQ&amp;A（長さ・サイズ・黒ずみ・しまい方）です。毎日、朝7:30と夜19:30にリールを1本ずつ出しています。</p>
+    <ul>
+      <li>映像はすべてAIで作り、そのことを毎回表示します（Instagram の「AIコンテンツ」の印と、説明文の「※映像はAI生成のイメージです。企画・文章・投稿もAIが運用しています。」）。</li>
+      <li>やらないこと：フォロワーの購入、自動のフォロー・いいね・コメント・DM、フォロー返し、「いいね◯件で」のような企画。運用している人が自分の投稿にいいね・保存をすることも、数字に混ざるのでやめてもらいました。</li>
+      <li>最初の目標は「30日でフォロワー300人」。判定は 11/23（14本）と 11/30 です。</li>
+    </ul>
+
+    <h3>これまでの流れ</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>時期</th><th>起きたこと・変えたこと</th></tr></thead>
+        <tbody>
+          <tr><td class="time">10.29</td><td>アカウントを始める。</td></tr>
+          <tr><td class="time">10.31</td><td>Meta の開発者の登録が「不審なアクティビティ」で通らず、公式の API での自動投稿をあきらめ、予約の道具 Metricool 経由に切り替え。手元の道具で60本作って予約したが、見た目の質が低く、全部を下書きに戻して Gemini の画像で作り直した。</td></tr>
+          <tr><td class="time">11.05</td><td>8本出してフォロワー0、1本が届いた人は2〜9人。最初の1秒で止まってもらえていないと見て、Gemini の動画生成（Veo）の動く映像に切り替え。</td></tr>
+          <tr><td class="time">11.09〜11</td><td>学習のための広告を3日間（3,000円）。</td></tr>
+          <tr><td class="time">11.12</td><td>「いいねが少ない。詰めが甘い」と言われ、8つの観点で原因を調べ直し（担当のAIが調べ、別のAIが疑って確かめる。計23人分の作業）、動画の型を全面的に作り直した。</td></tr>
+          <tr><td class="time">11.16</td><td>続きの計画を決める（11/21 から通し番号と次回の予告、11/24 から1日3本）。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>自動化の仕組み</h2>
+    <p class="lede">AIの作業の回は、作業の会話の中の予約で1日に数回起動します（予約は7日で切れるので、動いた回が自分で張り直します）。1回の作業で、まだ予約の入っていない最初の日の、朝と夜の2本を作って予約します。</p>
+
+    <h3>1本ができるまで</h3>
+    <ol class="flow">
+      <li><b>前の日の数字を記録する</b><span>Metricool から、各リールの届いた人・3秒以内に離れた人の割合・いいね・保存・送信・コメントを取り、進捗表に1行足します。判断に使うのは、公開から48時間たった回だけです。</span></li>
+      <li><b>空いている日を探す</b><span>予約の一覧を見て、7:30 と 19:30 の両方がまだ埋まっていない最初の日を選びます。埋まっている日には重ねません。</span></li>
+      <li><b>事実を確かめる</b><span>画面に書いてよい数字や「おすすめ」は、出典つきの「事実表」に載っている物だけです。新しい題は、「調べる係」のAIが出典を2件以上探し、「疑って確かめる係」のAIがそれを確かめてから表に足します（11/12 の朝に18件）。言い切ってはいけない言い方も表に書きます。</span></li>
+      <li><b>映像を作る</b><span>ブラウザで Gemini の「動画を作成」（Veo）を操作し、決まった型の英語の依頼文で頼みます（1本に1〜4分、10秒の映像）。1回に作れるのは約4本までなので、上限に当たったら次の回に回します。</span></li>
+      <li><b>文字と音を合わせる</b><span>Python の合成の道具で、縦1080×1920・10秒にします。見出しは13字以内の2行。0〜2.5秒は見出しだけ → 答え1 → 答え2 → 見る人への問い、の順で出します。音楽は Gemini の「音楽を作成」で作ったオリジナル曲で（11/21 の回からは Suno の有料プランで作った歌なしの曲も）、市販の曲は使いません。</span></li>
+      <li><b>道具で検品する</b><span>最初の1秒の動きの大きさを数で測ります（動きが大きい回ほど、すぐ離れられていたため）。決めた値を超えたら頭を少しずつ切って作り直します。冒頭の音量も測ります。</span></li>
+      <li><b>目で検品する</b><span>0・1・3・5・8秒のコマを見て、被写体がはっきり写っているか、余計な物や手が写っていないか、文字が Instagram の表示（上の帯・下の帯・右下のボタン）に重なっていないかを確かめます。</span></li>
+      <li><b>公開前に3人で検品する</b><span>AIを3人立て、「見え方」「事実と決まり」「初めて見る人」の目で見せます。止める指摘は直してから予約し、映像の問題は作り直します（文字だけ直して出すことはしません）。</span></li>
+      <li><b>予約する</b><span>動画を公開のURLが付く置き場に上げ、Metricool に予約します（リール・AI生成の印・表紙の画像・最初のコメントの問い）。予約の後に一覧を読み戻し、種類・AIの印・本文の全文がそろっているかを確かめます。</span></li>
+      <li><b>公開後に確かめる</b><span>ログインしていないブラウザで公開ページを開いて確かめます（運用している人の再生を数字に混ぜないため）。</span></li>
+    </ol>
+
+    <h3>依頼文の型（映像）</h3>
+    <p class="lede">映像の質をそろえるため、Veo への依頼文は型を決めています。冒頭は次のように書き、題の出来事を1つだけ足します。</p>
+    <p class="prompt">Ultra-realistic macro product video. From the very first frame, &lt;被写体&gt; is in sharp focus, centered … Locked-off camera. Constant soft studio light for the whole clip: no lens flare, no light sweep … no people, no hands, no text.</p>
+
+    <h3>1日の時刻表</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>時刻</th><th>やること</th><th class="who">担い手</th></tr></thead>
+        <tbody>
+          <tr><td class="time">1日に数回</td><td>AIの作業の回が起動。数字の記録 → 空いた日の2本を制作・検品・予約</td><td><span class="chip ok">自動</span></td></tr>
+          <tr><td class="time">7:30</td><td>朝のリールが公開される（予約の道具のサーバーが出すので、パソコンが寝ていても出る）</td><td><span class="chip ok">自動（予約）</span></td></tr>
+          <tr><td class="time">12:30</td><td>11/24 から3本目の枠を足す予定（比べる数字には入れない）</td><td><span class="chip ok">自動（予約）</span></td></tr>
+          <tr><td class="time">19:30</td><td>夜のリールが公開される</td><td><span class="chip ok">自動（予約）</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="src">専用の定時タスクも毎朝10時台に起動しますが、操作の確認で途中で止まる日があるため、作業の会話の中の予約を主にしています。</p>
+
+    <div class="panel human" style="margin-top:18px">
+      <h3>人の手が残っている所と、その理由</h3>
+      <ul>
+        <li><b>ログインと、道具の接続</b>：パスワードはAIが入力しない決まりです。Metricool の接続が切れた時は、人がつなぎ直します（その間もAIは映像の制作と検品までは進め、予約だけ後に回します）。</li>
+        <li><b>広告の支払いと操作</b>：スマホのアプリで人が行いました。</li>
+        <li><b>スマホのアプリでしか見られない数字</b>：広告の結果やリールの詳しい数字は、人がスクショを送ってくれます。</li>
+        <li><b>自己紹介の文の差し替え</b>：AIが文を作り、人がアプリで差し替えました。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>媒体ごとの作り分け</h2>
+    <h3>ai.silver.lab（Instagram のリール）</h3>
+    <ul>
+      <li><b>Q&amp;A型</b>：「シルバーで温泉はOK？」のような問いに、事実表の範囲で答える。A・B の2択のクイズにする回もあります。</li>
+      <li><b>どっち派型</b>：「着けるならどっち？」と、AIが考えたデザイン2案を並べる。「AIのデザイン案です。販売はしていません」と画面に常に出します。</li>
+      <li><b>毎回、押す理由を1つ入れる</b>：クイズ・どっち派・身近な人（贈り物など）・保存版の表のどれか。画面でフォローを頼んだり、「保存して」「送ってあげて」のような命令形を使ったりはしません。問いかけの形にします。</li>
+      <li><b>朝と夜は分けて比べる</b>：朝7:30は夜19:30より、3秒以内に離れる人が約12ポイント多いと分かったので、比べるのは同じ時間帯どうしです。</li>
+    </ul>
+
+    <h3>取引先のアカウント運用（2026年9月）</h3>
+    <p class="lede">実証の前に、取引先の X と Instagram の投稿も、作って予約するところをAIで行いました。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>場所</th><th>流れ</th><th>人の分</th></tr></thead>
+        <tbody>
+          <tr><td>X</td><td>投稿文の正本（1つのデータのファイル）→ 画像を作る道具（4:5、権利のはっきりした実写の写真に見出しを1つ）→ 文字数を数える道具（X の数え方で280以内）→ X の公式の予約機能に、ブラウザの操作で6本。役の順は「発見 → 保存用 → 実演 → 会話 → 発見 → 保存用」。同じブラウザに別のアカウントもあるので、毎回アカウント名を読み戻してから予約</td><td>同じ分野のアカウントに、中身に触れた返信を1投稿につき2〜3件（決まり文句や宣伝だけの返信はしない）</td></tr>
+          <tr><td>Instagram</td><td>9/3 の時点で18投稿・フォロワー0・閲覧0。「AI画像だから」ではなく「誰ともつながっていない、人の気配がない」と診断。実写の写真のストーリーズを Meta Business Suite で毎朝8:00に予約し、実写5枚＋読み上げの声＋字幕の25〜29秒のリールを3本予約。予約の後は予約の一覧で日時と本文の先頭を読み戻してから「予約済み」と報告</td><td>フォロー・いいね・コメントは人の手で（道具で自動化しない）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="src">最初のリールは、14時間で閲覧14・平均の再生2秒でした。</p>
+  </section>
+
+  <section>
+    <h2>品質の関門（出す前の検品・決まりごと）</h2>
+    <div class="table-wrap">
+      <table class="gates">
+        <thead><tr><th>関門・決まり</th><th>中身</th><th>きっかけ・実際に止めた例</th></tr></thead>
+        <tbody>
+          <tr><td>事実表だけを使う</td><td>出典つきの表に載った事だけを書く。「必ず」「正解」・効果の言い切り・医療の言葉・ほかのブランド名は使わない</td><td>前に使っていた「45cmは鎖骨の少し上」は、男性については裏づけが無いと分かり、使うのをやめた</td></tr>
+          <tr><td>言い方の決まり</td><td>「絡まらない」でなく「絡まりにくい」、「黒ずまない人」でなく「黒ずみやすい人」</td><td>事実の確かめと公開前の検品で、効果の言い切りに当たると止められた</td></tr>
+          <tr><td>公開前の3人の検品</td><td>見え方・事実と決まり・初めて見る人の3つの目。止める指摘は直してから</td><td>初回で、重ね付けの回の映像が止められた（2本の鎖が途中で太い鎖から細い鎖に変わっていた）。自分の目だけでは通していた</td></tr>
+          <tr><td>最初の1秒の動き</td><td>動きの大きさを数で測り、決めた値を超えたら作り直す</td><td>9本をさかのぼって見ると、最初の1秒の動きが大きい回ほど、すぐ離れられていた（仮の線）</td></tr>
+          <tr><td>文字を映像に描かせない</td><td>「925」の刻印のような文字はAIの映像に描かせず、後から丸い枠で描き「刻印はイメージ図」と添える</td><td>AIの映像は、925 と別の金属の質感の違いも描き分けられず、太さの違いになってしまった（11/5）。素材の比べは動画で扱わない</td></tr>
+          <tr><td>作り方を変えたら1コマずつ比べる</td><td>合成の道具を直した時は、作り直した動画を元と1コマずつ比べ、変わったコマが狙いどおりかを確かめてから差し替える</td><td>前後の文が2コマ重なって出る不具合を、自分のコマの確認で見つけた。予約済みの7本も差し替えた</td></tr>
+          <tr><td>AIの開示</td><td>AI生成の印と説明文の1行を毎回入れる。同じ映像の素材を2本以上に使わない</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>数字と学んだこと</h2>
+    <div class="stats">
+      <div class="stat"><b>3,000円 → 8人</b><span>広告3日間（消化2,987円）。届いた人2,030・プロフィールを見た人144・フォロー8（1人約373円）</span></div>
+      <div class="stat"><b>105〜130人</b><span>広告なしで1本が届いた人数のふだんの幅（11/12 の見直しの時点）</span></div>
+      <div class="stat"><b>48〜88%</b><span>3秒以内に離れた人の割合（回ごとの幅）</span></div>
+      <div class="stat"><b>いいね0・保存1</b><span>広告なしの知識系11本（届いた人のべ1,110）の、ほかの人からの反応</span></div>
+    </div>
+    <ul class="learn">
+      <li><b>広告で増えたのは、買う人ではなかった。</b>広告の期間に増えた9人は、全員が1,300人以上をフォローしている人で、買いそうな人は0〜1人。広告は「フォロワーを買う道具」ではなく、当たった型を確かめる道具として使うことにし、今は0円です。</li>
+      <li><b>3秒で離れる割合が、届く人数を決めていた。</b>75%以上が3秒以内に離れた回は届いた人19〜47、48〜69%の回は105〜130、40.6%の回は479（これまでで一番）。</li>
+      <li><b>当たった回でも、フォローの理由が足りない。</b>いちばん届いた回でも、見た503人のうちプロフィールを見た人は0、フォローも0でした。そこで、11/21 から通し番号と「次の問い」の予告を入れます。</li>
+      <li><b>測り方を誤っていた。</b>朝と夜の離れ方の差を「見出しの型の差」と取り違え、「失敗」型の見出しが強いと決めていました。今は同じ時間帯どうしで比べます。</li>
+      <li><b>新しい型も、まだ当たっていない。</b>作り直した型の1本目は、48時間で届いた人108・3秒以内に離れた人72.6%で、旧型の最後の1本（479）より悪い数字でした。1本では決めず、14本で判定します。</li>
+    </ul>
+
+    <div class="panel outlook">
+      <h3>11/30 の見通し（11/12 に依頼側へ伝えた内容）</h3>
+      <ul>
+        <li>300人には届きません。</li>
+        <li>今の反応のままなら9人前後（5〜20人）、新しい型が当たった場合だけ20〜40人。買いそうな人は0〜数人。</li>
+        <li>どの型でも反応が出なかったら、「人も実物も声も出さないAI映像だけでは、この分野では反応が取れなかった」とそのまま報告します。</li>
+      </ul>
+    </div>
+    <p class="src">数字は Metricool と、広告の画面・アプリのインサイトのスクショ（11/9〜11/16）から。費用は Metricool が月25ドル、広告は1回3,000円。</p>
+  </section>
+
+  <section>
+    <h2>見てみる</h2>
+    <div class="links">
+      <a class="btn" href="https://www.instagram.com/ai.silver.lab/" target="_blank" rel="noopener">Instagram ↗</a>
+    </div>
+    <p class="lede">Instagram はこのページに埋め込めないので、公開したリールの写しを2本置いています（音が出ます）。</p>
+    <div class="media">
+      <figure>
+        <div class="v916"><video controls preload="none" playsinline poster="reel-old-1112.jpg"><source src="reel-old-1112.mp4" type="video/mp4"></video></div>
+        <figcaption>旧型の最後の1本（11/12 朝）。答えを最初から出し、下に「フォローで、毎日2本届く」のボタン。届いた人は479でこれまでで一番でしたが、プロフィールを見た人は0でした。</figcaption>
+      </figure>
+      <figure>
+        <div class="v916"><video controls preload="none" playsinline poster="reel-new-1114.jpg"><source src="reel-new-1114.mp4" type="video/mp4"></video></div>
+        <figcaption>作り直した型（11/14 朝「シルバーで温泉はOK？」）。大きな見出しとA・Bの2択だけで始め、答えは2.5秒の後、最後に見る人への問い。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <footer>取引先の名前とアカウントは伏せています。数字はどれも運用の記録にある実測で、記録した時点のものです。</footer>
+</div>
+</body>
+</html>

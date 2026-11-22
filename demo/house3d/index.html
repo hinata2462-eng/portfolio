@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>農業用ビニールハウス 3Dビュアー</title>
+<style>
+  :root{
+    --bg:#f2f5f7; --panel:#ffffff; --border:#dbe2e8; --text:#243342;
+    --sub:#69788a; --accent:#2f7d4f; --accent2:#3b8ee0; --warn:#c96a1f;
+    --btn:#ffffff; --btnHover:#eef4ee; --catbg:#eef2f5; --selbg:#e0efe6;
+    --cardBg:#f0f7f2; --cardBorder:#cde3d5; --barBg:rgba(255,255,255,.94);
+    --warnBg:#fdf3e7; --warnBorder:#f0d9bd; --chipBg:#eef2f5;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#10161c; --panel:#171f27; --border:#2e3b47; --text:#e3ebf2;
+      --sub:#9db0c0; --accent:#5fc287; --accent2:#6db3f2; --warn:#e8a05c;
+      --btn:#222d38; --btnHover:#2d3b48; --catbg:#1f2933; --selbg:#25473436;
+      --cardBg:#1c2f25; --cardBorder:#32604a; --barBg:rgba(23,31,39,.94);
+      --warnBg:#332a1c; --warnBorder:#57452a; --chipBg:#233040;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10161c; --panel:#171f27; --border:#2e3b47; --text:#e3ebf2;
+    --sub:#9db0c0; --accent:#5fc287; --accent2:#6db3f2; --warn:#e8a05c;
+    --btn:#222d38; --btnHover:#2d3b48; --catbg:#1f2933; --selbg:#25473436;
+    --cardBg:#1c2f25; --cardBorder:#32604a; --barBg:rgba(23,31,39,.94);
+    --warnBg:#332a1c; --warnBorder:#57452a; --chipBg:#233040;
+  }
+  :root[data-theme="light"]{
+    --bg:#f2f5f7; --panel:#ffffff; --border:#dbe2e8; --text:#243342;
+    --sub:#69788a; --accent:#2f7d4f; --accent2:#3b8ee0; --warn:#c96a1f;
+    --btn:#ffffff; --btnHover:#eef4ee; --catbg:#eef2f5; --selbg:#e0efe6;
+    --cardBg:#f0f7f2; --cardBorder:#cde3d5; --barBg:rgba(255,255,255,.94);
+    --warnBg:#fdf3e7; --warnBorder:#f0d9bd; --chipBg:#eef2f5;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%; font-family:"Yu Gothic UI","Hiragino Sans","Meiryo",sans-serif; color:var(--text); background:var(--bg); overflow:hidden;}
+  #app{display:flex; flex-direction:column; height:100%; height:100dvh;}
+
+  header{display:flex; align-items:center; gap:10px; padding:8px 14px; background:var(--panel); border-bottom:1px solid var(--border);}
+  header .logo{font-weight:bold; color:var(--accent); white-space:nowrap;}
+  header input{color:var(--text); background:var(--panel); border:1px solid var(--border); border-radius:6px; font-size:14px; padding:6px 10px;}
+  header input#projName{flex:0 1 250px;}
+  header input#custName{flex:0 1 140px;}
+  header .spacer{flex:1;}
+  header button{padding:6px 14px; border:1px solid var(--border); background:var(--btn); color:var(--text); border-radius:6px; cursor:pointer; font-size:13px;}
+  header button:hover{background:var(--btnHover);}
+  header button.primary{background:var(--accent); color:#fff; border-color:var(--accent);}
+  #saveState{font-size:12px; color:var(--sub); white-space:nowrap;}
+
+  main{flex:1; display:flex; min-height:0; position:relative;}
+  aside{width:280px; background:var(--panel); border-right:1px solid var(--border); overflow-y:auto; padding:12px; overscroll-behavior:contain;}
+  aside.right{border-right:none; border-left:1px solid var(--border); width:312px;}
+  .drawerClose{display:none;}
+  #viewerWrap{flex:1; position:relative; min-width:0;}
+  #viewer{width:100%; height:100%; display:block; touch-action:none;}
+  .fabBtn{display:none;}
+
+  /* --- 設定カード --- */
+  .card{background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:12px; margin-bottom:12px;}
+  .card h3{display:flex; align-items:center; gap:6px; font-size:13px; color:var(--accent); margin:0 0 10px;}
+  .card h3 .ico{font-size:15px;}
+  .field{margin-bottom:10px;}
+  .field:last-child{margin-bottom:0;}
+  .field label{display:block; font-size:12px; color:var(--sub); margin-bottom:4px;}
+  .field input,.field select{width:100%; padding:9px 10px; border:1px solid var(--border); border-radius:8px; font-size:15px; background:var(--panel); color:var(--text);}
+  .field .hint{font-size:11px; color:var(--sub); margin-top:3px;}
+  .row2{display:flex; gap:8px;} .row2>.field{flex:1;}
+  details{margin-top:4px;}
+  details summary{cursor:pointer; font-size:13px; color:var(--accent2); padding:4px 0;}
+  .check{display:flex; align-items:center; gap:9px; font-size:14px; padding:8px 2px; border-bottom:1px solid var(--border); cursor:pointer;}
+  .check:last-of-type{border-bottom:none;}
+  .check input{width:18px; height:18px; accent-color:var(--accent);}
+  .hidden{display:none !important;}
+
+  /* ハウスタイプ切替(セグメント) */
+  .seg{display:flex; border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:10px;}
+  .seg button{flex:1; padding:10px 4px; background:var(--btn); border:none; font-size:13px; color:var(--text); cursor:pointer;}
+  .seg button.active{background:var(--accent); color:#fff; font-weight:700;}
+
+  #warnings{margin-top:4px;}
+  .warn{background:var(--warnBg); border:1px solid var(--warnBorder); color:var(--warn); font-size:12px; border-radius:8px; padding:7px 9px; margin-bottom:6px;}
+
+  /* --- ビュー操作バー --- */
+  #viewBar{position:absolute; left:50%; bottom:12px; transform:translateX(-50%); display:flex; align-items:center; gap:6px; background:var(--barBg); border:1px solid var(--border); border-radius:10px; padding:6px 8px; flex-wrap:wrap; justify-content:center; backdrop-filter:blur(4px);}
+  #viewBar button{padding:6px 10px; font-size:12px; border:1px solid var(--border); background:var(--btn); color:var(--text); border-radius:7px; cursor:pointer; white-space:nowrap;}
+  #viewBar button:hover{background:var(--btnHover);}
+  #viewBar button.active{background:var(--accent); color:#fff; border-color:var(--accent);}
+  #viewBar .vsep{width:1px; align-self:stretch; background:var(--border);}
+  #explodeWrap{display:flex; align-items:center; gap:6px; font-size:12px; color:var(--sub); white-space:nowrap;}
+  #explodeWrap input{width:110px; accent-color:var(--accent);}
+  #hintTip{position:absolute; top:10px; left:50%; transform:translateX(-50%); background:rgba(30,42,54,.8); color:#fff; font-size:12px; padding:6px 13px; border-radius:15px; pointer-events:none; max-width:92%; text-align:center; z-index:20;}
+
+  /* 写真品質モード */
+  #photoOverlay{position:absolute; top:12px; left:50%; transform:translateX(-50%); z-index:35;}
+  .photoPanel{background:var(--barBg); border:1px solid var(--border); border-radius:12px; padding:12px 16px; min-width:280px; backdrop-filter:blur(6px); box-shadow:0 4px 18px rgba(0,0,0,.25);}
+  #photoStatus{font-size:13px; font-weight:700; margin-bottom:8px;}
+  .photoBar{height:6px; background:var(--catbg); border-radius:3px; overflow:hidden; margin-bottom:10px;}
+  #photoProg{height:100%; width:0%; background:var(--accent); transition:width .2s;}
+  .photoBtns{display:flex; gap:8px;}
+  .photoBtns button{flex:1; padding:7px 10px; font-size:13px; border:1px solid var(--border); background:var(--btn); color:var(--text); border-radius:8px; cursor:pointer;}
+  .photoBtns button:disabled{opacity:.45; cursor:default;}
+  #photoSave:not(:disabled){background:var(--accent); color:#fff; border-color:var(--accent);}
+  .photoHint{font-size:11px; color:var(--sub); margin-top:8px;}
+
+  /* 3D上の数量チップ */
+  #pickTip{display:none; position:absolute; z-index:25; pointer-events:none;
+    background:var(--accent); color:#fff; font-size:13px; font-weight:700;
+    padding:7px 12px; border-radius:17px; white-space:nowrap;
+    box-shadow:0 3px 10px rgba(0,0,0,.3); transform:translate(-50%,-135%);}
+  #pickTip::after{content:''; position:absolute; left:50%; bottom:-6px; transform:translateX(-50%);
+    border:6px solid transparent; border-top-color:var(--accent); border-bottom:none;}
+  #pickTip.fixedTop{left:50% !important; top:48px !important; transform:translateX(-50%);}
+  #pickTip.fixedTop::after{display:none;}
+
+  /* --- 右パネル --- */
+  .rTitle{display:flex; align-items:center; gap:6px; font-size:13px; color:var(--accent); font-weight:700; margin:14px 0 8px;}
+  .rTitle:first-child{margin-top:0;}
+  #partInfo .empty{font-size:13px; color:var(--sub); padding:10px; background:var(--catbg); border-radius:10px; line-height:1.7;}
+  .infoCard{background:var(--cardBg); border:1px solid var(--cardBorder); border-radius:12px; padding:12px; font-size:13px;}
+  .infoCard .pname{font-size:16px; font-weight:bold; color:var(--accent);}
+  .qtyRow{display:flex; align-items:baseline; gap:6px; margin:8px 0 10px; padding:8px 12px; background:var(--panel); border-radius:10px; border:1px solid var(--cardBorder);}
+  .qtyRow .lbl{font-size:11px; color:var(--sub); margin-right:auto;}
+  .qtyRow .num{font-size:28px; font-weight:800; color:var(--accent); font-variant-numeric:tabular-nums;}
+  .qtyRow .unit{font-size:14px; font-weight:700; color:var(--accent);}
+  .infoCard dl{display:grid; grid-template-columns:auto 1fr; gap:5px 12px;}
+  .infoCard dt{color:var(--sub); white-space:nowrap; font-size:12px;}
+  .infoCard dd{font-weight:600; font-size:13px;}
+  .infoCard .note{margin-top:8px; font-size:11px; color:var(--sub);}
+
+  .dimGrid{display:grid; grid-template-columns:1fr 1fr; gap:7px;}
+  .dimItem{background:var(--catbg); border-radius:9px; padding:7px 10px;}
+  .dimItem .dl{font-size:11px; color:var(--sub);}
+  .dimItem .dv{font-size:15px; font-weight:700; font-variant-numeric:tabular-nums; margin-top:1px;}
+  .dimItem.wide{grid-column:1/-1;}
+
+  #partsList{display:flex; flex-direction:column;}
+  .pCat{display:flex; align-items:center; justify-content:space-between; font-size:11px; color:var(--sub); background:var(--catbg); border-radius:7px; padding:5px 10px; margin:10px 0 4px; letter-spacing:.06em;}
+  .pCat:first-child{margin-top:0;}
+  .pRow{display:flex; align-items:center; gap:8px; padding:9px 8px; border-radius:9px; cursor:pointer; border:1px solid transparent;}
+  .pRow:hover{background:var(--btnHover);}
+  .pRow.sel{background:var(--selbg); border-color:var(--accent);}
+  .pRow .pMain{flex:1; min-width:0;}
+  .pRow .pName{display:block; font-size:13.5px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .pRow .pSpec{display:block; font-size:11px; color:var(--sub); margin-top:1px;}
+  .pRow .pQty{font-size:16px; font-weight:800; font-variant-numeric:tabular-nums; white-space:nowrap;}
+  .pRow .pQty small{font-size:11px; font-weight:600; color:var(--sub); margin-left:2px;}
+  .listHint{font-size:11px; color:var(--sub); margin:6px 2px 0;}
+
+  /* ===== スマホ・タブレット(900px以下) ===== */
+  @media (max-width:900px){
+    header{flex-wrap:wrap; gap:6px; padding:6px 8px;}
+    header .logo{font-size:13px;}
+    header input#projName{flex:1 1 130px; font-size:13px;}
+    header input#custName{flex:0 1 96px; font-size:13px;}
+    header button{padding:6px 9px; font-size:12px;}
+    #saveState{display:none;}
+    aside{position:absolute; top:0; bottom:0; left:0; width:min(88vw,340px); z-index:40;
+      transform:translateX(-105%); transition:transform .25s ease; box-shadow:2px 0 16px rgba(0,0,0,.3);
+      border-right:1px solid var(--border); padding-top:44px;}
+    aside.right{left:auto; right:0; transform:translateX(105%); box-shadow:-2px 0 16px rgba(0,0,0,.3); border-left:1px solid var(--border);}
+    aside.open{transform:none;}
+    .drawerClose{display:block; position:absolute; top:8px; right:10px; z-index:41;
+      border:1px solid var(--border); background:var(--btn); color:var(--text); border-radius:7px; padding:5px 12px; font-size:14px;}
+    .fabBtn{display:block; position:absolute; top:10px; z-index:30; border:1px solid var(--border);
+      background:var(--barBg); color:var(--text); border-radius:9px; padding:9px 13px; font-size:13px; cursor:pointer; backdrop-filter:blur(4px);}
+    #btnDrawerL{left:10px;} #btnDrawerR{right:10px;}
+    #hintTip{top:56px;}
+    #pickTip.fixedTop{top:56px !important;}
+    #viewBar{bottom:8px; max-width:96vw; overflow-x:auto; flex-wrap:nowrap; justify-content:flex-start; -webkit-overflow-scrolling:touch;}
+    .card{padding:10px;}
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <span class="logo">🏠 ハウス3Dビュアー</span>
+    <input id="projName" placeholder="案件名(例:○○農園様)">
+    <input id="custName" placeholder="顧客名">
+    <span class="spacer"></span>
+    <span id="saveState">未保存</span>
+    <button class="primary" id="btnSave">保存</button>
+    <button id="btnLoad">開く</button>
+    <button id="btnCsv">部品一覧CSV</button>
+    <button id="btnPng">3D画像</button>
+  </header>
+  <main>
+    <!-- 左:設定 -->
+    <aside id="asideL">
+      <button class="drawerClose">✕ 閉じる</button>
+
+      <div class="card">
+        <h3><span class="ico">🏠</span>ハウスタイプ</h3>
+        <div class="seg" id="typeSeg">
+          <button data-t="pipe" class="active">単棟パイプ</button>
+          <button data-t="steel">鉄骨連棟</button>
+        </div>
+        <select id="houseType" class="hidden">
+          <option value="pipe">単棟パイプハウス</option>
+          <option value="steel">鉄骨連棟ハウス</option>
+        </select>
+        <div class="field">
+          <label>テンプレート(よく使う仕様)</label>
+          <select id="template"></select>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="ico">📐</span>寸法</h3>
+        <!-- 単棟用 -->
+        <div class="row2" data-vis="pipe">
+          <div class="field"><label>間口 (m)</label><input type="number" inputmode="decimal" id="width" value="6" min="3" max="10" step="0.1"></div>
+          <div class="field"><label>奥行 (m)</label><input type="number" inputmode="decimal" id="depth" value="30" min="4" max="100" step="0.5"></div>
+        </div>
+        <div class="row2" data-vis="pipe">
+          <div class="field"><label>棟高 (m)</label><input type="number" inputmode="decimal" id="ridgeHp" value="3.4" min="2.2" max="5" step="0.1"></div>
+          <div class="field"><label>軒高(肩) (m)</label><input type="number" inputmode="decimal" id="sideHp" value="1.7" min="1.0" max="2.5" step="0.1"></div>
+        </div>
+        <!-- 連棟用 -->
+        <div class="row2" data-vis="steel">
+          <div class="field"><label>スパン幅 (m)</label><input type="number" inputmode="decimal" id="spanW" value="6" min="4" max="9" step="0.5"></div>
+          <div class="field"><label>連棟数</label><input type="number" inputmode="numeric" id="nSpan" value="4" min="2" max="8" step="1"></div>
+        </div>
+        <div class="row2" data-vis="steel">
+          <div class="field"><label>奥行 (m)</label><input type="number" inputmode="decimal" id="depthS" value="40" min="10" max="100" step="0.5"></div>
+          <div class="field"><label>柱間隔 (m)</label><input type="number" inputmode="decimal" id="colPitch" value="4" min="2" max="6" step="0.5"></div>
+        </div>
+        <div class="row2" data-vis="steel">
+          <div class="field"><label>軒高 (m)</label><input type="number" inputmode="decimal" id="eaveHs" value="3.0" min="2.0" max="4.5" step="0.1"></div>
+          <div class="field"><label>棟高 (m)</label><input type="number" inputmode="decimal" id="ridgeHs" value="4.6" min="3.0" max="6.5" step="0.1"></div>
+        </div>
+        <div class="field"><label>アーチ間隔 (mm)</label><input type="number" inputmode="numeric" id="pitch" value="500" min="300" max="1200" step="50"></div>
+      </div>
+
+      <div class="card">
+        <h3><span class="ico">🔧</span>仕様の選択</h3>
+        <div class="field">
+          <label>扉(正面)</label>
+          <select id="door">
+            <option value="sliding">引き戸(両引き)1か所</option>
+            <option value="none">なし</option>
+          </select>
+        </div>
+        <label class="check"><input type="checkbox" id="sideVent" checked> 側面換気(巻き上げ)</label>
+        <label class="check"><input type="checkbox" id="fanChk" checked> 循環扇</label>
+        <label class="check" data-vis="pipe"><input type="checkbox" id="braceChk" checked> 補強材(筋交い)</label>
+        <label class="check" data-vis="pipe"><input type="checkbox" id="bandChk" checked> ハウスバンド</label>
+        <label class="check" data-vis="steel"><input type="checkbox" id="redNetChk" checked> 防虫ネット(側面・赤)</label>
+        <label class="check" data-vis="steel"><input type="checkbox" id="curtainChk" checked> 内張カーテン(収納状態)</label>
+        <details>
+          <summary>詳細設定</summary>
+          <div class="field">
+            <label>アーチパイプ径</label>
+            <select id="pipeDia"><option value="22.2">22.2mm</option><option value="25.4" selected>25.4mm</option><option value="31.8">31.8mm</option></select>
+          </div>
+          <div class="field">
+            <label>母屋(もや)の本数 <span class="hint">棟パイプを除く屋根の通しパイプ</span></label>
+            <select id="purlinN"><option value="2">2本</option><option value="4" selected>4本</option><option value="6">6本</option></select>
+          </div>
+          <div class="field">
+            <label>被覆材</label>
+            <select id="film"><option>農POフィルム</option><option>農ビ</option></select>
+          </div>
+        </details>
+      </div>
+
+      <div id="warnings"></div>
+    </aside>
+
+    <!-- 中央:3D -->
+    <div id="viewerWrap">
+      <canvas id="viewer"></canvas>
+      <button id="btnDrawerL" class="fabBtn">⚙ 設定</button>
+      <button id="btnDrawerR" class="fabBtn">📋 部品</button>
+      <div id="pickTip"></div>
+      <div id="hintTip">ドラッグで回転 / ホイールで拡大縮小 / 右ドラッグで移動 / 部品をクリックで数量表示</div>
+      <div id="viewBar">
+        <button data-view="iso" class="active">全体</button>
+        <button data-view="front">正面</button>
+        <button data-view="back">背面</button>
+        <button data-view="side">側面</button>
+        <button data-view="top">上面</button>
+        <button data-view="inside">内部</button>
+        <span class="vsep"></span>
+        <button id="btnFilmMode">被覆:表示</button>
+        <button id="btnDims">寸法:非表示</button>
+        <span class="vsep"></span>
+        <span id="explodeWrap">🔩 分解 <input type="range" id="explode" min="0" max="1" step="0.01" value="0"></span>
+        <span class="vsep"></span>
+        <button id="btnPhoto">📷 写真品質</button>
+      </div>
+      <div id="photoOverlay" class="hidden">
+        <div class="photoPanel">
+          <div id="photoStatus">シーン解析中…</div>
+          <div class="photoBar"><div id="photoProg"></div></div>
+          <div class="photoBtns">
+            <button id="photoSave" disabled>💾 画像を保存</button>
+            <button id="photoCancel">✕ 閉じる</button>
+          </div>
+          <div class="photoHint">物理光線追跡で現像しています。時間をかけるほどノイズが消えます。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右:情報 -->
+    <aside class="right" id="asideR">
+      <button class="drawerClose">✕ 閉じる</button>
+      <div class="rTitle">🔍 選択した部品</div>
+      <div id="partInfo"><div class="empty">3D画面の部品をタップすると、部品名と数量がその場に表示されます。下の一覧から選ぶこともできます。</div></div>
+      <div class="rTitle">📐 主要寸法</div>
+      <div class="dimGrid" id="dimsBox"></div>
+      <div class="rTitle">📋 部品一覧</div>
+      <div id="partsList"></div>
+      <div class="listHint">行をタップすると3D上で同じ部品がオレンジ色で強調されます。</div>
+    </aside>
+  </main>
+</div>
+
+<script src="three-bundle.min.js"></script>
+<script>
+const THREE = window.THREE;
+const OrbitControls = window.__OrbitControls;
+const RoomEnvironment = window.__RoomEnvironment;
+const Sky = window.__Sky;
+const EffectComposer = window.__EffectComposer;
+const RenderPass = window.__RenderPass;
+const UnrealBloomPass = window.__UnrealBloomPass;
+const OutputPass = window.__OutputPass;
+const ShaderPass = window.__ShaderPass;
+const WebGLPathTracer = window.__WebGLPathTracer;
+
+// three r160 に無い新しめのSceneプロパティをポリフィル(パストレーサーが参照する)
+{
+  const P = THREE.Scene.prototype;
+  const mkEuler = (name)=>{
+    if(Object.getOwnPropertyDescriptor(P, name)) return;
+    const key = '__'+name;
+    Object.defineProperty(P, name, {
+      get(){ return this[key] || (this[key] = new THREE.Euler()); },
+      set(v){ this[key] = v; },
+      configurable: true,
+    });
+  };
+  mkEuler('environmentRotation');
+  mkEuler('backgroundRotation');
+  const mkNum = (name)=>{
+    if(Object.getOwnPropertyDescriptor(P, name)) return;
+    const key = '__'+name;
+    Object.defineProperty(P, name, {
+      get(){ return this[key] === undefined ? 1 : this[key]; },
+      set(v){ this[key] = v; },
+      configurable: true,
+    });
+  };
+  mkNum('environmentIntensity');
+  mkNum('backgroundIntensity');
+}
+
+/* ============================================================
+   部品マスター
+   ============================================================ */
+const PART_MASTER = {
+  arch:     {name:'アーチパイプ',       code:'AP-2540', cat:'骨組み',   place:'屋根の主構造(曲げパイプ)', unit:'組'},
+  purlin:   {name:'母屋パイプ',         code:'MY-2240', cat:'骨組み',   place:'アーチを縦方向につなぐ屋根の通しパイプ', unit:'本'},
+  ridge:    {name:'棟パイプ',           code:'MN-2240', cat:'骨組み',   place:'ハウス最上部(棟)の通しパイプ', unit:'本'},
+  sideRail: {name:'側面胴縁パイプ',     code:'DB-2240', cat:'骨組み',   place:'側面の腰部分に通す横パイプ', unit:'本'},
+  gablePost:{name:'妻柱パイプ',         code:'TB-2540', cat:'妻面',     place:'前後の妻面(端の壁)の縦柱', unit:'本'},
+  gableRail:{name:'妻面胴縁パイプ',     code:'TD-2240', cat:'妻面',     place:'妻面の横方向の胴縁', unit:'本'},
+  cross:    {name:'パイプクロス',       code:'PC-254',  cat:'接続金具', place:'アーチパイプと母屋パイプの交差部の固定', unit:'個'},
+  anchor:   {name:'らせん杭アンカー',   code:'AK-450',  cat:'基礎・固定', place:'アーチパイプ両端の地中固定', unit:'本'},
+  braceP:   {name:'筋交いパイプ',       code:'SJ-2540', cat:'補強材',   place:'両妻側の斜め補強', unit:'本'},
+  band:     {name:'ハウスバンド',       code:'BD-400',  cat:'被覆材',   place:'フィルム押さえ(屋根越しに掛ける)', unit:'本', spec:'40mm幅'},
+  door:     {name:'扉(両引き戸)一式',  code:'DR-SW26', cat:'扉',       place:'正面妻面の出入口(アルミ框戸)', unit:'式', spec:'W2.6×H2.1m'},
+  doorRail: {name:'ドアレール',         code:'DL-340',  cat:'扉',       place:'引き戸上部の吊りレール', unit:'本', spec:'3.4m'},
+  rollpipe: {name:'巻き上げパイプ',     code:'MU-1920', cat:'換気',     place:'側面フィルムの巻き上げ用シャフト', unit:'式', spec:'19.1mm'},
+  roller:   {name:'巻き上げ機(ハンドル)', code:'MK-100', cat:'換気',    place:'側面巻き上げの手元ハンドル', unit:'台', spec:'手動式'},
+  fan:      {name:'循環扇',             code:'CF-300',  cat:'設備',     place:'棟下に吊り下げ(空気循環用)', unit:'台', spec:'30cm羽根'},
+  film:     {name:'被覆フィルム',       code:'PO-135',  cat:'被覆材',   place:'屋根・側面・妻面の被覆', unit:'式', spec:'厚0.15mm'},
+  spring:   {name:'ビニペットスプリング', code:'SP-200', cat:'被覆材',  place:'フィルムの固定(妻面・肩部)', unit:'本', spec:'2m'},
+  column:   {name:'鉄骨柱(角パイプ)',  code:'CL-7575', cat:'骨組み',   place:'谷部・外壁部の垂直柱', unit:'本', spec:'75×75角'},
+  girder:   {name:'軒・谷桁(通し梁)',  code:'GR-C100', cat:'骨組み',   place:'柱の頂部を奥行方向につなぐ梁', unit:'本', spec:'C-100'},
+  tieBeam:  {name:'タイビーム(梁)',    code:'TB-C100', cat:'骨組み',   place:'柱間をスパン方向につなぐ水平梁', unit:'本', spec:'C-100'},
+  lattice:  {name:'屋根ブレース材',     code:'LT-19',   cat:'補強材',   place:'屋根アーチ間の斜め補強(ラチス)', unit:'本', spec:'19.1mm'},
+  braceX:   {name:'壁面ブレース',       code:'BX-M12',  cat:'補強材',   place:'外壁端部のX形ブレース', unit:'本', spec:'M12'},
+  gutterV:  {name:'谷樋',               code:'GT-V180', cat:'骨組み',   place:'連棟の谷部の雨樋', unit:'本', spec:'180mm'},
+  gutterE:  {name:'軒樋',               code:'GT-E120', cat:'骨組み',   place:'外壁側の軒の雨樋', unit:'本', spec:'120mm'},
+  foundation:{name:'独立基礎(コンクリート)', code:'FD-300', cat:'基礎・固定', place:'鉄骨柱の根元の基礎', unit:'か所', spec:'300角'},
+  curtain:  {name:'内張カーテン(保温)', code:'CT-LS',   cat:'設備',     place:'軒高付近に展張(収納状態で表示)', unit:'式', spec:'LS遮光'},
+  redNet:   {name:'防虫ネット(赤)',     code:'NT-R06',  cat:'設備',     place:'側面換気部の防虫ネット', unit:'式', spec:'0.6mm目'},
+};
+const CAT_ORDER = ['骨組み','接続金具','基礎・固定','妻面','扉','換気','被覆材','補強材','設備'];
+
+/* ============================================================
+   基本セットアップ
+   ============================================================ */
+const el = id => document.getElementById(id);
+const canvas = el('viewer');
+const mqMobile = matchMedia('(max-width:900px)');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, preserveDrawingBuffer:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio, mqMobile.matches ? 1.5 : 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.52; // 物理スカイは高輝度のため露出を抑える
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0xe4eef5, 140, 340);
+const camera = new THREE.PerspectiveCamera(50, 2, 0.1, 600);
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+controls.maxPolarAngle = Math.PI/2 - 0.01;
+controls.minDistance = 1.2;
+controls.maxDistance = 220;
+
+const pmrem = new THREE.PMREMGenerator(renderer);
+
+// ===== 物理ベースの空+太陽(参考写真の空の色・光) =====
+const sunDir = new THREE.Vector3().setFromSphericalCoords(
+  1, THREE.MathUtils.degToRad(50), THREE.MathUtils.degToRad(60));
+function makeSky(scale){
+  const sky = new Sky();
+  sky.scale.setScalar(scale);
+  const u = sky.material.uniforms;
+  u.turbidity.value = 2.5;
+  u.rayleigh.value = 2.6;
+  u.mieCoefficient.value = .003;
+  u.mieDirectionalG.value = .8;
+  u.sunPosition.value.copy(sunDir);
+  // Skyシェーダーは輝度が高すぎるため、空だけ減光(露出を下げずに青を出す)
+  sky.material.fragmentShader = sky.material.fragmentShader.replace(
+    'gl_FragColor = vec4( retColor, 1.0 );',
+    'gl_FragColor = vec4( retColor * 0.27, 1.0 );');
+  sky.material.needsUpdate = true;
+  return sky;
+}
+const skyMesh = makeSky(450);
+skyMesh.userData.noPhoto = true; // 写真品質モードでは環境マップに置き換え
+scene.add(skyMesh);
+// 空全体を環境マップ化(金属・フィルムへの空の映り込み)
+{
+  const envScene = new THREE.Scene();
+  envScene.add(makeSky(80));
+  const eg = new THREE.Mesh(new THREE.CircleGeometry(90,16),
+    new THREE.MeshBasicMaterial({color:0xb7b0a2}));
+  eg.rotation.x = -Math.PI/2; eg.position.y = -.5; envScene.add(eg);
+  scene.environment = pmrem.fromScene(envScene, .03, .1, 300).texture;
+}
+// 雲(積雲:丸い塊+平らな底+灰色の陰)
+function cloudTex(seed){
+  const c=document.createElement('canvas'); c.width=512; c.height=256;
+  const g=c.getContext('2d');
+  const rnd=()=>{ seed=(seed*9301+49297)%233280; return seed/233280; };
+  const baseY=176;
+  const puff=(cx,cy,r,bright)=>{
+    const gr=g.createRadialGradient(cx-r*.25,cy-r*.3,r*.1,cx,cy,r);
+    gr.addColorStop(0,`rgba(255,255,255,${bright})`);
+    gr.addColorStop(.65,`rgba(248,249,252,${bright*.8})`);
+    gr.addColorStop(1,'rgba(255,255,255,0)');
+    g.fillStyle=gr; g.beginPath(); g.arc(cx,cy,r,0,7); g.fill();
+  };
+  // 底の並び(平らに)
+  const n=5+Math.floor(rnd()*3);
+  const xs=[];
+  for(let i=0;i<n;i++){ xs.push(90+ (332/(n-1))*i + (rnd()-.5)*26); }
+  for(const x of xs) puff(x, baseY-18-rnd()*8, 46+rnd()*22, .88);
+  // 上の盛り上がり
+  for(let i=0;i<n-1;i++) puff((xs[i]+xs[i+1])/2 + (rnd()-.5)*20, baseY-62-rnd()*34, 38+rnd()*26, .95);
+  puff(256+(rnd()-.5)*60, baseY-108-rnd()*22, 34+rnd()*20, 1);
+  // 底の灰色の陰(控えめに)
+  g.fillStyle='rgba(176,183,193,.16)';
+  g.save(); g.translate(256,baseY-14); g.scale(1,.1);
+  g.beginPath(); g.arc(0,0,130,0,7); g.fill(); g.restore();
+  const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; return t;
+}
+for(const [x,y,z,s,sd,o] of [
+  [-150,58,-200,170,7,1],[140,64,-230,190,13,.95],[220,52,110,160,29,.9],
+  [-210,46,150,130,41,.85],[60,72,250,180,67,.8]]){
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:cloudTex(sd), transparent:true, opacity:o, fog:false, depthWrite:false}));
+  sp.position.set(x,y,z); sp.scale.set(s,s*.5,1); scene.add(sp);
+}
+
+scene.add(new THREE.HemisphereLight(0xdcecf8, 0x9a8a6f, 1.1));
+const sun = new THREE.DirectionalLight(0xfff2df, 4.5);
+sun.position.copy(sunDir).multiplyScalar(90);
+sun.castShadow = true;
+sun.shadow.mapSize.set(mqMobile.matches ? 1024 : 2048, mqMobile.matches ? 1024 : 2048);
+sun.shadow.bias = -0.0002;
+sun.shadow.radius = 5;
+sun.shadow.blurSamples = 12;
+scene.add(sun);
+const fill1 = new THREE.DirectionalLight(0xeaf2fa, 0.5); fill1.position.set(-25, 18, -45); scene.add(fill1);
+const fill2 = new THREE.DirectionalLight(0xf5efe2, 0.35); fill2.position.set(25, 12, 40); scene.add(fill2);
+
+// ===== ブルーム(光の滲み)後処理 =====
+const usePost = !mqMobile.matches;
+let composer=null;
+if(usePost){
+  // MSAA付きレンダーターゲット(エッジのギザギザを解消)
+  const rt = new THREE.WebGLRenderTarget(2, 2, {samples:4, type:THREE.HalfFloatType});
+  composer = new EffectComposer(renderer, rt);
+  composer.addPass(new RenderPass(scene, camera));
+  composer.addPass(new UnrealBloomPass(new THREE.Vector2(1,1), .3, .65, 1.05));
+  composer.addPass(new OutputPass());
+  // 写真的な仕上げ(ビネット+彩度+コントラスト)
+  composer.addPass(new ShaderPass({
+    uniforms:{ tDiffuse:{value:null} },
+    vertexShader:'varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }',
+    fragmentShader:`varying vec2 vUv; uniform sampler2D tDiffuse;
+      void main(){
+        vec4 c = texture2D(tDiffuse, vUv);
+        // 緩いSカーブでコントラスト
+        vec3 s = c.rgb*c.rgb*(3.0-2.0*c.rgb);
+        c.rgb = mix(c.rgb, s, .22);
+        // 彩度をわずかに上げる
+        float l = dot(c.rgb, vec3(.299,.587,.114));
+        c.rgb = mix(vec3(l), c.rgb, 1.08);
+        // ビネット
+        float d = distance(vUv, vec2(.5));
+        c.rgb *= 1.0 - smoothstep(.45,.85,d)*.28;
+        gl_FragColor = c;
+      }`
+  }));
+}
+function renderFrame(){ if(composer) composer.render(); else renderer.render(scene,camera); }
+function setShadowArea(s){
+  const c = sun.shadow.camera;
+  c.left=-s; c.right=s; c.top=s; c.bottom=-s; c.near=5; c.far=160;
+  c.updateProjectionMatrix();
+}
+
+// ===== 地面テクスチャ(高精細+異方性フィルタ) =====
+const maxAniso = renderer.capabilities.getMaxAnisotropy();
+function groundNoiseTex(){
+  const c=document.createElement('canvas'); c.width=c.height=512;
+  const g=c.getContext('2d');
+  g.fillStyle='#b5a68d'; g.fillRect(0,0,512,512);
+  for(let i=0;i<48;i++){ // 大きな湿りムラ
+    g.fillStyle=`rgba(130,112,88,${.04+Math.random()*.08})`;
+    g.beginPath(); g.arc(Math.random()*512,Math.random()*512, 20+Math.random()*55, 0,7); g.fill();
+  }
+  for(let i=0;i<1600;i++){ // 砂粒(暗)
+    g.fillStyle=`rgba(76,64,48,${.06+Math.random()*.15})`;
+    g.beginPath(); g.arc(Math.random()*512,Math.random()*512, .5+Math.random()*1.7, 0,7); g.fill();
+  }
+  for(let i=0;i<700;i++){ // 砂粒(明)・小石
+    g.fillStyle=`rgba(226,216,196,${.1+Math.random()*.18})`;
+    g.beginPath(); g.arc(Math.random()*512,Math.random()*512, .5+Math.random()*1.6, 0,7); g.fill();
+  }
+  const t=new THREE.CanvasTexture(c);
+  t.wrapS=t.wrapT=THREE.RepeatWrapping; t.colorSpace=THREE.SRGBColorSpace;
+  t.anisotropy=maxAniso;
+  return t;
+}
+// 草地(高精細:草の筋・枯れパッチ・刈りムラ)
+function grassTexGen(){
+  const c=document.createElement('canvas'); c.width=c.height=512;
+  const g=c.getContext('2d');
+  g.fillStyle='#6f8148'; g.fillRect(0,0,512,512);
+  for(let i=0;i<30;i++){ // 枯れ気味の黄パッチ(柔らかく)
+    const x=Math.random()*512, y=Math.random()*512, r=30+Math.random()*80;
+    const gr=g.createRadialGradient(x,y,2,x,y,r);
+    gr.addColorStop(0,`rgba(172,166,98,${.05+Math.random()*.07})`);
+    gr.addColorStop(1,'rgba(172,166,98,0)');
+    g.fillStyle=gr; g.beginPath(); g.arc(x,y,r,0,7); g.fill();
+  }
+  for(let i=0;i<22;i++){ // 濃い緑パッチ(柔らかく)
+    const x=Math.random()*512, y=Math.random()*512, r=26+Math.random()*66;
+    const gr=g.createRadialGradient(x,y,2,x,y,r);
+    gr.addColorStop(0,`rgba(70,88,44,${.05+Math.random()*.08})`);
+    gr.addColorStop(1,'rgba(70,88,44,0)');
+    g.fillStyle=gr; g.beginPath(); g.arc(x,y,r,0,7); g.fill();
+  }
+  for(let i=0;i<4200;i++){ // 草の葉(短いストローク)
+    const gr=90+Math.random()*80|0, gg=110+Math.random()*80|0, gb=40+Math.random()*40|0;
+    g.strokeStyle=`rgba(${gr},${gg},${gb},${.2+Math.random()*.35})`;
+    g.lineWidth=.8+Math.random()*.9;
+    const x=Math.random()*512, y=Math.random()*512, l=2+Math.random()*4, a=Math.random()*Math.PI;
+    g.beginPath(); g.moveTo(x,y); g.lineTo(x+Math.cos(a)*l, y+Math.sin(a)*l); g.stroke();
+  }
+  const t=new THREE.CanvasTexture(c);
+  t.wrapS=t.wrapT=THREE.RepeatWrapping; t.colorSpace=THREE.SRGBColorSpace;
+  t.anisotropy=maxAniso;
+  return t;
+}
+const grassTex = grassTexGen(); grassTex.repeat.set(58,58);
+const dirtTex = groundNoiseTex();
+
+// 遠景がうねる草地(完全な平面をやめて地平線を自然に)
+const groundGeo = new THREE.PlaneGeometry(620,620,110,110);
+{
+  const p=groundGeo.attributes.position;
+  for(let i=0;i<p.count;i++){
+    const x=p.getX(i), y=p.getY(i);
+    const d=Math.hypot(x,y);
+    const amp=THREE.MathUtils.smoothstep(d,30,140)*1.5;
+    const n=Math.sin(x*.045)+Math.sin(y*.052+1.7)+.6*Math.sin((x+y)*.023+.5);
+    p.setZ(i, n*.33*amp);
+  }
+  groundGeo.computeVertexNormals();
+}
+const ground = new THREE.Mesh(groundGeo,
+  new THREE.MeshStandardMaterial({map:grassTex, roughness:1, metalness:0}));
+ground.rotation.x = -Math.PI/2; ground.receiveShadow = true;
+scene.add(ground);
+
+// 草の株ジオメトリ(交差2枚板・インスタンス描画用)
+function grassBladeTex(){
+  const c=document.createElement('canvas'); c.width=256; c.height=192;
+  const g=c.getContext('2d');
+  for(let i=0;i<24;i++){
+    const x0=30+Math.random()*196, lean=(Math.random()-.5)*70;
+    const h=70+Math.random()*80;
+    const gr=108+Math.random()*62|0, gg=126+Math.random()*60|0;
+    g.strokeStyle=`rgba(${gr},${gg},${52+Math.random()*30|0},${.55+Math.random()*.3})`;
+    g.lineWidth=2.2+Math.random()*2.6; g.lineCap='round';
+    g.beginPath(); g.moveTo(x0,192);
+    g.quadraticCurveTo(x0+lean*.3, 192-h*.6, x0+lean, 192-h);
+    g.stroke();
+  }
+  const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace;
+  return t;
+}
+const tuftGeo = (()=>{
+  const pos=[],uv=[],idx=[];
+  const w=.62,h=.44;
+  for(const rot of [0,Math.PI/2]){
+    const cA=Math.cos(rot), sA=Math.sin(rot);
+    const b=pos.length/3;
+    for(const [x,y] of [[-w/2,0],[w/2,0],[w/2,h],[-w/2,h]]) pos.push(x*cA,y,x*sA);
+    uv.push(0,0, 1,0, 1,1, 0,1);
+    idx.push(b,b+1,b+2, b,b+2,b+3);
+  }
+  const g=new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos,3));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(uv,2));
+  g.setIndex(idx); g.computeVertexNormals();
+  return g;
+})();
+const tuftMat = new THREE.MeshStandardMaterial({map:grassBladeTex(), alphaTest:.35, side:THREE.DoubleSide, roughness:1, metalness:0});
+
+// ハウス内の畝(うね)
+function ridgeSoilTex(){
+  const c=document.createElement('canvas'); c.width=256; c.height=64;
+  const g=c.getContext('2d');
+  const grad=g.createLinearGradient(0,0,256,0);
+  grad.addColorStop(0,'#6f5741'); grad.addColorStop(.5,'#8a6d52'); grad.addColorStop(1,'#6f5741');
+  g.fillStyle=grad; g.fillRect(0,0,256,64);
+  for(let i=0;i<300;i++){ g.fillStyle=`rgba(40,28,18,${Math.random()*.25})`;
+    g.fillRect(Math.random()*256, Math.random()*64, 2, 1); }
+  const t=new THREE.CanvasTexture(c);
+  t.wrapS=t.wrapT=THREE.RepeatWrapping; t.colorSpace=THREE.SRGBColorSpace;
+  return t;
+}
+const soilTex = ridgeSoilTex();
+soilTex.anisotropy = maxAniso;
+
+// フィルムのシワ(バンプ・光沢ムラ)
+function wrinkleTex(){
+  const c=document.createElement('canvas'); c.width=c.height=256;
+  const g=c.getContext('2d');
+  g.fillStyle='#9c9c9c'; g.fillRect(0,0,256,256);
+  for(let i=0;i<110;i++){
+    const v=120+Math.random()*100|0;
+    g.fillStyle=`rgba(${v},${v},${v},.28)`;
+    g.save();
+    g.translate(Math.random()*256, Math.random()*256);
+    g.rotate(Math.random()*Math.PI);
+    g.scale(1, .25+Math.random()*.5);
+    g.beginPath(); g.arc(0,0, 10+Math.random()*26, 0,7); g.fill();
+    g.restore();
+  }
+  const t=new THREE.CanvasTexture(c);
+  t.wrapS=t.wrapT=THREE.RepeatWrapping;
+  return t;
+}
+const wrinkle = wrinkleTex();
+
+const houseGroup = new THREE.Group(); scene.add(houseGroup);
+const dimGroup = new THREE.Group(); scene.add(dimGroup);
+
+/* ============================================================
+   材質
+   ============================================================ */
+const MAT = {
+  pipe:   new THREE.MeshStandardMaterial({color:0xd8dbde, metalness:.85, roughness:.35}),
+  pipe2:  new THREE.MeshStandardMaterial({color:0xc4c9ce, metalness:.8, roughness:.42}),
+  steel:  new THREE.MeshStandardMaterial({color:0xd2d6da, metalness:.55, roughness:.5}),
+  fitting:new THREE.MeshStandardMaterial({color:0x8f979e, metalness:.7, roughness:.5}),
+  dark:   new THREE.MeshStandardMaterial({color:0x3a3f45, metalness:.4, roughness:.6}),
+  alu:    new THREE.MeshStandardMaterial({color:0xd8dcdf, metalness:.6, roughness:.35}),
+  concrete:new THREE.MeshStandardMaterial({color:0xb9b6ad, metalness:0, roughness:.95}),
+  band:   new THREE.MeshStandardMaterial({color:0x2b2b2b, metalness:.1, roughness:.9}),
+  red:    new THREE.MeshStandardMaterial({color:0xd42b10, metalness:.2, roughness:.5}),
+  sel:    new THREE.MeshStandardMaterial({color:0xff8c1a, emissive:0x7a3c00, metalness:.3, roughness:.4}),
+  film: mqMobile.matches
+    ? new THREE.MeshPhysicalMaterial({color:0xf6fafd, transparent:true, opacity:.4, side:THREE.DoubleSide,
+        roughness:.18, metalness:0, envMapIntensity:2.2, depthWrite:false,
+        clearcoat:.8, clearcoatRoughness:.18,
+        bumpMap:wrinkle, bumpScale:.35, roughnessMap:wrinkle})
+    : new THREE.MeshPhysicalMaterial({color:0xffffff, side:THREE.DoubleSide,
+        transmission:.9, roughness:.2, ior:1.45, thickness:.02,
+        metalness:0, envMapIntensity:1.4, clearcoat:.35, clearcoatRoughness:.25,
+        bumpMap:wrinkle, bumpScale:.25, roughnessMap:wrinkle}),
+  doorFilm:new THREE.MeshPhysicalMaterial({color:0xeef4f8, transparent:true, opacity:.5, side:THREE.DoubleSide,
+            roughness:.18, envMapIntensity:1.3, depthWrite:false}),
+  curtain:new THREE.MeshStandardMaterial({color:0xe6e2d8, roughness:.95, metalness:0}),
+  net:    new THREE.MeshStandardMaterial({color:0xff2f12, transparent:true, opacity:.42, side:THREE.DoubleSide, roughness:.8, depthWrite:false}),
+};
+function setFilmMode(){
+  if(MAT.film.transparent){ // スマホ:不透明度方式
+    MAT.film.opacity = filmMode===1 ? .12 : .4;
+  }else{ // PC:物理透過方式
+    MAT.film.transmission = filmMode===1 ? .985 : .9;
+    MAT.film.roughness = filmMode===1 ? .05 : .2;
+  }
+}
+
+/* ============================================================
+   ジオメトリ補助
+   ============================================================ */
+const V2 = (x,y)=>new THREE.Vector2(x,y), V3=(x,y,z)=>new THREE.Vector3(x,y,z);
+const UP = V3(0,1,0);
+const unitCyl = new THREE.CylinderGeometry(1,1,1,8);
+const unitBox = new THREE.BoxGeometry(1,1,1);
+const pickables = [];
+let tally = {};
+const T = (k,n=1)=>{ tally[k]=(tally[k]||0)+n; };
+
+function tag(mesh, key, {cast=true, recv=false, order=0, ex=null, label=null}={}){
+  mesh.userData.partKey = key;
+  mesh.userData.baseMat = mesh.material;
+  if(ex) mesh.userData.exDir = ex;
+  if(label) mesh.userData.labelPts = label;
+  mesh.castShadow = cast; mesh.receiveShadow = recv;
+  if(order) mesh.renderOrder = order;
+  pickables.push(mesh); houseGroup.add(mesh);
+  return mesh;
+}
+function instSegs(segs, r, mat, key, count=true, ex=null){
+  if(!segs.length) return;
+  const m = new THREE.InstancedMesh(unitCyl, mat, segs.length);
+  const mtx = new THREE.Matrix4(), q = new THREE.Quaternion(), s = new THREE.Vector3(), p = new THREE.Vector3();
+  const pts=[];
+  segs.forEach(([a,b,rr], i)=>{
+    const dir = V3(0,0,0).subVectors(b,a); const len = dir.length();
+    q.setFromUnitVectors(UP, dir.clone().normalize());
+    p.copy(a).addScaledVector(dir,.5); s.set(rr||r, len, rr||r);
+    mtx.compose(p,q,s); m.setMatrixAt(i,mtx);
+    pts.push(p.clone());
+  });
+  tag(m, key, {ex, label:pts}); if(count) T(key, segs.length);
+  return m;
+}
+function instBoxes(list, mat, key, count=true, ex=null){
+  if(!list.length) return;
+  const m = new THREE.InstancedMesh(unitBox, mat, list.length);
+  const mtx = new THREE.Matrix4(), q0 = new THREE.Quaternion();
+  list.forEach((it,i)=>{
+    mtx.compose(it.p, it.quat||q0, V3(...it.size));
+    m.setMatrixAt(i,mtx);
+  });
+  tag(m, key, {ex, label:list.map(it=>it.p.clone())}); if(count) T(key, list.length);
+  return m;
+}
+function cylBetween(a, b, r, mat, key, ex=null, seg=8){
+  const dir = V3(0,0,0).subVectors(b,a);
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(r,r,dir.length(),seg), mat);
+  m.position.copy(a).addScaledVector(dir,.5);
+  m.quaternion.setFromUnitVectors(UP, dir.clone().normalize());
+  return tag(m, key, {ex, label:[V3(0,0,0)]});
+}
+// 断面プロファイルを奥行方向に掃引したフィルム(アーチ間のたるみ付き)
+function filmSweep(pts, z0f, D, key, opt={}){
+  const n = pts.length;
+  const sag = opt.sag||0, z0a = opt.z0Arch??z0f;
+  const rows = sag ? Math.min(2*Math.ceil(D/sag)+1, 161) : 2;
+  const nx=[], ny=[];
+  for(let i=0;i<n;i++){
+    const a=pts[Math.max(0,i-1)], b=pts[Math.min(n-1,i+1)];
+    let dx=b.x-a.x, dy=b.y-a.y; const l=Math.hypot(dx,dy)||1;
+    nx.push(-dy/l); ny.push(dx/l);
+  }
+  let arc=0; const arcs=[0];
+  for(let i=1;i<n;i++){ arc+=pts[i].distanceTo(pts[i-1]); arcs.push(arc); }
+  const pos=[], uv=[], idx=[];
+  for(let j=0;j<rows;j++){
+    const t=j/(rows-1), z=z0f+D*t;
+    let dep=0;
+    if(sag){
+      const ph=(((z-z0a)/sag)%1+1)%1;
+      dep = -0.03*Math.pow(Math.sin(Math.PI*ph),2);
+    }
+    for(let i=0;i<n;i++){
+      pos.push(pts[i].x+nx[i]*dep, pts[i].y+ny[i]*dep, z);
+      uv.push(arcs[i]/1.5, z/1.5);
+    }
+  }
+  for(let j=0;j<rows-1;j++) for(let i=0;i<n-1;i++){
+    const a=j*n+i, b=a+1, c=(j+1)*n+i, d=c+1;
+    idx.push(a,c,b, b,c,d);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos,3));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(uv,2));
+  g.setIndex(idx); g.computeVertexNormals();
+  return tag(new THREE.Mesh(g, MAT.film), key, {cast:false, order:10, ex:opt.ex});
+}
+function gableFilm(outlinePts, z, doorHole, key, ex=null){
+  const shape = new THREE.Shape();
+  shape.moveTo(outlinePts[0].x, outlinePts[0].y);
+  for(let i=1;i<outlinePts.length;i++) shape.lineTo(outlinePts[i].x, outlinePts[i].y);
+  shape.closePath();
+  if(doorHole){
+    const [w,h] = doorHole;
+    const hole = new THREE.Path();
+    hole.moveTo(-w/2,.01); hole.lineTo(w/2,.01); hole.lineTo(w/2,h); hole.lineTo(-w/2,h);
+    hole.closePath(); shape.holes.push(hole);
+  }
+  const m = new THREE.Mesh(new THREE.ShapeGeometry(shape), MAT.film);
+  m.position.z = z;
+  return tag(m, key, {cast:false, order:10, ex});
+}
+function yAt(pts, x){
+  for(let i=0;i<pts.length-1;i++){
+    const a=pts[i], b=pts[i+1];
+    if((x>=a.x&&x<=b.x)||(x>=b.x&&x<=a.x)){
+      const t=(x-a.x)/((b.x-a.x)||1e-9); return a.y+(b.y-a.y)*t;
+    }
+  }
+  return 0;
+}
+
+/* ============================================================
+   断面プロファイル
+   ============================================================ */
+function profilePipe(W, sideH, H){
+  const R=W/2, pts=[V2(-R,0), V2(-R,sideH*.55), V2(-R,sideH)];
+  const bz = new THREE.CubicBezierCurve(
+    V2(-R,sideH), V2(-R, sideH+(H-sideH)*.78), V2(-R*.40, H*.995), V2(0,H));
+  for(let i=1;i<=14;i++) pts.push(bz.getPoint(i/14));
+  for(let i=pts.length-2;i>=0;i--) pts.push(V2(-pts[i].x, pts[i].y));
+  return pts;
+}
+function profileSpanRoof(S, eave, H){
+  const pts=[];
+  const bzL = new THREE.CubicBezierCurve(V2(0,eave), V2(S*.06, eave+(H-eave)*.85), V2(S*.30, H*.99), V2(S*.5,H));
+  for(let i=0;i<=12;i++) pts.push(bzL.getPoint(i/12));
+  for(let i=11;i>=0;i--){ const p=bzL.getPoint(i/12); pts.push(V2(S-p.x, p.y)); }
+  return pts;
+}
+
+/* ============================================================
+   仕様の読み取り
+   ============================================================ */
+function readSpec(){
+  const type = el('houseType').value;
+  const s = {
+    type,
+    pitch: +el('pitch').value/1000,
+    hasDoor: el('door').value!=='none',
+    sideVent: el('sideVent').checked,
+    fans: el('fanChk').checked,
+    dia: el('pipeDia').value,
+    purlinN: +el('purlinN').value,
+    filmName: el('film').value,
+    doorW: 2.6, doorH: 2.1,
+  };
+  if(type==='pipe'){
+    s.W = +el('width').value; s.D = +el('depth').value;
+    s.H = +el('ridgeHp').value; s.sideH = Math.min(+el('sideHp').value, s.H-0.5);
+    s.brace = el('braceChk').checked; s.band = el('bandChk').checked;
+    s.totalW = s.W;
+  }else{
+    s.S = +el('spanW').value; s.n = Math.round(+el('nSpan').value);
+    s.D = +el('depthS').value; s.colPitch = +el('colPitch').value;
+    s.eave = +el('eaveHs').value; s.H = Math.max(+el('ridgeHs').value, s.eave+0.6);
+    s.redNet = el('redNetChk').checked; s.curtain = el('curtainChk').checked;
+    s.totalW = s.S*s.n;
+  }
+  s.arches = Math.floor(s.D/s.pitch)+1;
+  return s;
+}
+
+/* ============================================================
+   扉(両引きアルミ框戸+レール)
+   ============================================================ */
+function buildDoor(zFace, dirSign, spec){
+  const {doorW, doorH} = spec;
+  const zOut = zFace + dirSign*0.09;
+  const exDoor = V3(0, 0, dirSign*2.1);
+  const railLen = doorW*1.3;
+  const rail = new THREE.Mesh(new THREE.BoxGeometry(railLen,.07,.07), MAT.alu);
+  rail.position.set(0, doorH+.22, zFace + dirSign*0.05);
+  tag(rail,'doorRail',{ex:V3(0,.15,dirSign*1.8), label:[V3(0,0,0)]}); T('doorRail',1);
+  const segs=[];
+  for(const sx of [-1,1]){
+    const px = sx*doorW/4;
+    const fw = doorW/2 - .02, fh = doorH;
+    const zp = zOut + dirSign*(sx>0?0.015:-0.015);
+    const f = .045;
+    segs.push([V3(px-fw/2, .02, zp), V3(px-fw/2, fh, zp), f]);
+    segs.push([V3(px+fw/2, .02, zp), V3(px+fw/2, fh, zp), f]);
+    segs.push([V3(px-fw/2, fh, zp), V3(px+fw/2, fh, zp), f]);
+    segs.push([V3(px-fw/2, .05, zp), V3(px+fw/2, .05, zp), f]);
+    segs.push([V3(px, .05, zp), V3(px, fh, zp), .028]);
+    segs.push([V3(px-fw/2, fh*.52, zp), V3(px+fw/2, fh*.52, zp), .028]);
+    segs.push([V3(px-fw/2, fh*.18, zp), V3(px+fw/2, fh*.18, zp), .028]);
+    const pf = new THREE.Mesh(new THREE.PlaneGeometry(fw-.06, fh-.1), MAT.doorFilm);
+    pf.position.set(px, fh/2, zp); tag(pf,'door',{cast:false, order:11, ex:exDoor});
+    for(const hx of [px-fw/3, px+fw/3]){
+      const hg = new THREE.Mesh(new THREE.BoxGeometry(.05,.16,.05), MAT.fitting);
+      hg.position.set(hx, doorH+.12, zp); tag(hg,'door',{ex:exDoor});
+    }
+  }
+  instSegs(segs, .04, MAT.alu, 'door', false, exDoor);
+  T('door',1);
+}
+
+/* ============================================================
+   単棟パイプハウス
+   ============================================================ */
+function buildPipeHouse(s){
+  const {W,D,H,sideH,pitch,arches} = s;
+  const r = (+s.dia)/2000;
+  const z0 = -D/2, R = W/2;
+  const prof = profilePipe(W,sideH,H);
+  s.profile = prof;
+
+  const curve = new THREE.CatmullRomCurve3(prof.map(p=>V3(p.x,p.y,0)), false, 'catmullrom', .4);
+  const archGeo = new THREE.TubeGeometry(curve, 56, r, 8);
+  const archInst = new THREE.InstancedMesh(archGeo, MAT.pipe, arches);
+  const mtx = new THREE.Matrix4();
+  for(let i=0;i<arches;i++){ mtx.makeTranslation(0,0,z0+i*pitch); archInst.setMatrixAt(i,mtx); }
+  tag(archInst,'arch',{ex:V3(0,.55,0)}); T('arch',arches);
+
+  const totalLen = curve.getLength();
+  const shoulderFrac = (()=>{
+    let acc=0; for(let i=0;i<prof.length-1;i++){ acc+=prof[i].distanceTo(prof[i+1]); if(prof[i+1].y>=sideH-.01 && prof[i+1].x<0 && Math.abs(prof[i+1].x+R)<.02) return acc/totalLen; }
+    return .18; })();
+  const half = s.purlinN/2, roofTs=[];
+  for(let k=1;k<=half;k++){ const t = shoulderFrac + (0.5-shoulderFrac)*k/(half+1); roofTs.push(t, 1-t); }
+  const purlinPts = roofTs.map(t=>curve.getPoint(t));
+  for(const p of purlinPts){
+    cylBetween(V3(p.x,p.y,z0-.05), V3(p.x,p.y,z0+D+.05), r*.9, MAT.pipe2, 'purlin', V3(0,1.5,0)); T('purlin',1);
+  }
+  const apex = curve.getPoint(.5);
+  archInst.userData.labelPts = Array.from({length:arches},(_,i)=>V3(apex.x, apex.y+.1, z0+i*pitch));
+  cylBetween(V3(apex.x,apex.y+.01,z0-.05), V3(apex.x,apex.y+.01,z0+D+.05), r, MAT.pipe, 'ridge', V3(0,2.0,0)); T('ridge',1);
+  for(const sx of [-1,1]) for(const hy of [sideH*.5, sideH*.95]){
+    cylBetween(V3(sx*R, hy, z0-.05), V3(sx*R, hy, z0+D+.05), r*.85, MAT.pipe2, 'sideRail', V3(sx*1.3,.15,0)); T('sideRail',1);
+  }
+
+  const crossPts = [...purlinPts, apex];
+  const boxes=[];
+  for(const p of crossPts) for(let i=0;i<arches;i++)
+    boxes.push({p:V3(p.x,p.y,z0+i*pitch), size:[r*4.6,r*4.6,r*4.6]});
+  instBoxes(boxes, MAT.fitting, 'cross', true, V3(0,1.05,0));
+
+  const anchors=[];
+  for(let i=0;i<arches;i++) for(const sx of [-1,1])
+    anchors.push({p:V3(sx*R, .05, z0+i*pitch), size:[r*3, .1, r*3]});
+  instBoxes(anchors, MAT.dark, 'anchor', true, V3(0,-.8,0));
+
+  if(s.brace){
+    const segs=[];
+    for(const ez of [z0, z0+D]){
+      const dir = ez<0 ? 1 : -1;
+      for(const sx of [-1,1]){
+        const a = V3(sx*R*.97, .25, ez+dir*.1);
+        const b = V3(sx*R*.30, H*.92, ez+dir*Math.min(3.2,D*.2));
+        segs.push([a,b]);
+      }
+    }
+    instSegs(segs, r*.9, MAT.pipe2, 'braceP', true, V3(0,.35,0));
+  }
+
+  for(const [ez, isFront] of [[z0,true],[z0+D,false]]){
+    const zsign = ez<0 ? -1 : 1;
+    const withDoor = isFront && s.hasDoor;
+    const posts=[], rails=[];
+    const nPost = Math.max(4, Math.round(W/1.1));
+    for(let i=1;i<nPost;i++){
+      const x = -R + W*i/nPost;
+      const top = yAt(prof,x)-.02;
+      const inDoor = withDoor && Math.abs(x) < s.doorW/2+.08;
+      const y0 = inDoor ? s.doorH+.25 : .02;
+      if(top>y0+.15) posts.push([V3(x,y0,ez), V3(x,top,ez)]);
+    }
+    for(const hy of [ .95, 1.75 ]){
+      if(hy>H-.3) continue;
+      if(withDoor && hy < s.doorH){
+        rails.push([V3(-R,hy,ez), V3(-s.doorW/2-.05,hy,ez)]);
+        rails.push([V3(s.doorW/2+.05,hy,ez), V3(R,hy,ez)]);
+      }else rails.push([V3(-R,hy,ez), V3(R,hy,ez)]);
+    }
+    if(withDoor) rails.push([V3(-s.doorW/2-.05, s.doorH+.18, ez), V3(s.doorW/2+.05, s.doorH+.18, ez)]);
+    instSegs(posts, r*.95, MAT.pipe, 'gablePost', true, V3(0,.25,zsign*1.6));
+    instSegs(rails, r*.8, MAT.pipe2, 'gableRail', true, V3(0,.12,zsign*1.9));
+    if(withDoor) buildDoor(ez, -1, s);
+  }
+
+  if(s.sideVent){
+    for(const sx of [-1,1]){
+      const exSide = V3(sx*1.7,.1,0);
+      cylBetween(V3(sx*(R+.06), .92, z0), V3(sx*(R+.06), .92, z0+D), .028, MAT.pipe, 'rollpipe', exSide);
+      T('rollpipe',1);
+      const roll = new THREE.Mesh(new THREE.CylinderGeometry(.055,.055,D,10), MAT.doorFilm);
+      roll.rotation.x = Math.PI/2; roll.position.set(sx*(R+.06), .92, 0);
+      tag(roll,'rollpipe',{cast:false,order:9, ex:exSide});
+      const arm = new THREE.Mesh(new THREE.CylinderGeometry(.02,.02,.55,8), MAT.fitting);
+      arm.position.set(sx*(R+.1), .62, z0-.12); tag(arm,'roller',{ex:exSide});
+      const grip = new THREE.Mesh(new THREE.BoxGeometry(.06,.2,.06), MAT.red);
+      grip.position.set(sx*(R+.1), .38, z0-.2); grip.rotation.x=.5;
+      tag(grip,'roller',{ex:exSide, label:[V3(0,0,0)]});
+      T('roller',1);
+    }
+  }
+
+  if(s.fans){
+    const nf = Math.max(2, Math.round(D/10));
+    for(let i=0;i<nf;i++){
+      const z = z0 + D*(i+1)/(nf+1);
+      buildFan(0, H-.55, z, V3(0,1.0,0));
+    }
+    T('fan', nf);
+  }
+
+  if(s.band){
+    const bandCurve = new THREE.CatmullRomCurve3(prof.map(p=>V3(p.x*1.004, p.y+.05, 0)), false,'catmullrom',.4);
+    const bGeo = new THREE.TubeGeometry(bandCurve, 40, .008, 5);
+    const nBand = Math.floor((arches-1)/2);
+    const bInst = new THREE.InstancedMesh(bGeo, MAT.band, nBand);
+    for(let i=0;i<nBand;i++){ mtx.makeTranslation(0,0,z0+pitch*(2*i+1)); bInst.setMatrixAt(i,mtx); }
+    tag(bInst,'band',{cast:false, ex:V3(0,2.6,0),
+      label:Array.from({length:nBand},(_,i)=>V3(0, H+.18, z0+pitch*(2*i+1)))}); T('band',nBand);
+  }
+
+  if(filmMode<2){
+    setFilmMode();
+    filmSweep(prof.map(p=>V2(p.x*1.006,p.y+.02)), z0-.02, D+.04, 'film', {sag:pitch, z0Arch:z0, ex:V3(0,2.4,0)});
+    gableFilm(prof, z0-.03, s.hasDoor?[s.doorW,s.doorH+.2]:null, 'film', V3(0,.6,-1.9));
+    gableFilm(prof, z0+D+.03, null, 'film', V3(0,.6,1.9));
+    T('film',1);
+  }else T('film',1);
+  T('spring', Math.ceil((W*2+D*2)/2));
+
+  makeSoil(W-1, D-1, s);
+}
+
+function buildFan(x, y, z, ex){
+  const g = new THREE.Group();
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(.26,.05,8,20), MAT.dark);
+  const hub = new THREE.Mesh(new THREE.CylinderGeometry(.09,.11,.16,10), MAT.dark);
+  hub.rotation.x = Math.PI/2;
+  const blade = new THREE.Mesh(new THREE.CircleGeometry(.24,16),
+    new THREE.MeshStandardMaterial({color:0x9aa2a8, metalness:.6, roughness:.4, side:THREE.DoubleSide}));
+  const rod = new THREE.Mesh(new THREE.CylinderGeometry(.012,.012,.4,6), MAT.fitting);
+  rod.position.y = .4;
+  g.add(ring,hub,blade,rod);
+  g.position.set(x,y,z);
+  g.userData.exDir = ex;
+  g.userData.partKey = 'fan';
+  g.userData.labelPts = [V3(0,.55,0)];
+  g.traverse(o=>{ if(o.isMesh){ o.userData.partKey='fan'; o.userData.baseMat=o.material; o.castShadow=true; pickables.push(o);} });
+  houseGroup.add(g);
+}
+
+function makeSoil(w,d,s){
+  // ハウス周りの土の犬走り(草地との境界)
+  dirtTex.repeat.set(Math.max(2,(s.totalW+6)/4), Math.max(2,(s.D+6)/4));
+  const apron = new THREE.Mesh(new THREE.PlaneGeometry(s.totalW+6, s.D+6),
+    new THREE.MeshStandardMaterial({map:dirtTex, roughness:1}));
+  apron.rotation.x=-Math.PI/2; apron.position.y=.004; apron.receiveShadow=true;
+  houseGroup.add(apron);
+  // 立体的な畝(盛り上がった列)
+  const nRows = Math.max(2, Math.round(w/1.3));
+  const rowPitch = w/nRows;
+  soilTex.repeat.set(nRows,1);
+  const sg = new THREE.PlaneGeometry(w, d, nRows*8, 4);
+  {
+    const p=sg.attributes.position;
+    for(let i=0;i<p.count;i++){
+      const x=p.getX(i);
+      p.setZ(i, .06*(0.5-0.5*Math.cos((x+w/2)*Math.PI*2/rowPitch)));
+    }
+    sg.computeVertexNormals();
+  }
+  const soil = new THREE.Mesh(sg, new THREE.MeshStandardMaterial({map:soilTex, roughness:1}));
+  soil.rotation.x=-Math.PI/2; soil.position.y=.012; soil.receiveShadow=true;
+  houseGroup.add(soil);
+  // 草の株(ハウス周囲の近景)
+  {
+    const N = mqMobile.matches ? 700 : 2400;
+    const inst = new THREE.InstancedMesh(tuftGeo, tuftMat, N);
+    const m=new THREE.Matrix4(), q=new THREE.Quaternion(), eul=new THREE.Euler();
+    const ax=s.totalW/2+3.6, az=s.D/2+3.6;
+    const range=Math.max(ax,az)+24;
+    let placed=0, tries=0;
+    while(placed<N && tries<N*25){
+      tries++;
+      const x=(Math.random()*2-1)*range, z=(Math.random()*2-1)*range;
+      if(Math.abs(x)<ax && Math.abs(z)<az) continue;
+      const sc=.4+Math.random()*.5;
+      eul.set(0,Math.random()*Math.PI,0); q.setFromEuler(eul);
+      m.compose(V3(x,0,z), q, V3(sc, sc*(.7+Math.random()*.5), sc));
+      inst.setMatrixAt(placed++, m);
+    }
+    inst.count=placed;
+    inst.castShadow=false; inst.receiveShadow=false;
+    inst.userData.noPhoto=true; // 切り抜きテクスチャは写真品質モード非対応
+    houseGroup.add(inst);
+  }
+  // 接地影(フェイクAO)
+  const c=document.createElement('canvas'); c.width=256; c.height=256;
+  const g=c.getContext('2d');
+  g.filter='blur(22px)';
+  g.fillStyle='rgba(30,24,16,.5)';
+  g.fillRect(34,34,188,188);
+  const aoTex=new THREE.CanvasTexture(c);
+  const ao=new THREE.Mesh(new THREE.PlaneGeometry(s.totalW+4, s.D+4),
+    new THREE.MeshBasicMaterial({map:aoTex, transparent:true, opacity:.55, depthWrite:false}));
+  ao.rotation.x=-Math.PI/2; ao.position.y=.006;
+  ao.userData.noPhoto=true; // 写真品質モードでは本物のGI影が出るため不要
+  houseGroup.add(ao);
+}
+
+/* ============================================================
+   鉄骨連棟ハウス
+   ============================================================ */
+function buildSteelHouse(s){
+  const {S,n,D,colPitch,eave,H,pitch,arches} = s;
+  const TW = s.totalW, z0=-D/2, x0=-TW/2;
+  const roofProf = profileSpanRoof(S,eave,H);
+  s.roofProf = roofProf;
+  const colRows = Math.floor(D/colPitch)+1;
+  const mtx = new THREE.Matrix4();
+
+  const cols=[], founds=[];
+  for(let i=0;i<=n;i++){
+    const x = x0 + i*S;
+    for(let j=0;j<colRows;j++){
+      const z = z0 + j*colPitch;
+      cols.push({p:V3(x, eave/2, z), size:[.09, eave, .09]});
+      founds.push({p:V3(x,.06,z), size:[.3,.12,.3]});
+    }
+  }
+  instBoxes(cols, MAT.steel, 'column');
+  instBoxes(founds, MAT.concrete, 'foundation', true, V3(0,-.55,0));
+
+  const girders=[], ties=[];
+  for(let i=0;i<=n;i++){
+    const x = x0+i*S;
+    girders.push({p:V3(x, eave-.05, 0), size:[.08,.1,D]});
+  }
+  instBoxes(girders, MAT.steel, 'girder', true, V3(0,.75,0));
+  for(let j=0;j<colRows;j++){
+    const z = z0+j*colPitch;
+    for(let i=0;i<n;i++){
+      ties.push({p:V3(x0+i*S+S/2, eave-.02, z), size:[S,.07,.07]});
+    }
+  }
+  instBoxes(ties, MAT.steel, 'tieBeam', true, V3(0,1.25,0));
+
+  const localPts = roofProf.map(p=>V3(p.x-S/2, p.y, 0));
+  const curve = new THREE.CatmullRomCurve3(localPts, false,'catmullrom',.4);
+  const archGeo = new THREE.TubeGeometry(curve, 40, .012, 7);
+  const archInst = new THREE.InstancedMesh(archGeo, MAT.pipe, n*arches);
+  let k=0;
+  for(let i=0;i<n;i++){
+    const xc = x0+i*S+S/2;
+    for(let a=0;a<arches;a++){ mtx.makeTranslation(xc,0,z0+a*pitch); archInst.setMatrixAt(k++,mtx); }
+  }
+  tag(archInst,'arch',{ex:V3(0,1.75,0)}); T('arch', n*arches);
+  {
+    const pts=[];
+    for(let i=0;i<n;i++){ const xc=x0+i*S+S/2;
+      for(let a=0;a<arches;a++) pts.push(V3(xc, H+.1, z0+a*pitch)); }
+    archInst.userData.labelPts = pts;
+  }
+
+  const half=s.purlinN/2, ts=[];
+  for(let q=1;q<=half;q++){ const t=.5*q/(half+1); ts.push(t,1-t); }
+  const boxes=[];
+  for(let i=0;i<n;i++){
+    const xc = x0+i*S+S/2;
+    for(const t of ts){
+      const p = curve.getPoint(t);
+      cylBetween(V3(xc+p.x,p.y,z0-.05), V3(xc+p.x,p.y,z0+D+.05), .011, MAT.pipe2, 'purlin', V3(0,2.1,0)); T('purlin',1);
+      for(let a=0;a<arches;a++) boxes.push({p:V3(xc+p.x,p.y,z0+a*pitch), size:[.05,.05,.05]});
+    }
+    const ap = curve.getPoint(.5);
+    cylBetween(V3(xc+ap.x,ap.y+.01,z0-.05), V3(xc+ap.x,ap.y+.01,z0+D+.05), .012, MAT.pipe, 'ridge', V3(0,2.3,0)); T('ridge',1);
+    for(let a=0;a<arches;a++) boxes.push({p:V3(xc+ap.x,ap.y,z0+a*pitch), size:[.05,.05,.05]});
+  }
+  instBoxes(boxes, MAT.fitting, 'cross', true, V3(0,1.95,0));
+
+  const lat=[];
+  const latTs = [.08,.2,.32,.44,.56,.68,.8,.92];
+  for(let i=0;i<n;i++){
+    const xc = x0+i*S+S/2;
+    for(let a=0;a<arches-1;a++){
+      for(let q=0;q<latTs.length-1;q++){
+        const t1=latTs[q], t2=latTs[q+1];
+        const p1=curve.getPoint(t1), p2=curve.getPoint(t2);
+        const za=z0+a*pitch, zb=z0+(a+1)*pitch;
+        lat.push(q%2 ? [V3(xc+p1.x,p1.y,za),V3(xc+p2.x,p2.y,zb)]
+                     : [V3(xc+p1.x,p1.y,zb),V3(xc+p2.x,p2.y,za)]);
+      }
+    }
+  }
+  instSegs(lat, .006, MAT.pipe2, 'lattice', true, V3(0,2.6,0));
+
+  const gv=[], ge=[];
+  for(let i=1;i<n;i++) gv.push({p:V3(x0+i*S, eave+.06, 0), size:[.2,.1,D+.1]});
+  for(const x of [x0, x0+TW]) ge.push({p:V3(x, eave+.04, 0), size:[.13,.09,D+.1]});
+  instBoxes(gv, MAT.steel, 'gutterV', true, V3(0,1.1,0));
+  instBoxes(ge, MAT.steel, 'gutterE', true, V3(0,.95,0));
+
+  const bx=[];
+  for(const x of [x0, x0+TW]){
+    for(const [za,zb] of [[z0, z0+colPitch],[z0+D-colPitch, z0+D]]){
+      bx.push([V3(x,.15,za), V3(x,eave-.15,zb)]);
+      bx.push([V3(x,eave-.15,za), V3(x,.15,zb)]);
+    }
+  }
+  instSegs(bx, .008, MAT.pipe2, 'braceX', true, V3(0,.3,0));
+
+  const yAtTotal = x => { let lx=(x-x0)%S; if(lx<0)lx+=S; return yAt(roofProf, lx); };
+  for(const [ez,isFront] of [[z0,true],[z0+D,false]]){
+    const zsign = ez<0 ? -1 : 1;
+    const withDoor = isFront && s.hasDoor;
+    const posts=[], rails=[];
+    const nPost = Math.round(TW/1.15);
+    for(let i=1;i<nPost;i++){
+      const x = x0 + TW*i/nPost;
+      if(Math.abs((x-x0)%S)<.15 || Math.abs(((x-x0)%S)-S)<.15) continue;
+      const top = yAtTotal(x)-.02;
+      const inDoor = withDoor && Math.abs(x) < s.doorW/2+.08;
+      const y0 = inDoor ? s.doorH+.25 : .02;
+      if(top>y0+.15) posts.push([V3(x,y0,ez), V3(x,top,ez)]);
+    }
+    for(const hy of [.95, 1.8, Math.min(eave-.1, 2.6)]){
+      if(withDoor && hy < s.doorH){
+        rails.push([V3(x0,hy,ez), V3(-s.doorW/2-.05,hy,ez)]);
+        rails.push([V3(s.doorW/2+.05,hy,ez), V3(x0+TW,hy,ez)]);
+      }else rails.push([V3(x0,hy,ez), V3(x0+TW,hy,ez)]);
+    }
+    if(withDoor) rails.push([V3(-s.doorW/2-.05,s.doorH+.18,ez), V3(s.doorW/2+.05,s.doorH+.18,ez)]);
+    instSegs(posts, .014, MAT.pipe, 'gablePost', true, V3(0,.25,zsign*1.6));
+    instSegs(rails, .011, MAT.pipe2, 'gableRail', true, V3(0,.12,zsign*1.9));
+    if(withDoor) buildDoor(ez, -1, s);
+  }
+
+  if(s.sideVent){
+    for(const x of [x0-.06, x0+TW+.06]){
+      const sgn = x<0?-1:1, exSide=V3(sgn*1.7,.1,0);
+      cylBetween(V3(x,1.5,z0), V3(x,1.5,z0+D), .028, MAT.pipe, 'rollpipe', exSide); T('rollpipe',1);
+      const roll = new THREE.Mesh(new THREE.CylinderGeometry(.055,.055,D,10), MAT.doorFilm);
+      roll.rotation.x=Math.PI/2; roll.position.set(x,1.5,0); tag(roll,'rollpipe',{cast:false,order:9, ex:exSide});
+      T('roller',1);
+    }
+  }
+  if(s.redNet){
+    for(const x of [x0-.03, x0+TW+.03]){
+      const sgn = x<0?-1:1;
+      const net = new THREE.Mesh(new THREE.PlaneGeometry(D,1.25), MAT.net);
+      net.rotation.y = Math.PI/2; net.position.set(x, .78, 0);
+      tag(net,'redNet',{cast:false, order:8, ex:V3(sgn*1.9,0,0)});
+    }
+    T('redNet',1);
+  }
+
+  if(s.curtain){
+    for(let i=0;i<n;i++){
+      const xc = x0+i*S+S/2;
+      for(const dx of [-S*.25, S*.25]){
+        const b = new THREE.Mesh(new THREE.CylinderGeometry(.06,.06,D-.4,8), MAT.curtain);
+        b.rotation.x=Math.PI/2; b.position.set(xc+dx, eave+.12, 0);
+        tag(b,'curtain',{cast:false, ex:V3(0,-.8,0)});
+      }
+    }
+    T('curtain',1);
+  }
+
+  if(s.fans){
+    const nf = Math.max(2, Math.round(D/12));
+    let cnt=0;
+    for(let i=0;i<n;i++){
+      const xc = x0+i*S+S/2;
+      for(let f=0;f<nf;f++){ buildFan(xc, eave+.9, z0+D*(f+1)/(nf+1), V3(0,.9,0)); cnt++; }
+    }
+    T('fan',cnt);
+  }
+
+  if(filmMode<2){
+    setFilmMode();
+    for(let i=0;i<n;i++){
+      const xc=x0+i*S;
+      filmSweep(roofProf.map(p=>V2(xc+p.x, p.y+.03)), z0-.02, D+.04, 'film', {sag:pitch, z0Arch:z0, ex:V3(0,2.3,0)});
+    }
+    for(const x of [x0-.02, x0+TW+.02]){
+      const sgn = x<0?-1:1;
+      const wall = new THREE.Mesh(new THREE.PlaneGeometry(D+.04, eave), MAT.film);
+      wall.rotation.y=Math.PI/2; wall.position.set(x, eave/2, 0);
+      tag(wall,'film',{cast:false, order:10, ex:V3(sgn*1.5,.2,0)});
+    }
+    const outline=[V2(x0,0)];
+    for(let i=0;i<n;i++){ const xc=x0+i*S; for(const p of roofProf) outline.push(V2(xc+p.x,p.y)); }
+    outline.push(V2(x0+TW,0));
+    gableFilm(outline, z0-.03, s.hasDoor?[s.doorW,s.doorH+.2]:null, 'film', V3(0,.6,-1.9));
+    gableFilm(outline, z0+D+.03, null, 'film', V3(0,.6,1.9));
+    T('film',1);
+  }else T('film',1);
+  T('spring', Math.ceil((TW*2+D*2)/2));
+
+  makeSoil(TW-1.2, D-1.2, s);
+}
+
+/* ============================================================
+   再構築・分解表示
+   ============================================================ */
+let spec=null, filmMode=0, selectedKey=null, dimsOn=false, explodeVal=0;
+
+function disposeGroup(g){
+  g.traverse(o=>{ if(o.isMesh){ o.geometry?.dispose(); } });
+  g.clear();
+}
+function buildHouse(){
+  disposeGroup(houseGroup); pickables.length=0; tally={};
+  spec = readSpec();
+  if(spec.type==='pipe') buildPipeHouse(spec); else buildSteelHouse(spec);
+  setShadowArea(Math.max(spec.totalW, spec.D)*0.75+8);
+  applyExplode(explodeVal);
+  updatePartNumbers();
+  updateDims();
+  renderPartsTable(); renderDimsBox(); renderWarnings(); renderPartInfo(); updatePickTip();
+  markDirty();
+}
+function applyExplode(v){
+  explodeVal = v;
+  if(!spec) return;
+  const F = Math.max(spec.H*1.15, 3.5);
+  for(const o of houseGroup.children){
+    const d = o.userData.exDir;
+    if(!d) continue;
+    if(!o.userData.basePos) o.userData.basePos = o.position.clone();
+    o.position.copy(o.userData.basePos).addScaledVector(d, v*F);
+  }
+}
+el('explode').addEventListener('input', e=>applyExplode(+e.target.value));
+
+/* ============================================================
+   寸法表示
+   ============================================================ */
+function makeLabel(text){
+  const c=document.createElement('canvas'); c.width=320; c.height=72;
+  const g=c.getContext('2d');
+  g.fillStyle='rgba(255,255,255,.92)'; g.fillRect(0,0,320,72);
+  g.strokeStyle='#2f7d4f'; g.lineWidth=4; g.strokeRect(2,2,316,68);
+  g.fillStyle='#1c4f30'; g.font='bold 34px sans-serif'; g.textAlign='center'; g.textBaseline='middle';
+  g.fillText(text,160,38);
+  const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace;
+  const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t, depthTest:false}));
+  s.scale.set(3,.68,1); s.renderOrder=20; return s;
+}
+function updateDims(){
+  dimGroup.clear();
+  if(!dimsOn||!spec) return;
+  const W=spec.totalW, {D,H}=spec;
+  const line=(a,b)=>dimGroup.add(new THREE.Line(
+    new THREE.BufferGeometry().setFromPoints([a,b]),
+    new THREE.LineBasicMaterial({color:0xc0392b})));
+  line(V3(-W/2,.05,-D/2-1.2), V3(W/2,.05,-D/2-1.2));
+  let l=makeLabel(`${spec.type==='pipe'?'間口':'全幅'} ${W}m`); l.position.set(0,.6,-D/2-1.2); dimGroup.add(l);
+  line(V3(W/2+1.2,.05,-D/2), V3(W/2+1.2,.05,D/2));
+  l=makeLabel(`奥行 ${D}m`); l.position.set(W/2+1.2,.6,0); dimGroup.add(l);
+  line(V3(0,0,-D/2-1.2), V3(0,H,-D/2-1.2));
+  l=makeLabel(`棟高 ${H}m`); l.position.set(0,H+.5,-D/2-1.2); dimGroup.add(l);
+}
+
+/* ============================================================
+   クリック選択+3D上の数量チップ
+   ============================================================ */
+const ray = new THREE.Raycaster();
+let selAnchor = null; // 3Dクリック位置(Vector3)。一覧クリック時はnull
+canvas.addEventListener('pointerdown', e=>{ canvas._px=e.clientX; canvas._py=e.clientY; });
+canvas.addEventListener('pointerup', e=>{
+  if(Math.hypot(e.clientX-canvas._px, e.clientY-canvas._py)>5) return;
+  const rect=canvas.getBoundingClientRect();
+  ray.setFromCamera(new THREE.Vector2(
+    (e.clientX-rect.left)/rect.width*2-1, -((e.clientY-rect.top)/rect.height)*2+1), camera);
+  const hits = ray.intersectObjects(pickables,false)
+    .filter(h=>h.object.userData.partKey!=='film' || filmMode===0);
+  if(hits.length) selectPart(hits[0].object.userData.partKey, hits[0].point.clone());
+  else selectPart(null);
+});
+/* --- 部品ごとの番号ラベル(1,2,3…) --- */
+const numberSprites=[]; const numMatCache=new Map();
+const NUM_CAP = mqMobile.matches ? 250 : 400;
+function numMaterial(n){
+  if(numMatCache.has(n)) return numMatCache.get(n);
+  const c=document.createElement('canvas'); c.width=96; c.height=52;
+  const g=c.getContext('2d');
+  g.font='bold 42px sans-serif'; g.textAlign='center'; g.textBaseline='middle';
+  g.lineJoin='round';
+  g.strokeStyle='rgba(255,255,255,.9)'; g.lineWidth=7;
+  g.strokeText(n,48,28);
+  g.fillStyle='#e65c00';
+  g.fillText(n,48,28);
+  const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace;
+  const m=new THREE.SpriteMaterial({map:t, depthTest:false, transparent:true});
+  numMatCache.set(n,m); return m;
+}
+function updatePartNumbers(){
+  for(const s of numberSprites) s.parent && s.parent.remove(s);
+  numberSprites.length=0;
+  if(!selectedKey || !tally[selectedKey]) return;
+  const owners = houseGroup.children.filter(o=>o.userData.partKey===selectedKey);
+  const pairs=[];
+  for(const o of owners) for(const p of (o.userData.labelPts||[])) pairs.push([o,p]);
+  const total = tally[selectedKey];
+  if(!pairs.length || pairs.length!==total || total>NUM_CAP) return;
+  pairs.forEach(([o,p],i)=>{
+    const sp = new THREE.Sprite(numMaterial(i+1));
+    sp.position.copy(p);
+    sp.center.set(.5,-.3);
+    sp.scale.set(.3,.16,1);
+    sp.renderOrder=40;
+    o.add(sp);
+    numberSprites.push(sp);
+  });
+}
+function selectPart(key, anchor=null){
+  selectedKey=key;
+  selAnchor=anchor;
+  for(const m of pickables){
+    const k=m.userData.partKey;
+    if(k==='film') continue;
+    m.material = (key&&k===key) ? MAT.sel : m.userData.baseMat;
+  }
+  updatePartNumbers();
+  renderPartInfo(); renderPartsTable(); updatePickTip();
+  if(key && mqMobile.matches && !anchor) el('asideR').classList.add('open');
+}
+function updatePickTip(){
+  const tip=el('pickTip');
+  if(!selectedKey || !tally[selectedKey]){ tip.style.display='none'; return; }
+  const p=PART_MASTER[selectedKey];
+  tip.textContent = `${p.name} × ${tally[selectedKey]} ${p.unit}` +
+    (tally[selectedKey]>NUM_CAP ? '(数が多いため番号は省略)' : '');
+  tip.style.display='block';
+  tip.classList.toggle('fixedTop', !selAnchor);
+}
+function trackPickTip(){
+  if(!selectedKey || !selAnchor) return;
+  const tip=el('pickTip');
+  const v=selAnchor.clone().project(camera);
+  if(v.z>1){ tip.style.display='none'; return; }
+  tip.style.display='block';
+  const w=canvas.clientWidth, h=canvas.clientHeight;
+  tip.style.left=((v.x*.5+.5)*w)+'px';
+  tip.style.top=((-v.y*.5+.5)*h)+'px';
+}
+function specText(key){
+  return PART_MASTER[key].spec || `${spec.dia}mm`;
+}
+function renderPartInfo(){
+  const box=el('partInfo');
+  if(!selectedKey||!tally[selectedKey]){ box.innerHTML='<div class="empty">3D画面の部品をタップすると、部品名と数量がその場に表示されます。下の一覧から選ぶこともできます。</div>'; return; }
+  const p=PART_MASTER[selectedKey];
+  box.innerHTML=`<div class="infoCard">
+    <div class="pname">${p.name}</div>
+    <div class="qtyRow"><span class="lbl">使用数量</span><span class="num">${tally[selectedKey]}</span><span class="unit">${p.unit}</span></div>
+    <dl>
+      <dt>使用場所</dt><dd style="font-weight:normal">${p.place}</dd>
+      <dt>規格</dt><dd>${specText(selectedKey)}</dd>
+      <dt>商品コード</dt><dd>${p.code}</dd>
+    </dl>
+    <div class="note">同じ部品を3D上でオレンジ色で強調表示しています。</div>
+  </div>`;
+}
+
+/* ============================================================
+   右パネル:部品一覧・寸法
+   ============================================================ */
+function renderPartsTable(){
+  const host=el('partsList');
+  let html='';
+  for(const cat of CAT_ORDER){
+    const rows = Object.entries(PART_MASTER).filter(([k,p])=>p.cat===cat && tally[k]);
+    if(!rows.length) continue;
+    html+=`<div class="pCat"><span>${cat}</span><span>${rows.length}品目</span></div>`;
+    for(const [k,p] of rows)
+      html+=`<div class="pRow ${k===selectedKey?'sel':''}" data-key="${k}">
+        <div class="pMain"><span class="pName">${p.name}</span><span class="pSpec">${specText(k)} / ${p.code}</span></div>
+        <div class="pQty">${tally[k]}<small>${p.unit}</small></div>
+      </div>`;
+  }
+  host.innerHTML=html;
+  host.querySelectorAll('.pRow').forEach(r=>r.onclick=()=>selectPart(r.dataset.key));
+}
+function dimItem(l,v,wide){ return `<div class="dimItem${wide?' wide':''}"><div class="dl">${l}</div><div class="dv">${v}</div></div>`; }
+function renderDimsBox(){
+  const s=spec; let html='';
+  if(s.type==='pipe'){
+    html+=dimItem('間口', s.W+' m')+dimItem('奥行', s.D+' m');
+    html+=dimItem('棟高', s.H+' m')+dimItem('軒高(肩)', s.sideH+' m');
+    html+=dimItem('アーチ間隔', s.pitch*1000+' mm')+dimItem('アーチ本数', s.arches+' 組');
+    if(s.hasDoor) html+=dimItem('扉', `${s.doorW}×${s.doorH} m`);
+    html+=dimItem('床面積(参考)', (s.W*s.D).toFixed(0)+' ㎡', !s.hasDoor);
+  }else{
+    html+=dimItem('スパン幅', s.S+' m')+dimItem('連棟数', s.n+' 連');
+    html+=dimItem('全幅', s.totalW+' m')+dimItem('奥行', s.D+' m');
+    html+=dimItem('軒高', s.eave+' m')+dimItem('棟高', s.H+' m');
+    html+=dimItem('柱間隔', s.colPitch+' m')+dimItem('アーチ', `${s.arches}×${s.n}スパン`);
+    html+=dimItem('床面積(参考)', (s.totalW*s.D).toFixed(0)+' ㎡', true);
+  }
+  el('dimsBox').innerHTML=html;
+}
+function renderWarnings(){
+  const w=[], s=spec;
+  if(s.hasDoor && s.doorW > s.totalW*0.55) w.push('扉の幅がハウスの間口に対して大きすぎます');
+  if(s.type==='pipe' && s.D>50) w.push('この奥行では母屋パイプの継ぎが必要です');
+  if(s.type==='steel' && s.S>8) w.push('スパン幅が大きいため、梁の強度確認が必要です');
+  if(s.pitch<.4 && s.D>40) w.push('アーチ本数が多くなっています。仕様を確認してください');
+  if(s.type==='steel' && s.H-s.eave < .8) w.push('棟高と軒高の差が小さく、屋根の勾配が緩すぎます');
+  el('warnings').innerHTML=w.map(t=>`<div class="warn">⚠ ${t}</div>`).join('');
+}
+
+/* ============================================================
+   ビュー操作
+   ============================================================ */
+function setView(v){
+  const W=spec.totalW, {D,H}=spec, R=Math.max(W,D*.8,H*2.4);
+  const pos={
+    iso:[R*.62,R*.35,-(D/2+R*.38)],
+    front:[0,H*.62,-(D/2+Math.max(W,H*2)*1.05)],
+    back:[0,H*.62,D/2+Math.max(W,H*2)*1.05],
+    side:[W/2+R*.7,H*.6,0],
+    top:[.01,R*1.25,0],
+    inside:[spec.type==='steel'?spec.S/2:0,1.55,-D/2+2.5],
+  }[v];
+  camera.position.set(...pos);
+  controls.target.set(v==='inside'?pos[0]:0, v==='inside'?1.7:H/2.4, v==='inside'?D*.2:0);
+  controls.update();
+  document.querySelectorAll('#viewBar button[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
+}
+document.querySelectorAll('#viewBar button[data-view]').forEach(b=>b.onclick=()=>setView(b.dataset.view));
+el('btnFilmMode').onclick=()=>{
+  filmMode=(filmMode+1)%3;
+  el('btnFilmMode').textContent=['被覆:表示','被覆:透明','被覆:非表示'][filmMode];
+  buildHouse(); selectPart(selectedKey);
+};
+el('btnDims').onclick=()=>{
+  dimsOn=!dimsOn;
+  el('btnDims').textContent=dimsOn?'寸法:表示':'寸法:非表示';
+  updateDims();
+};
+
+/* ============================================================
+   テンプレート・タイプ切替
+   ============================================================ */
+const TEMPLATES = {
+  pipe:[
+    {label:'間口5.4m × 奥行20m 標準', v:{width:5.4, depth:20, ridgeHp:3.0, sideHp:1.6, pitch:500}},
+    {label:'間口6m × 奥行30m 標準', v:{width:6, depth:30, ridgeHp:3.4, sideHp:1.7, pitch:500}},
+    {label:'間口7.2m × 奥行40m 補強仕様', v:{width:7.2, depth:40, ridgeHp:3.8, sideHp:1.8, pitch:450}},
+  ],
+  steel:[
+    {label:'6m×4連棟 × 奥行40m 標準', v:{spanW:6, nSpan:4, depthS:40, colPitch:4, eaveHs:3.0, ridgeHs:4.6, pitch:600}},
+    {label:'6m×3連棟 × 奥行30m', v:{spanW:6, nSpan:3, depthS:30, colPitch:4, eaveHs:3.0, ridgeHs:4.5, pitch:600}},
+    {label:'8m×2連棟 × 奥行30m 花き用', v:{spanW:8, nSpan:2, depthS:30, colPitch:3.5, eaveHs:3.5, ridgeHs:5.2, pitch:600}},
+  ],
+};
+function fillTemplates(){
+  const type=el('houseType').value;
+  el('template').innerHTML = '<option value="">選択してください</option>' +
+    TEMPLATES[type].map((t,i)=>`<option value="${i}">${t.label}</option>`).join('');
+}
+function applyTemplate(i){
+  const t=TEMPLATES[el('houseType').value][i];
+  if(!t) return;
+  for(const [id,v] of Object.entries(t.v)) el(id).value=v;
+}
+function updateFieldVis(){
+  const type=el('houseType').value;
+  document.querySelectorAll('[data-vis]').forEach(n=>n.classList.toggle('hidden', n.dataset.vis!==type));
+  document.querySelectorAll('#typeSeg button').forEach(b=>b.classList.toggle('active', b.dataset.t===type));
+}
+document.querySelectorAll('#typeSeg button').forEach(b=>{
+  b.onclick=()=>{ el('houseType').value=b.dataset.t; el('houseType').dispatchEvent(new Event('change')); };
+});
+el('houseType').addEventListener('change',()=>{
+  updateFieldVis(); fillTemplates(); applyTemplate(0);
+  el('template').value='0';
+  selectedKey=null; selAnchor=null; buildHouse(); setView('iso');
+});
+el('template').addEventListener('change',e=>{
+  if(e.target.value==='')return;
+  applyTemplate(+e.target.value); buildHouse(); setView('iso');
+});
+
+const ALL_IDS=['houseType','width','depth','ridgeHp','sideHp','spanW','nSpan','depthS','colPitch','eaveHs','ridgeHs','pitch','door','pipeDia','purlinN','film'];
+const CHK_IDS=['sideVent','fanChk','braceChk','bandChk','redNetChk','curtainChk'];
+for(const id of [...ALL_IDS.filter(i=>i!=='houseType'),...CHK_IDS])
+  el(id).addEventListener('change',()=>{ buildHouse(); selectPart(selectedKey); });
+
+/* ============================================================
+   保存・読込
+   ============================================================ */
+function markDirty(){ el('saveState').textContent='未保存の変更あり'; }
+el('btnSave').onclick=()=>{
+  const name=el('projName').value.trim()||'無題の案件';
+  const all=JSON.parse(localStorage.getItem('houseProjects')||'{}');
+  all[name]={
+    name, customer:el('custName').value, savedAt:new Date().toLocaleString('ja-JP'),
+    inputs:Object.fromEntries([
+      ...ALL_IDS.map(id=>[id,el(id).value]),
+      ...CHK_IDS.map(id=>[id,el(id).checked])]),
+  };
+  localStorage.setItem('houseProjects', JSON.stringify(all));
+  el('saveState').textContent=`保存済み(${all[name].savedAt})`;
+};
+el('btnLoad').onclick=()=>{
+  const all=JSON.parse(localStorage.getItem('houseProjects')||'{}');
+  const names=Object.keys(all);
+  if(!names.length) return alert('保存された案件がありません。');
+  const name=prompt('開く案件名を入力してください:\n\n'+names.map(n=>`・${n}(${all[n].savedAt})`).join('\n'));
+  if(!name||!all[name]) return;
+  const p=all[name];
+  el('projName').value=p.name; el('custName').value=p.customer||'';
+  for(const [id,v] of Object.entries(p.inputs)){
+    if(CHK_IDS.includes(id)) el(id).checked=v; else el(id).value=v;
+  }
+  updateFieldVis(); fillTemplates();
+  buildHouse(); setView('iso');
+  el('saveState').textContent=`保存済み(${p.savedAt})`;
+};
+
+/* ============================================================
+   出力
+   ============================================================ */
+el('btnCsv').onclick=()=>{
+  let csv='﻿カテゴリー,部品名,商品コード,規格,数量,単位,使用場所\n';
+  for(const cat of CAT_ORDER)
+    for(const [k,p] of Object.entries(PART_MASTER))
+      if(p.cat===cat && tally[k])
+        csv+=`${p.cat},${p.name},${p.code},${specText(k)},${tally[k]},${p.unit},${p.place}\n`;
+  csv+=`\n案件名,${el('projName').value}\nハウスタイプ,${el('houseType').selectedOptions[0].text}\n`;
+  if(spec.type==='pipe') csv+=`間口(m),${spec.W}\n奥行(m),${spec.D}\n棟高(m),${spec.H}\n軒高(m),${spec.sideH}\n`;
+  else csv+=`スパン幅(m),${spec.S}\n連棟数,${spec.n}\n全幅(m),${spec.totalW}\n奥行(m),${spec.D}\n軒高(m),${spec.eave}\n棟高(m),${spec.H}\n`;
+  csv+=`アーチ間隔(mm),${spec.pitch*1000}\n`;
+  download(new Blob([csv],{type:'text/csv'}), (el('projName').value||'ハウス')+'_部品一覧.csv');
+};
+el('btnPng').onclick=()=>{
+  renderFrame();
+  canvas.toBlob(b=>download(b,(el('projName').value||'ハウス')+'_3D.png'));
+};
+function download(blob,name){
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download=name; a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+}
+
+/* ============================================================
+   ループ・リサイズ・モバイルUI
+   ============================================================ */
+function resize(){
+  const w=canvas.clientWidth||2, h=canvas.clientHeight||1;
+  renderer.setSize(w,h,false);
+  if(composer) composer.setSize(w,h);
+  camera.aspect=w/h; camera.updateProjectionMatrix();
+}
+let photo = null; // 写真品質モードの状態
+new ResizeObserver(resize).observe(el('viewerWrap'));
+(function loop(){ requestAnimationFrame(loop); if(photo && photo.active) return; controls.update(); trackPickTip(); renderFrame(); })();
+
+/* ============================================================
+   写真品質モード(パストレーシング)
+   ============================================================ */
+// HDR環境マップ(青空+高輝度の太陽+地面の照り返し)を生成
+function buildEnvEquirect(){
+  const W=512, H=256;
+  const data = new Float32Array(W*H*4);
+  const sd = sunDir.clone().normalize();
+  for(let y=0;y<H;y++){
+    const v = y/(H-1);
+    const dy = Math.cos(Math.PI*(1-v));      // v=1(最終行)→ 天頂(+Y)
+    const r  = Math.sin(Math.PI*(1-v));
+    for(let x=0;x<W;x++){
+      const u = x/(W-1);
+      const th = u*Math.PI*2 - Math.PI;
+      const dx = Math.sin(th)*r, dz = -Math.cos(th)*r;
+      let R,G,B;
+      if(dy>0){
+        const t = Math.pow(dy,.55);
+        R=.60-.33*t; G=.72-.19*t; B=.90;
+        const s = Math.max(0, dx*sd.x + dy*sd.y + dz*sd.z);
+        const glow = Math.pow(s,1500)*150 + Math.pow(s,10)*.4;
+        R+=glow; G+=glow*.97; B+=glow*.88;
+        const hz = Math.pow(1-dy,7)*.45;
+        R+=hz; G+=hz; B+=hz*.95;
+      }else{
+        R=.30; G=.33; B=.20; // 草地の照り返し
+      }
+      const i=(y*W+x)*4;
+      data[i]=R; data[i+1]=G; data[i+2]=B; data[i+3]=1;
+    }
+  }
+  const tex = new THREE.DataTexture(data, W, H, THREE.RGBAFormat, THREE.FloatType);
+  tex.mapping = THREE.EquirectangularReflectionMapping;
+  tex.needsUpdate = true;
+  return tex;
+}
+async function startPhoto(){
+  if(photo) return;
+  closeDrawers();
+  // 非対応オブジェクト(スプライト・線・空・草の株・AO)を一時的に隠す
+  const hidden=[];
+  scene.traverse(o=>{
+    if((o.isSprite || o.isLine || o.userData.noPhoto) && o.visible){ o.visible=false; hidden.push(o); }
+  });
+  const lightsOff=[];
+  scene.traverse(o=>{ if(o.isLight && o.visible){ o.visible=false; lightsOff.push(o); } });
+  el('pickTip').style.display='none';
+  const envTex = buildEnvEquirect();
+  const oldEnv=scene.environment, oldBg=scene.background, oldFog=scene.fog;
+  scene.environment=envTex; scene.background=envTex; scene.fog=null;
+  controls.enabled=false;
+  el('photoOverlay').classList.remove('hidden');
+  el('photoSave').disabled=true;
+  el('photoStatus').textContent='シーン解析中…(数秒かかります)';
+  el('photoProg').style.width='0%';
+  photo={active:true, hidden, lightsOff, oldEnv, oldBg, oldFog, envTex,
+         targetSamples: mqMobile.matches ? 80 : 220};
+  await new Promise(r=>setTimeout(r,50)); // オーバーレイ描画を先に
+  try{
+    const tracer = new WebGLPathTracer(renderer);
+    tracer.bounces = 6;
+    tracer.filterGlossyFactor = .5;
+    tracer.renderScale = Math.min(1, 1.6/devicePixelRatio);
+    tracer.tiles.set(2,2);
+    tracer.setScene(scene, camera);
+    photo.tracer = tracer;
+    photoLoop();
+  }catch(err){
+    console.error(err);
+    el('photoStatus').textContent='この端末では写真品質モードを実行できませんでした';
+    setTimeout(endPhoto, 2500);
+  }
+}
+function photoLoop(){
+  if(!photo || !photo.active || !photo.tracer) return;
+  photo.tracer.renderSample();
+  const n = photo.tracer.samples, N = photo.targetSamples;
+  const pct = Math.min(100, Math.round(n/N*100));
+  el('photoStatus').textContent = pct<100 ? `写真品質で現像中… ${pct}%` : '現像完了(続けるほど滑らかになります)';
+  el('photoProg').style.width = pct+'%';
+  if(pct>=100) el('photoSave').disabled=false;
+  if(n < N*3) requestAnimationFrame(photoLoop); // 完了後もしばらく品質向上を継続
+}
+function endPhoto(){
+  if(!photo) return;
+  photo.active=false;
+  for(const o of photo.hidden) o.visible=true;
+  for(const o of photo.lightsOff) o.visible=true;
+  scene.environment=photo.oldEnv; scene.background=photo.oldBg; scene.fog=photo.oldFog;
+  try{ photo.tracer && photo.tracer.dispose && photo.tracer.dispose(); }catch(e){}
+  try{ photo.envTex.dispose(); }catch(e){}
+  photo=null;
+  controls.enabled=true;
+  el('photoOverlay').classList.add('hidden');
+  resize();
+}
+el('btnPhoto').onclick=startPhoto;
+el('photoCancel').onclick=endPhoto;
+el('photoSave').onclick=()=>{
+  canvas.toBlob(b=>download(b,(el('projName').value||'ハウス')+'_写真.png'));
+};
+
+function closeDrawers(){ el('asideL').classList.remove('open'); el('asideR').classList.remove('open'); }
+el('btnDrawerL').onclick = ()=>{ el('asideR').classList.remove('open'); el('asideL').classList.toggle('open'); };
+el('btnDrawerR').onclick = ()=>{ el('asideL').classList.remove('open'); el('asideR').classList.toggle('open'); };
+document.querySelectorAll('.drawerClose').forEach(b=>b.onclick=closeDrawers);
+canvas.addEventListener('pointerdown', ()=>{ if(mqMobile.matches) closeDrawers(); });
+if('ontouchstart' in window)
+  el('hintTip').textContent = '1本指:回転 / ピンチ:拡大縮小 / 2本指:移動 / 部品をタップで数量表示';
+
+// 検証用フック(ヘッドレス確認用)
+window.__hv = {
+  shot(w=960,h=540,q=.6){
+    renderer.setSize(w,h,false); if(composer) composer.setSize(w,h);
+    camera.aspect=w/h; camera.updateProjectionMatrix();
+    renderFrame();
+    return canvas.toDataURL('image/jpeg',q);
+  },
+  cam(pos,target){ camera.position.set(...pos); controls.target.set(...target); controls.update(); },
+  setView, buildHouse, selectPart, applyExplode,
+  get spec(){return spec}, get tally(){return tally},
+  get photo(){return photo},
+  scene, camera, renderer, sun, MAT,
+};
+
+updateFieldVis(); fillTemplates(); el('template').value='';
+buildHouse(); setView('iso');
+el('saveState').textContent='未保存';
+el('hintTip').style.transition='opacity 1s';
+setTimeout(()=>el('hintTip').style.opacity=0, 9000);
+</script>
+</body>
+</html>

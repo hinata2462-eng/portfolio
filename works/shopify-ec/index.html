@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>シルバーアクセサリー店の自社ECサイト構築｜作品ページ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap">
+<link rel="stylesheet" href="../../assets/case.css">
+<style>
+section h3 { font-size: 17px; font-weight: 700; margin: 22px 0 8px; }
+.panel h3:first-child { margin-top: 0; }
+.panel ul { max-width: none; }
+.src-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 16px; align-items: start; }
+.src-card dl { margin: 0; display: grid; grid-template-columns: 6.5em minmax(0, 1fr); gap: 4px 10px; font-size: 14px; }
+.src-card dt { color: var(--muted); }
+.src-card dd { margin: 0; }
+.ctrls { display: grid; gap: 10px; font-size: 14px; }
+.ctrls fieldset { border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px 10px; margin: 0; min-width: 0; }
+.ctrls legend { font-size: 12.5px; color: var(--muted); font-weight: 700; padding: 0 4px; }
+.ctrls label { display: inline-flex; align-items: center; gap: 5px; margin-right: 12px; white-space: nowrap; }
+.ctrls select { font: inherit; font-size: 14px; padding: 3px 6px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); }
+.csv td, .csv th { font-family: var(--mono); font-size: 12.5px; white-space: nowrap; }
+.csv td.jp { font-family: var(--body); }
+.csv tr.first td { background: color-mix(in srgb, var(--sample) 16%, transparent); }
+.csv td.empty::after { content: "（空）"; color: var(--muted); font-family: var(--body); font-size: 11.5px; }
+.legend-row { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); margin: 8px 0 0; }
+.swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 4px; background: color-mix(in srgb, var(--sample) 40%, transparent); border: 1px solid var(--line); }
+.lanes { display: grid; gap: 14px; }
+.lane { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0; }
+.lane > b { display: block; font-size: 14px; margin-bottom: 8px; }
+.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: stretch; gap: 0; }
+.steps li { margin: 0; display: flex; align-items: center; }
+.steps li + li::before { content: "→"; color: var(--muted); padding: 0 8px; font-family: var(--mono); }
+.box { border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; font-size: 13.5px; line-height: 1.5; background: var(--paper); }
+.box small { display: block; color: var(--muted); font-size: 12px; }
+.box.out { border-color: var(--accent); }
+.box.tool { border-style: dashed; }
+.ver td:first-child { font-family: var(--mono); font-weight: 500; white-space: nowrap; }
+.chapters { counter-reset: ch; list-style: none; padding: 0; max-width: none; }
+.chapters > li { padding: 8px 0; border-bottom: 1px solid var(--line); margin: 0; }
+.chapters > li:last-child { border-bottom: 0; }
+.chapters small { color: var(--muted); font-size: 13px; }
+.brands { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.view8 { display: flex; flex-wrap: wrap; gap: 6px; padding: 0; list-style: none; max-width: none; }
+.view8 li { margin: 0; font-size: 13px; border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; background: var(--paper); }
+@media (max-width: 700px) {
+  .src-card { grid-template-columns: minmax(0, 1fr); }
+  .steps { flex-direction: column; align-items: stretch; }
+  .steps li { flex-direction: column; align-items: stretch; }
+  .steps li + li::before { content: "↓"; padding: 2px 0; text-align: center; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../../">← ポートフォリオに戻る</a>
+
+  <header class="case-head">
+    <p class="eyebrow">Web・EC制作 · 2026.07 – 2026.08</p>
+    <h1>シルバーアクセサリー店の自社ECサイト構築</h1>
+    <p class="lead">楽天で売っているシルバーアクセサリーの店が、初めて自社のECサイトをShopifyで開くための一式を作りました。楽天店と同じ見た目のテーマ、商品データの一括作成、商品画像の加工、他社サイトの分析、作業の手順書です。</p>
+    <div class="meta"><span class="tag">Shopify</span><span class="tag">Liquid</span><span class="tag">Python</span><span class="tag">OpenCV</span><span class="tag">Claude Code</span></div>
+    <span class="sample-note">見本：商品名・価格・画像の名前はすべて架空です</span>
+  </header>
+
+  <section>
+    <h2>困りごと</h2>
+    <p>楽天の手数料は実質9〜15%かかります。自社のECサイトを持てば、決済の手数料は3%台に下がります。ただ、商品は楽天・Yahoo!ショッピング・Amazonにそれぞれ出ていて、商品名も画像も少しずつ違います。長さ違い・色違いまで手で入れると間違いが出ますし、楽天の表紙画像には楽天向けの文字やバッジが入っていて、そのままでは使えません。担当の方はエンジニアではないので、作業の手順も具体的に書く必要がありました。</p>
+  </section>
+
+  <section>
+    <h2>仕組み</h2>
+    <ol class="flow">
+      <li><b>楽天店の見た目を写し取る</b><span>トップページと商品ページの並び（看板・ランキング・カテゴリ・商品情報の表）を細かく調べ、Shopifyのセクション（Liquid）にしました。最初は11個に分かれていた貼り付け用の部品も、1つにまとめ直しています。</span></li>
+      <li><b>商品データを一度に作る</b><span>各モールの商品ページから、商品名・価格・長さや色の違い・説明画像を集め、Shopifyにそのまま取り込める表（CSV）をスクリプトで作ります。直しが入るたびに全商品を作り直し、11版まで改良しました。</span></li>
+      <li><b>表紙画像を整える</b><span>OpenCVで、表紙画像に入った文字やバッジを消して背景を埋め直します。消した画像はShopifyに置き、テーマから参照します。</span></li>
+      <li><b>売れている自社ECを調べる</b><span>海外と日本のブランド16社の自社ECサイトを、同じ8つの観点で見比べたレポートを作りました。</span></li>
+      <li><b>手順書を渡す</b><span>「どの画面を開き、どこを押し、何を貼るか」まで書いた手順書です。作業は3つにまとめ、それぞれ3〜5分ほどで終わるようにしました。</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>見本</h2>
+    <div class="tabs" role="tablist" aria-label="見本の切り替え">
+      <button type="button" role="tab" id="t-csv" aria-selected="true" aria-controls="p-csv">1行がCSVになるまで</button>
+      <button type="button" role="tab" id="t-flow" aria-selected="false" aria-controls="p-flow">全体の流れ</button>
+      <button type="button" role="tab" id="t-rep" aria-selected="false" aria-controls="p-rep">分析レポートの章立て</button>
+    </div>
+
+    <div class="panel" id="p-csv" role="tabpanel" aria-labelledby="t-csv">
+      <h3>元の商品ページ（架空）</h3>
+      <div class="src-card">
+        <dl>
+          <dt>商品名</dt><dd id="src-title"></dd>
+          <dt>素材</dt><dd>シルバー925</dd>
+          <dt>長さと価格</dt><dd>40cm 5,800円 ／ 45cm 6,200円 ／ 50cm 6,600円 ／ 55cm 7,000円</dd>
+          <dt>説明画像</dt><dd>12枚（長さごとに表紙が違う）</dd>
+          <dt>分類</dt><dd>ネックレス、チェーン</dd>
+        </dl>
+        <div class="ctrls">
+          <fieldset>
+            <legend>Shopifyに出す長さ</legend>
+            <label><input type="checkbox" name="len" value="40" checked>40cm</label>
+            <label><input type="checkbox" name="len" value="45" checked>45cm</label>
+            <label><input type="checkbox" name="len" value="50" checked>50cm</label>
+            <label><input type="checkbox" name="len" value="55">55cm</label>
+          </fieldset>
+          <fieldset>
+            <legend>最初に表示する長さ</legend>
+            <select id="first" aria-label="最初に表示する長さ"></select>
+          </fieldset>
+          <fieldset>
+            <legend>商品名をどこから取るか</legend>
+            <label><input type="radio" name="tsrc" value="r" checked>楽天の商品名</label>
+            <label><input type="radio" name="tsrc" value="a">Amazonの正式名</label>
+          </fieldset>
+        </div>
+      </div>
+
+      <h3>Shopifyに取り込む表（CSV）</h3>
+      <div class="table-wrap">
+        <table class="csv">
+          <thead><tr><th>Handle</th><th>Title</th><th>Option1 Name</th><th>Option1 Value</th><th>Variant SKU</th><th class="num">Variant Price</th><th>Image Src</th><th>Variant Image</th><th>Tags</th></tr></thead>
+          <tbody id="csv-body"></tbody>
+        </table>
+      </div>
+      <p class="legend-row"><span><span class="swatch"></span>1行目だけに商品名・説明・分類が入り、2行目からは長さ違いだけが並びます</span><span id="csv-count"></span></p>
+      <p class="muted small" style="margin-top:8px">実物では、説明（Body）の列に説明画像の並びと、長さを選ぶと説明画像も切り替わる仕掛けが入ります。取り込み直すときは「同じハンドルの商品を上書きする」にチェックを入れる、と手順書に書きました。</p>
+
+      <h3>版ごとに直したこと（実際の記録）</h3>
+      <div class="table-wrap">
+        <table class="ver">
+          <thead><tr><th>版</th><th>直したこと</th></tr></thead>
+          <tbody>
+            <tr><td>v7</td><td>長さ・色違い（SKU）ごとに表紙画像を設定。選んだ長さに合わせて説明画像も切り替わるようにした</td></tr>
+            <tr><td>v8</td><td>長さ違いのうち45cmを最初に表示</td></tr>
+            <tr><td>v9</td><td>楽天店の商品名の変更に合わせて23商品の名前と説明画像を同期。商品番号が変わった16 SKUの対応表を追加</td></tr>
+            <tr><td>v10</td><td>説明画像と表紙をYahoo!ショッピング版に差し替え。表紙48枚をShopifyに置き、楽天の画像への参照を0件にした</td></tr>
+            <tr><td>v11</td><td>31商品の名前をAmazonの正式名にそろえた</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel" id="p-flow" role="tabpanel" aria-labelledby="t-flow" hidden>
+      <div class="lanes">
+        <div class="lane">
+          <b>商品データ</b>
+          <ol class="steps">
+            <li><span class="box">各モールの商品ページ<small>楽天・Yahoo!・Amazon</small></span></li>
+            <li><span class="box tool">集めるスクリプト<small>Python</small></span></li>
+            <li><span class="box">対応表<small>Shopifyの商品と各モールの商品番号</small></span></li>
+            <li><span class="box tool">CSVを作る<small>v1 → v11</small></span></li>
+            <li><span class="box out">Shopifyに取り込み<small>上書きで入れ直せる</small></span></li>
+          </ol>
+        </div>
+        <div class="lane">
+          <b>商品画像</b>
+          <ol class="steps">
+            <li><span class="box">表紙画像<small>文字・バッジ入り</small></span></li>
+            <li><span class="box tool">文字とバッジを消す<small>OpenCV</small></span></li>
+            <li><span class="box">見比べのページ<small>前と後を並べて確認</small></span></li>
+            <li><span class="box out">Shopifyのファイルに置く<small>テーマから参照</small></span></li>
+          </ol>
+        </div>
+        <div class="lane">
+          <b>見た目（テーマ）</b>
+          <ol class="steps">
+            <li><span class="box">楽天店のトップ・商品ページ<small>並び・文言・カテゴリ</small></span></li>
+            <li><span class="box tool">見本ページで確認<small>HTML</small></span></li>
+            <li><span class="box">セクション1つ＋部品1つ<small>Liquid・CSS・JavaScript</small></span></li>
+            <li><span class="box out">手順書どおりに貼る<small>作業3つ・各3〜5分</small></span></li>
+          </ol>
+        </div>
+      </div>
+      <p class="muted small" style="margin-top:12px">点線の箱が自分で作った道具です。青い枠が、担当の方の手元に届くものです。</p>
+    </div>
+
+    <div class="panel" id="p-rep" role="tabpanel" aria-labelledby="t-rep" hidden>
+      <p class="small muted" style="margin-bottom:10px">「なぜ売れるのか」を、16社の自社ECサイトの直接観察と、決算資料・インタビューなどの公開情報から調べたレポートです（1回の調査日にまとめて観察）。</p>
+      <ol class="chapters">
+        <li><b>総論 — 16サイトに共通する「売れる構造」</b><br><small>①欲しくなる理由を作る → ②買わない理由を消す → ③今買う理由 → ④買った後の設計、の4段で読む</small>
+          <ul class="small" style="margin-top:6px">
+            <li>原則1　商品を売る前に「カテゴリを言い直す」</li>
+            <li>原則2　商品数は「少数に集中」か「速く大量に出す」かの二択</li>
+            <li>原則3　「買わない理由」を1つずつ名指しで消す</li>
+            <li>原則4　値引きではなく「数が少ない」ことで今買う理由を作る</li>
+            <li>原則5　広告ではなく「人と物語」が人を呼ぶ</li>
+            <li>原則6　長く買ってもらえるかは「買った後の設計」で決まる</li>
+            <li>原則7　贈り物は「2つ目の市場」</li>
+            <li>原則8　最初の1画面は「誰のための何か・今来た理由・失敗しない保証」の3点</li>
+          </ul>
+        </li>
+        <li><b>第I部 海外のD2Cブランド10社</b><br><small>Loop Earplugs／Gymshark／Allbirds／Fashion Nova／Kylie Cosmetics／ColourPop／Bombas／Alo Yoga／Graza／Rhode Skin</small></li>
+        <li><b>第II部 日本の企業6社</b><br><small>土屋鞄製造所／ALLU／COHINA／Mr.CHEESECAKE／BASE FOOD／ミキハウス</small></li>
+        <li><b>取引先への提言</b><br><small>16社から取り入れることを8つにまとめ、着手する順番をつけた</small></li>
+      </ol>
+      <h3>1社ごとに同じ8つの観点で見る</h3>
+      <ul class="view8">
+        <li>1 ブランドの概要</li><li>2 立ち位置と物語</li><li>3 商品の出し方</li><li>4 サイトとページの作り</li>
+        <li>5 買ってもらう工夫</li><li>6 集客と仲間づくり</li><li>7 買った後のつながり</li><li>8 なぜ売れるのか</li>
+      </ul>
+      <p class="muted small" style="margin-top:10px">16社はすべて公開されている自社ECサイトです。提言の中身は取引先向けのため載せていません。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>工夫したこと</h2>
+    <ul>
+      <li>商品名・価格・画像を「どのモールのものを正とするか」を版ごとに決め、毎回スクリプトで全商品を作り直しました。手で直さないので、取り込み直しても食い違いが出ません。</li>
+      <li>長さや色を選ぶと、表紙と説明画像もその長さのものに切り替わるようにしました。</li>
+      <li>文字消しでは、赤いバッジを色で自動で見つけますが、探すのは画像の下の部分だけにしています。全体を探すと、人の肌の色をバッジと間違えて消してしまうためです。</li>
+      <li>楽天のクーポンやキャンペーン、LINEへの誘導の画像は、自社ECの説明画像から外すルールにしました。楽天のレビュー表示も外し、自社ECで新しく集める形に切り替えています。</li>
+      <li>手順書は「どの画面を開いて、どこを押して、何を貼るか」の細かさで書き、作業の数そのものも減らしました。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>結果</h2>
+    <p>32商品・48通りの長さ・色違いを、Shopifyに取り込める商品データにしました（11版）。表紙画像は9枚の文字消しと、48枚をShopifyに置く形への切り替えまでを行い、楽天の画像への参照は0件になりました。31商品の名前をAmazonの正式名にそろえ、テーマの部品は11個から1つにまとめています。決済や表示義務のページなど、公開前に必要な設定はチェックリストにまとめて渡しました。</p>
+  </section>
+
+  <footer>見本の商品名・価格・画像の名前はすべて架空です。取引先の店名・商品画像は載せていません。</footer>
+</div>
+<script>
+(function () {
+  var tabs = document.querySelectorAll('[role="tab"]');
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      tabs.forEach(function (u) {
+        var on = u === t;
+        u.setAttribute('aria-selected', on ? 'true' : 'false');
+        document.getElementById(u.getAttribute('aria-controls')).hidden = !on;
+      });
+    });
+  });
+
+  // 見本の1商品（架空）を、Shopifyの取り込み用の行に展開する
+  var PRICE = { 40: 5800, 45: 6200, 50: 6600, 55: 7000 };
+  var TITLE = {
+    r: '見本チェーン ネックレス 2mm シルバー925 メンズ レディース',
+    a: '[見本ブランド] チェーン ネックレス 幅2mm シルバー925'
+  };
+  var HANDLE = 'sample-chain-2mm';
+  var body = document.getElementById('csv-body');
+  var firstSel = document.getElementById('first');
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  function chosen() { return Array.prototype.filter.call(document.querySelectorAll('input[name="len"]'), function (c) { return c.checked; }).map(function (c) { return c.value; }); }
+  function tsrc() { return document.querySelector('input[name="tsrc"]:checked').value; }
+  function fillFirst(lens) {
+    var keep = firstSel.value || '45';
+    firstSel.innerHTML = lens.map(function (l) { return '<option value="' + l + '">' + l + 'cm</option>'; }).join('');
+    firstSel.value = lens.indexOf(keep) >= 0 ? keep : lens[0];
+  }
+  function cell(v, cls) { return v === '' ? '<td class="empty' + (cls ? ' ' + cls : '') + '"></td>' : '<td' + (cls ? ' class="' + cls + '"' : '') + '>' + esc(v) + '</td>'; }
+  function render() {
+    var lens = chosen();
+    if (!lens.length) { document.querySelector('input[name="len"][value="45"]').checked = true; lens = ['45']; }
+    fillFirst(lens);
+    var head = firstSel.value;
+    var order = [head].concat(lens.filter(function (l) { return l !== head; }));
+    document.getElementById('src-title').textContent = TITLE.r;
+    body.innerHTML = order.map(function (l, i) {
+      var img = 'files/' + HANDLE + '-' + l + '.jpg';
+      return '<tr' + (i === 0 ? ' class="first"' : '') + '>' +
+        cell(HANDLE) + cell(i === 0 ? TITLE[tsrc()] : '', 'jp') + cell('長さ', 'jp') + cell(l + 'cm') +
+        cell('sc2-' + l) + '<td class="num">' + PRICE[l] + '</td>' +
+        cell(i === 0 ? img : '') + cell(img) + cell(i === 0 ? 'ネックレス, チェーン, シルバー925' : '', 'jp') + '</tr>';
+    }).join('');
+    document.getElementById('csv-count').textContent = '元の1商品 → ' + order.length + '行';
+  }
+  document.querySelectorAll('input[name="len"], input[name="tsrc"]').forEach(function (c) { c.addEventListener('change', render); });
+  firstSel.addEventListener('change', render);
+  render();
+})();
+</script>
+</body>
+</html>

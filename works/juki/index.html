@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>商品開発のリサーチ班「重機」｜作品ページ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap">
+<link rel="stylesheet" href="../../assets/case.css">
+<style>
+section h3.sub { font-size: 17px; margin: 26px 0 10px; }
+.cond .card { border-top: 4px solid var(--accent); }
+.cond .val { font: 700 26px/1.2 var(--display); }
+.cond .val small { font-size: 14px; font-weight: 700; color: var(--muted); margin-left: 4px; }
+.grade td:first-child { font: 700 18px/1.4 var(--mono); width: 3em; text-align: center; }
+.cand td { vertical-align: middle; }
+.cand td:first-child { min-width: 10em; }
+.cand td .sub { display: block; font-size: 12px; color: var(--muted); }
+.cand .chip { font-size: 11.5px; }
+.cand tr.out td:first-child { color: var(--muted); }
+.verdict { font-weight: 700; white-space: nowrap; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12.5px; color: var(--muted); margin-top: 10px; align-items: center; }
+.steps { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 0 12px; font-size: 13px; }
+.steps span { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 2px 10px; }
+.steps span.last { border-color: var(--accent); color: var(--accent); font-weight: 700; }
+.steps i { font-style: normal; color: var(--muted); }
+.note-box { margin-top: 14px; font-size: 14px; }
+.note-box b { display: block; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../../">← ポートフォリオに戻る</a>
+
+  <header class="case-head">
+    <p class="eyebrow">AIの仕組みづくり・調査 · 2026.09</p>
+    <h1>商品開発のリサーチ班「重機」</h1>
+    <p class="lead">ネットで売る新しい商品を探すための調査チームです。「オー」を写して作り、探す前に大きさ・値段・売れている数の条件を数字で決め、決まった順番と証拠の強さで候補をふるいにかけます。</p>
+    <div class="meta"><span class="tag">Claude Code</span><span class="tag">Amazon・楽天の公開ページ</span><span class="tag">市場調査ツール</span></div>
+    <span class="sample-note">見本：架空の分野「大型の収納家具」の、架空の候補表です</span>
+  </header>
+
+  <section>
+    <h2>困りごと</h2>
+    <p>「売れそうな物」を好みや思いつきで探すと、調べるたびに方向が変わり、何で決めたのかも残りません。売れすぎている物は大手との値下げ合戦になり、小さすぎる物は差がつきません。調べる前に「何を通せば候補と呼べるか」を決める必要がありました。</p>
+  </section>
+
+  <section>
+    <h2>仕組み</h2>
+    <p>土台は会議の仕組み「オー」の写しです。30人の名前と気質はそのまま、役目だけを商品調査用に付け替えました。元の「オー」は読むだけで、一文字も書き換えない決まりです。</p>
+
+    <h3 class="sub">探す前に決めた、数字の条件</h3>
+    <div class="cards cond">
+      <div class="card"><h3>大きさ</h3><p class="val">約180cm<small>以上</small></p><p>箱の三辺（縦・横・高さ）の合計。宅配の200サイズ前後。小さい物は誰でも真似できるため。</p></div>
+      <div class="card"><h3>値段</h3><p class="val">約2万円<small>以上</small></p><p>1個あたりの売値。送料や保管料を引いても、利益が残る値段から。</p></div>
+      <div class="card"><h3>売れている数</h3><p class="val">月50〜500点</p><p>Amazonの「過去1か月で○点以上購入」の表示。1,000点を超える物は大手の土俵なので外します。</p></div>
+    </div>
+
+    <h3 class="sub">決める順番（この順を崩さない）</h3>
+    <ol class="flow">
+      <li><b>型に合うか</b><span>上の数字の条件に合うか。合わない物は、どれだけ魅力的でも次へ進めません。</span></li>
+      <li><b>証拠があるか</b><span>売れている証拠に、強さの印（◎○△×）を付けます。証拠のない物は候補にしません。</span></li>
+      <li><b>ずらせているか</b><span>参考にした動画や本が名指しした分野、すでに扱っている人がいる分野とは重ならない所へずらします。</span></li>
+      <li><b>運べるか</b><span>大型の配送、倉庫、返品の当てがあるか。当てがないまま大きな物を仕入れません。</span></li>
+      <li><b>売ってよいか</b><span>電気用品の安全基準、家電のリサイクル、製品の事故の責任、商標など、法律の壁を確かめます。</span></li>
+      <li><b>お客を一人に絞れるか</b><span>誰が今何で我慢していて、届いた翌朝に何が楽になるかを、原理の一文で言えるか。</span></li>
+      <li><b>最後に、人の好み</b><span>ここまでを通った候補の中から、人が選びます。好みから商品を探しには行きません。</span></li>
+    </ol>
+
+    <h3 class="sub">証拠の強さ</h3>
+    <div class="table-wrap grade">
+      <table>
+        <thead><tr><th>印</th><th>何を証拠と見るか</th></tr></thead>
+        <tbody>
+          <tr><td>◎</td><td>Amazonの商品ページにある「過去1か月で○点以上購入」の表示</td></tr>
+          <tr><td>○</td><td>Amazonのカテゴリの順位、楽天の週間・日間ランキング</td></tr>
+          <tr><td>△</td><td>レビューの数と、増える速さ</td></tr>
+          <tr><td>×</td><td>お店の「売れています」という自称、情報源の発言だけ</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted small" style="margin-top:8px">寸法は「本体＝商品ページに書いてある事実」「箱＝推定」と書き分けます。表示がゼロで落ちた分野も、次に同じ所を掘らないよう一覧に残します。</p>
+  </section>
+
+  <section>
+    <h2>見本</h2>
+    <p class="muted small" style="margin-bottom:10px">架空の分野「大型の収納家具」で、6つの候補を決める順番どおりにふるいにかけた表です（商品・数字はすべて架空）。</p>
+    <div class="steps" aria-label="決める順番"><span>型</span><i>→</i><span>証拠</span><i>→</i><span>ずらし</span><i>→</i><span>物流</span><i>→</i><span>法規</span><i>→</i><span>お客と原理</span><i>→</i><span class="last">人が選ぶ</span></div>
+    <div class="table-wrap cand">
+      <table>
+        <thead><tr><th>候補（架空）</th><th>大きさ<br>三辺の合計</th><th>値段</th><th>月の表示</th><th>証拠</th><th>物流</th><th>法規</th><th>判定</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>天井まで届く突っ張り本棚<span class="sub">幅90cm・木製</span></td>
+            <td><span class="chip ok">約205cm</span><span class="sub">箱・推定</span></td>
+            <td><span class="chip ok">24,800円</span></td>
+            <td><span class="chip ok">100点以上</span></td>
+            <td>◎</td>
+            <td><span class="chip ok">大型便で可</span></td>
+            <td><span class="chip ok">壁なし</span></td>
+            <td class="verdict"><span class="chip ok">候補</span></td>
+          </tr>
+          <tr>
+            <td>大容量の靴箱<span class="sub">高さ180cm・扉つき</span></td>
+            <td><span class="chip ok">約230cm</span><span class="sub">箱・推定</span></td>
+            <td><span class="chip ok">21,500円</span></td>
+            <td><span class="chip ok">50点以上</span></td>
+            <td>◎</td>
+            <td><span class="chip ok">大型便で可</span></td>
+            <td><span class="chip ok">壁なし</span></td>
+            <td class="verdict"><span class="chip ok">候補</span></td>
+          </tr>
+          <tr>
+            <td>電動で持ち上がる収納ベッド<span class="sub">シングル</span></td>
+            <td><span class="chip ok">約260cm</span><span class="sub">箱・推定</span></td>
+            <td><span class="chip ok">58,000円</span></td>
+            <td><span class="chip ok">50点以上</span></td>
+            <td>◎</td>
+            <td><span class="chip warn">2人で搬入</span></td>
+            <td><span class="chip warn">電気の基準・事故の責任</span></td>
+            <td class="verdict"><span class="chip warn">法規を先に</span></td>
+          </tr>
+          <tr>
+            <td>組み立て式の大型洋服だんす<span class="sub">幅120cm</span></td>
+            <td><span class="chip ok">約210cm</span><span class="sub">箱・推定</span></td>
+            <td><span class="chip warn">19,800円</span></td>
+            <td><span class="chip ok">300点以上</span></td>
+            <td>◎</td>
+            <td>—</td>
+            <td>—</td>
+            <td class="verdict"><span class="chip warn">大手が上位</span></td>
+          </tr>
+          <tr class="out">
+            <td>鍵付きの書類キャビネット<span class="sub">4段</span></td>
+            <td><span class="chip ok">約190cm</span><span class="sub">箱・推定</span></td>
+            <td><span class="chip ok">32,000円</span></td>
+            <td><span class="chip bad">表示なし</span></td>
+            <td>△</td>
+            <td>—</td>
+            <td>—</td>
+            <td class="verdict"><span class="chip bad">証拠なし</span></td>
+          </tr>
+          <tr class="out">
+            <td>3段のカラーボックス<span class="sub">2個組</span></td>
+            <td><span class="chip bad">約120cm</span><span class="sub">箱・推定</span></td>
+            <td><span class="chip bad">3,980円</span></td>
+            <td><span class="chip bad">1,000点以上</span></td>
+            <td>◎</td>
+            <td>—</td>
+            <td>—</td>
+            <td class="verdict"><span class="chip bad">型に合わない</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="legend"><span class="chip ok">条件に合う</span><span class="chip warn">確かめが要る・少し外れる</span><span class="chip bad">外れる</span><span>— は前の段で止まったので調べていない</span></div>
+
+    <div class="panel note-box">
+      <b>この見本でのまとめ（架空）</b>
+      本命は突っ張り本棚。お客は「本や漫画が床に積み上がり、部屋が狭くなっている人」で、届いた翌日から床が空く。効く理由は「人は物そのものより、片付いた後の場面が浮かぶ時に買う」。靴箱は2番手、収納ベッドは法規の確認が済むまで保留。どれに進むかは、最後に人が選びます。
+    </div>
+  </section>
+
+  <section>
+    <h2>工夫したこと</h2>
+    <ul>
+      <li>「大きい」「売れている」を、言葉ではなく数字で決めてから探しました。条件が言葉のままだと、調べるたびに意味がずれるからです。</li>
+      <li>決める順番を固定し、人の好みは一番最後にしました。好きな分野から探すと、型に合わない物まで候補に残ってしまうためです。</li>
+      <li>売れている証拠は、お店の自称ではなく、Amazonが表示する数を一番強い証拠にしました。</li>
+      <li>依頼者から新しい物差し（「数が多いセット売りは外す」「医療に関わる物は責任が重いので外す」など）をもらうたびに、条件に足して表を作り直しました。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>結果</h2>
+    <p>作った日（2026年9月15日）までの調査と合わせて約400語ぶんの分野を掘り、条件と証拠を通った本命の候補を4つまで絞りました。売れている表示がゼロだった約200語も、次に掘らないよう一覧に残しています。</p>
+    <p style="margin-top:10px">10月21日には、市場調査ツールで条件に合った1,936件をすべて読み、必須の条件2つと依頼者の物差しで12件まで絞りました。表は物差しが増えるたびに作り直し、その日のうちに第10版になりました。どれを売るかは依頼者が決めるため、ここでは実際の商品名は伏せています。</p>
+  </section>
+
+  <footer>見本の分野・商品・値段・数はすべて架空です。実際の調査の中身は、依頼者の事業のため載せていません。</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>マイページへ移動します｜見本資材 ハウスEC</title>
+<meta name="robots" content="noindex">
+<script>location.replace("mypage.html" + location.search + location.hash);</script>
+</head>
+<body>
+<div class="demo-banner" role="note" style="background:#F2C230;color:#1B1E24;font:700 13px/1.5 'Noto Sans JP',sans-serif;text-align:center;padding:6px 12px;position:relative;z-index:80">デモ版：会社名・価格・連絡先は架空です</div>
+<p>マイページへ移動します。切り替わらないときは <a id="go" href="mypage.html">こちら</a> をお開きください。</p>
+<script>document.getElementById("go").href = "mypage.html" + location.search + location.hash;</script>
+</body>
+</html>

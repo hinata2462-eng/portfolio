@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>SAMPLE MOTORS|在庫、置いてません。関東オークションから探す車の注文販売</title>
+<meta name="description" content="見本県見本市の車両調達代行。在庫を持たず、関東のオークションからあなたの1台を探して納車。30秒診断で依頼票を発行、LINEで2タップ相談。売却・査定もどうぞ。">
+<meta name="theme-color" content="#0E0F12">
+<meta property="og:title" content="SAMPLE MOTORS|在庫、置いてません。">
+<meta property="og:description" content="関東のオークションからあなたの1台を探して納車する注文販売。30秒診断→依頼票→LINEで相談。">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230E0F12'/%3E%3Ctext x='16' y='21' font-family='sans-serif' font-weight='900' font-size='13' fill='%23F2F0E9' text-anchor='middle'%3ET%26%23x2F;N%3C/text%3E%3Crect x='4' y='24' width='24' height='3' fill='%23E5342B'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Michroma&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/studio.jpg?d=3">
+<link rel="preload" as="image" href="assets/cars/gr86.png">
+<link rel="stylesheet" href="css/showroom.css?v=9">
+<script>
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    d.classList.add('fx-off');
+  } else {
+    d.classList.add('fx');
+  }
+})();
+</script>
+</head>
+<body>
+
+<!-- 撮影スタジオ(全画面背景・ページ遷移でスタジオごと横回転) -->
+<div class="bg" aria-hidden="true">
+  <div class="bg-img" id="bgA"><div class="bg-pan"></div></div>
+  <div class="bg-img" id="bgB"><div class="bg-pan"></div></div>
+  <div class="bg-veil" id="bgVeil"></div>
+</div>
+
+<header class="top">
+  <p class="brand">SAMPLE <span class="brand-sub">MOTORS</span></p>
+  <p class="brand-tag">DIGITAL SHOWROOM</p>
+</header>
+
+<nav class="tabs" id="tabs" aria-label="セクション">
+  <button type="button" class="tab active" data-go="0">TOP</button>
+  <button type="button" class="tab" data-go="1">仕組み</button>
+  <button type="button" class="tab" data-go="2">30秒診断</button>
+  <button type="button" class="tab" data-go="3">納車実績</button>
+  <button type="button" class="tab" data-go="4">メニュー</button>
+  <button type="button" class="tab" data-go="5">会社情報</button>
+</nav>
+
+<!-- 中央ステージ: 車が主役。文字はセンターに置かない -->
+<div class="stage" aria-hidden="true">
+  <div class="stage-center">
+    <div class="car-holder" id="carHolder">
+      <img class="car" id="carImg" src="assets/cars/gr86.png" alt="" decoding="async">
+      <!-- assets/models/<car>.glb が存在する車種は自動で本物の3D表示に切替(ドラッグで回転可) -->
+      <model-viewer id="carMv" class="car-mv" hidden
+        camera-controls disable-zoom disable-pan disable-tap
+        loading="eager" interaction-prompt="none"
+        shadow-intensity="0.7" exposure="1.15"
+        camera-orbit="35deg 78deg 105%"
+        alt=""></model-viewer>
+    </div>
+    <div class="turntable"><div class="tt-spin"></div><div class="tt-ring"></div></div>
+    <p class="car-name" id="carName">GR86</p>
+  </div>
+</div>
+
+<!-- 回転リング(6面): 各面は上端タイトル+下端アクションのみ -->
+<main class="viewport" id="viewport">
+  <div class="ring" id="ring">
+
+    <section class="face active" data-car="gr86" data-carname="GR86" data-bg="studio" aria-label="トップ">
+      <div class="face-head">
+        <p class="hero-badge"><span class="badge-dot" aria-hidden="true"></span>関東オークション会場 対応</p>
+        <h1 class="hero-title">在庫、<span class="kw">置いてません。</span></h1>
+        <p class="face-lead">展示場も在庫も持たない、中間マージンのない注文販売。<br>関東のオークションから探して、そのまま納車します。</p>
+      </div>
+      <div class="face-foot">
+        <button type="button" class="btn btn-primary btn-wide js-open-quiz">30秒診断で依頼票をつくる</button>
+        <a href="#" class="btn btn-ghost btn-wide js-line-link" data-line-context="hero">LINEでそのまま相談</a>
+        <p class="swipe-hint" aria-hidden="true">スクロール / スワイプでショールームが回ります</p>
+      </div>
+    </section>
+
+    <section class="face" data-car="alphard" data-carname="ALPHARD" data-bg="studio-warm" aria-label="仕組み">
+      <div class="face-head">
+        <p class="sec-no">01 / SYSTEM</p>
+        <h2 class="sec-title">仕組みは<span class="kw">3ステップ</span></h2>
+        <p class="face-lead">きいて、さがして、とどける。それだけです。</p>
+      </div>
+      <div class="face-foot">
+        <div class="chip-row" aria-hidden="true">
+          <span class="chip">1 きく</span><span class="chip-arrow">→</span>
+          <span class="chip">2 さがす</span><span class="chip-arrow">→</span>
+          <span class="chip">3 とどける</span>
+        </div>
+        <button type="button" class="btn btn-ghost btn-wide js-open-sheet" data-sheet="system">3ステップを詳しく見る</button>
+      </div>
+    </section>
+
+    <section class="face" data-car="harrier" data-carname="HARRIER" data-bg="studio-dark" aria-label="30秒診断">
+      <div class="face-head">
+        <p class="sec-no">02 / DIAGNOSIS</p>
+        <h2 class="sec-title">30秒<span class="kw">車さがし診断</span></h2>
+        <p class="face-lead">7問答えると、そのまま送れる「依頼票」を発行。</p>
+      </div>
+      <div class="face-foot">
+        <button type="button" class="btn btn-primary btn-wide js-open-sheet" data-sheet="quiz">診断をはじめる</button>
+        <p class="foot-note-sm">タコメーターが振り切れたら依頼票が出てきます</p>
+      </div>
+    </section>
+
+    <section class="face" data-car="nbox" data-carname="N-BOX" data-bg="studio-white" aria-label="納車実績">
+      <div class="face-head">
+        <p class="sec-no">03 / RECORDS</p>
+        <h2 class="sec-title">納車実績<span class="kw">データ</span></h2>
+        <p class="face-lead">1台納めるたびに、伝票が増えます。</p>
+      </div>
+      <div class="face-foot">
+        <div class="records-summary" id="recordsSummary">
+          <div class="sum-item"><p class="sum-num"><span class="mono-num countup" id="sumCount">0</span><span class="sum-unit">台</span></p><p class="sum-label">累計納車</p></div>
+          <div class="sum-item"><p class="sum-num"><span class="mono-num countup" id="sumDays">0</span><span class="sum-unit">日</span></p><p class="sum-label">平均日数</p></div>
+          <div class="sum-item"><p class="sum-num"><span class="mono-num" id="sumVenues">50+</span></p><p class="sum-label">対応会場</p></div>
+        </div>
+        <button type="button" class="btn btn-ghost btn-wide js-open-sheet" data-sheet="records">実績の伝票を見る</button>
+      </div>
+    </section>
+
+    <section class="face" data-car="jimny" data-carname="JIMNY" data-bg="studio-warm" aria-label="メニュー">
+      <div class="face-head">
+        <p class="sec-no">04 / MENU</p>
+        <h2 class="sec-title">メニュー<span class="kw">表</span></h2>
+        <p class="face-lead">買う・売る・維持・困りごと、ぜんぶ窓口はここ。</p>
+      </div>
+      <div class="face-foot">
+        <div class="chip-row" aria-hidden="true">
+          <span class="chip">買う</span><span class="chip">売る</span><span class="chip">維持</span><span class="chip">困りごと</span>
+        </div>
+        <button type="button" class="btn btn-ghost btn-wide js-open-sheet" data-sheet="menu">メニューとFAQを見る</button>
+      </div>
+    </section>
+
+    <section class="face" data-car="crown" data-carname="CROWN" data-bg="studio-dark" aria-label="会社情報">
+      <div class="face-head">
+        <p class="sec-no">05 / COMPANY</p>
+        <h2 class="sec-title">運営者<span class="kw">情報</span></h2>
+        <p class="face-lead">古物商許可・所在地・固定電話、ぜんぶ公開しています。</p>
+      </div>
+      <div class="face-foot">
+        <a href="#" class="btn btn-primary btn-wide js-line-link" data-line-context="company">LINEで相談してみる</a>
+        <button type="button" class="btn btn-ghost btn-wide js-open-sheet" data-sheet="company">会社情報を見る</button>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<button type="button" class="edge-nav edge-prev" id="navPrev" aria-label="前のセクションへ回す">‹</button>
+<button type="button" class="edge-nav edge-next" id="navNext" aria-label="次のセクションへ回す">›</button>
+
+<!-- 詳細シート(下からスライド。センターの車を隠すのは開いている間だけ) -->
+<div class="sheet-backdrop" id="sheetBackdrop" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="false" aria-label="詳細" hidden>
+  <div class="sheet-grab">
+    <span class="sheet-handle" aria-hidden="true"></span>
+    <button type="button" class="sheet-close" id="sheetClose">閉じる ✕</button>
+  </div>
+  <div class="sheet-body" id="sheetBody">
+
+    <div class="sheet-page" data-page="system" hidden>
+      <div class="mini-step"><p class="ms-no">STEP 1</p><h3>きく</h3><p>30秒診断かLINEで、予算・用途・希望を教えてください。曖昧でもOK、プロが翻訳します。</p></div>
+      <div class="mini-step"><p class="ms-no">STEP 2</p><h3>さがす</h3><p>関東のオークション会場から条件に合う車を捜索。出品票と写真をお見せして、入札はあなたのGOサインが出てから。</p></div>
+      <div class="mini-step"><p class="ms-no">STEP 3</p><h3>とどける</h3><p>落札後は整備・名義変更までまとめて代行。ご自宅まで納車します。中間マージンがない分、総額は正直です。</p></div>
+      <div class="human">
+        <div class="human-photo" data-todo="公開前に代表の実写真(正方形)へ差し替え">
+          <svg viewBox="0 0 80 80" role="img" aria-label="代表 見本の写真(準備中)"><circle cx="40" cy="30" r="14" fill="#3a3d45"/><path d="M12 74c3-18 14-26 28-26s25 8 28 26" fill="#3a3d45"/></svg>
+        </div>
+        <p class="human-word">「条件が固まってなくても、遠慮なく丸投げしてください。」<span class="human-name">— 代表 見本</span></p>
+      </div>
+      <button type="button" class="btn btn-primary btn-wide js-open-quiz">30秒診断をはじめる</button>
+    </div>
+
+    <div class="sheet-page" data-page="quiz" hidden>
+      <div class="quiz-panel" id="quizPanel">
+        <div class="tacho-wrap" aria-hidden="true">
+          <svg class="tacho" id="tacho" viewBox="0 0 200 120">
+            <path class="tacho-arc" d="M20 110 A 80 80 0 0 1 180 110" fill="none"/>
+            <path class="tacho-red" d="M172.1 75.3 A 80 80 0 0 1 180 110" fill="none"/>
+            <g class="tacho-ticks" id="tachoTicks"></g>
+            <line class="tacho-needle" id="tachoNeedle" x1="100" y1="110" x2="22" y2="110"/>
+            <circle class="tacho-hub" cx="100" cy="110" r="7"/>
+          </svg>
+          <p class="tacho-label"><span id="tachoCount" class="mono-num">0</span><span class="tacho-total">/7</span></p>
+        </div>
+        <div class="quiz-body" id="quizBody" aria-live="polite"></div>
+        <div class="quiz-foot">
+          <button type="button" class="quiz-back" id="quizBack" hidden>← 前の質問へ</button>
+          <button type="button" class="quiz-partial" id="quizPartial">ここまでの条件で相談する →</button>
+        </div>
+      </div>
+      <div class="slip-area" id="slipArea" hidden>
+        <p class="sr-only" role="status" id="slipStatus"></p>
+        <div class="slit" aria-hidden="true"><span class="slit-light"></span></div>
+        <div class="slip-slot">
+          <article class="slip" id="slip" aria-label="車両調達依頼票" tabindex="-1">
+            <header class="slip-head">
+              <svg class="slip-car" viewBox="0 0 48 26" aria-hidden="true">
+                <path d="M3 17 C4 11 8 9 14 8 L19 3 C25 1 33 2 37 6 L43 10 C45 12 45 15 43 17 L38 17 M30 17 L22 17 M11 17 L8 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="14" cy="18" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <circle cx="34" cy="18" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <p class="slip-brand">SAMPLE MOTORS</p>
+              <h3 class="slip-title">車 両 調 達 依 頼 票</h3>
+              <p class="slip-meta">伝票No. <span id="slipNo">TN-000000-0000</span></p>
+              <p class="slip-meta">発行日時 <span id="slipDate"></span></p>
+            </header>
+            <dl class="slip-rows" id="slipRows"></dl>
+            <div class="slip-total">
+              <p class="slip-total-label">総額目安</p>
+              <p class="slip-total-num" id="slipTotal">¥0,000,000</p>
+              <p class="slip-total-note">※オークション相場・車両状態により変動します</p>
+            </div>
+            <p class="slip-stamp-note">この依頼票をそのままLINEで送信できます(内容入力済み・2タップ)</p>
+          </article>
+        </div>
+        <div class="slip-actions">
+          <a href="#" class="btn btn-primary btn-wide" id="slipLineBtn">LINEでこの依頼票を送る</a>
+          <button type="button" class="btn btn-ghost" id="slipCopyBtn">内容をコピー(予備)</button>
+          <button type="button" class="quiz-retry" id="quizRetry">条件を変えてやり直す</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sheet-page" data-page="records" hidden>
+      <div class="record-filters" id="recordFilters" role="group" aria-label="実績の絞り込み"></div>
+      <div class="record-list" id="recordList" aria-live="polite"></div>
+      <p class="records-note" id="recordsNote" hidden></p>
+      <div class="sell-cta">
+        <p class="sell-copy">買うだけじゃなく、<strong>売るのも直販価格。</strong></p>
+        <a href="#" class="btn btn-signal btn-wide js-sell" data-sell-source="records">今の車、いくら? → 無料査定</a>
+      </div>
+    </div>
+
+    <div class="sheet-page" data-page="menu" hidden>
+      <div class="menu-card"><h3 class="menu-cat">買う</h3>
+        <ul class="menu-list">
+          <li><span>オークション代行(車両調達)</span><span class="menu-price mono-num" data-todo="公開前に実料金へ">手数料 55,000円〜</span></li>
+          <li><span>登録・名義変更・納車まで込み</span><span class="menu-price">コミコミ見積り</span></li>
+          <li class="menu-biz"><span>社用車の調達代行(法人・複数台)</span><span class="menu-price">応相談</span></li>
+        </ul>
+        <p class="menu-note">※手数料は車両価格・会場により変動します。見積りは無料です。</p>
+      </div>
+      <div class="menu-card"><h3 class="menu-cat">売る</h3>
+        <ul class="menu-list">
+          <li><span>買取・売却代行(オークション直販)</span><span class="menu-price">成約時手数料のみ</span></li>
+          <li><span>廃車・不動車の引き取り</span><span class="menu-price">無料(状態による)</span></li>
+        </ul>
+        <a href="#" class="menu-sell-btn js-sell" data-sell-source="menu">今の車、いくら? → 無料査定</a>
+      </div>
+      <div class="menu-card"><h3 class="menu-cat">維持</h3>
+        <ul class="menu-list">
+          <li><span>車検・整備(提携工場)</span><span class="menu-price">見積り無料</span></li>
+          <li><span>タイヤ・オイル・消耗品交換</span><span class="menu-price">実費+工賃</span></li>
+          <li><span>任意保険の見直し相談</span><span class="menu-price">無料</span></li>
+        </ul>
+      </div>
+      <div class="menu-card"><h3 class="menu-cat">困りごと</h3>
+        <ul class="menu-list">
+          <li><span>事故・故障・バッテリー上がり</span><span class="menu-price">まずLINE</span></li>
+          <li><span>名義・住所変更などの手続き</span><span class="menu-price">代行OK</span></li>
+          <li><span>車のことなんでも相談</span><span class="menu-price">無料</span></li>
+        </ul>
+      </div>
+      <h3 class="sheet-sub">よくある質問</h3>
+      <details class="faq-item"><summary>なぜ普通の中古車屋より安くなるんですか?</summary><p>展示場・在庫・広告のコストを持たず、オークション落札価格+手数料の明朗会計だからです。中間マージンが乗らない分、同じ車なら総額で差が出ます。</p></details>
+      <details class="faq-item"><summary>現車を見ないで買うのが不安です。</summary><p>評価点や車両状態など、会場規約の範囲でお伝えできる情報はすべて共有し、気になる点は落札前にLINEでご説明します。評価点の低い車はこちらからお止めします。</p></details>
+      <details class="faq-item"><summary>納車までどのくらいかかりますか?</summary><p>条件が固まっていれば最短1〜2週間、平均は実績データの通りです。急ぎの場合はその旨をお伝えください。</p></details>
+      <details class="faq-item"><summary>保証や整備はどうなりますか?</summary><p>納車前に提携工場で点検・整備を行います。有償の中古車保証(外部保証)にも対応しています。</p></details>
+      <details class="faq-item"><summary>支払い方法は? ローンは使えますか?</summary><p>現金振込のほか、提携ローンがご利用いただけます。事前審査もLINEからご案内できます。</p></details>
+      <details class="faq-item"><summary>落札後にキャンセルはできますか?</summary><p>オークションの規約上、落札後のキャンセルはできません。そのため入札は必ず、条件と金額をご確認いただいたGOサインの後にだけ行います。</p></details>
+      <details class="faq-item"><summary>希望の車が落札できなかったら費用はかかりますか?</summary><p>落札できなければ手数料はいただきません。条件に合う車が出るまで探し続けます。</p></details>
+      <details class="faq-item"><summary>遠方でも頼めますか?</summary><p>納車は見本市を中心に見本県と近隣の県が基本エリアですが、関東全域もご相談ください。陸送費込みでお見積りします。</p></details>
+    </div>
+
+    <div class="sheet-page" data-page="company" hidden>
+      <dl class="trust-rows" data-todo="公開前: 許可番号・住所・電話・代表名を実データへ差し替え">
+        <div><dt>屋号</dt><dd>SAMPLE MOTORS(サンプルモーターズ)</dd></div>
+        <div><dt>代表者</dt><dd>見本 太郎</dd></div>
+        <div><dt>所在地</dt><dd>見本県見本市〇〇町 0-0-0</dd></div>
+        <div><dt>固定電話</dt><dd><a href="tel:0276000000" class="js-tel mono-num">0276-00-0000</a><span class="trust-hours">(受付 10:00–19:00 / 不定休)</span></dd></div>
+        <div><dt>古物商許可</dt><dd>見本県公安委員会 第000000000000号</dd></div>
+        <div><dt>納車エリア</dt><dd>見本市・見本県内・近隣の県(関東全域応相談)</dd></div>
+        <div><dt>取扱会場</dt><dd>USS・TAA・CAA・JU ほか関東オークション会場</dd></div>
+      </dl>
+      <p class="foot-copy">画面はショールーム、伝票は証拠。</p>
+      <p class="foot-note">© 2026 SAMPLE MOTORS — Demo</p>
+      <p class="foot-note"><a class="classic-link" href="classic.html">クラシック版(縦スクロール)を見る</a></p>
+    </div>
+
+  </div>
+</div>
+
+<nav class="dock" id="dock" aria-label="クイックメニュー">
+  <button type="button" class="dock-btn dock-quiz js-open-quiz"><span class="dock-ico" aria-hidden="true">◎</span>30秒診断</button>
+  <a href="#" class="dock-btn dock-line js-line-link" data-line-context="dock"><span class="dock-ico" aria-hidden="true">✉</span>LINE相談</a>
+  <a href="tel:0276000000" class="dock-btn dock-tel" id="dockTel"><span class="dock-ico" aria-hidden="true">☎</span><span id="dockTelLabel">電話する</span></a>
+</nav>
+
+<script src="js/showroom.js?v=3" defer></script>
+</body>
+</html>

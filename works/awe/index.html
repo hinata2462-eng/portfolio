@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AIの会議・制作の仕組み「オー」｜作品ページ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap">
+<link rel="stylesheet" href="../../assets/case.css">
+<style>
+section h3.sub { font-size: 17px; margin: 26px 0 10px; }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 12px; }
+.filters button { font: inherit; font-size: 13.5px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.filters button[aria-pressed="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.filters button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.filters button .n { font-family: var(--mono); font-size: 12px; opacity: .75; margin-left: 4px; }
+.roster { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 10px; }
+.roster li { margin: 0; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--gc, var(--accent)); border-radius: 8px; padding: 11px 13px; display: grid; gap: 3px; align-content: start; min-width: 0; }
+.roster li[hidden] { display: none; }
+.roster li[data-g="A"] { --gc: var(--accent); }
+.roster li[data-g="R"] { --gc: var(--live); }
+.roster li[data-g="E"] { --gc: var(--warn); }
+.roster li[data-g="S"] { --gc: var(--bad); }
+.roster li[data-g="X"] { --gc: var(--muted); }
+.roster .hd { display: flex; align-items: baseline; gap: 8px; }
+.roster .code { font: 500 12px/1 var(--mono); color: var(--muted); }
+.roster b { font-family: var(--display); font-size: 16.5px; }
+.roster .role { font-size: 13px; font-weight: 700; color: var(--gc); }
+.roster q { font-size: 12.5px; color: var(--muted); line-height: 1.65; quotes: "「" "」"; }
+.count { font-size: 12.5px; color: var(--muted); margin-bottom: 8px; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12.5px; color: var(--muted); margin-top: 12px; }
+.legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; background: var(--c); }
+/* 会議の流れ */
+.pipe { list-style: none; padding: 0; margin: 0; display: grid; gap: 0; }
+.pipe > li { margin: 0; position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 8px; }
+.pipe > li + li { margin-top: 30px; }
+.pipe > li + li::before { content: "↓"; position: absolute; top: -27px; left: 50%; transform: translateX(-50%); font: 700 18px/24px var(--mono); color: var(--muted); }
+.pipe .st { font: 500 12px/1 var(--mono); letter-spacing: .08em; color: var(--accent); }
+.pipe h3 { font-size: 17px; }
+.pipe p { font-size: 14px; color: var(--muted); }
+.slots { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; }
+.slot { border: 1px dashed var(--line); border-radius: 8px; padding: 8px 10px; display: grid; gap: 5px; align-content: start; }
+.slot > span { font-size: 12px; color: var(--muted); font-weight: 700; }
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.p { font-size: 12.5px; border-radius: 999px; padding: 1px 9px; background: var(--paper); border: 1px solid var(--line); white-space: nowrap; }
+.p i { font-style: normal; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-right: 3px; }
+.rounds { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; }
+.rounds .r { border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; font-size: 13.5px; }
+.rounds .r b { display: block; font-size: 14px; }
+.rounds .arr { font: 700 18px var(--mono); color: var(--muted); }
+.councils { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.council { border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; display: grid; gap: 4px; align-content: start; }
+.council b { font-size: 14px; }
+.council small { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+.council .who { font-size: 12px; color: var(--accent); }
+/* 会議の記録 */
+.rec h3 { font-size: 16.5px; margin: 18px 0 6px; }
+.rec h3:first-of-type { margin-top: 6px; }
+.rec .head { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 13px; color: var(--muted); }
+.answer { border-left: 4px solid var(--accent); background: var(--paper); border-radius: 0 8px 8px 0; padding: 10px 14px; font-weight: 700; }
+.rec dl { display: grid; grid-template-columns: 9em 1fr; gap: 6px 12px; margin: 8px 0 0; font-size: 14px; }
+.rec dt { color: var(--muted); font-weight: 700; }
+.rec dd { margin: 0; }
+.rec td.who { white-space: nowrap; }
+.sanpo td:first-child, .sanpo td:last-child { white-space: nowrap; }
+.rec td.who small { display: block; color: var(--muted); font-size: 11.5px; }
+.chg { font-size: 12.5px; color: var(--muted); }
+.chg.on { color: var(--accent); font-weight: 700; }
+.skill { white-space: nowrap; font-family: var(--mono); font-size: 13px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px; }
+@media (max-width: 700px) {
+  .rounds { grid-template-columns: minmax(0, 1fr); }
+  .rounds .arr { text-align: center; transform: rotate(90deg); }
+  .rec dl { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .rec dd { margin-bottom: 8px; }
+}
+/* mobile-stack */
+@media (max-width: 700px) {
+  .voices thead { display: none; }
+  .voices table, .voices tbody, .voices tr, .voices td { display: block; }
+  .voices tr { padding: 10px 13px; border-bottom: 1px solid var(--line); }
+  .voices tr:last-child { border-bottom: 0; }
+  .voices td { border: 0; padding: 0; }
+  .voices td.who { font-weight: 700; }
+  .voices td.who small { display: inline; margin-left: 6px; font-weight: 400; }
+  .voices td.chg { margin-top: 3px; }
+  .voices td.chg::before { content: "2回目："; font-weight: 400; color: var(--muted); }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../../">← ポートフォリオに戻る</a>
+
+  <header class="case-head">
+    <p class="eyebrow">AIの仕組みづくり・調査 · 2026.08 – 運用中</p>
+    <h1>AIの会議・制作の仕組み「オー」</h1>
+    <p class="lead">集客、お金、法律、初めて見る人の目など、39人の専門家役が会議して方向を決め、作った物を出す前に検品する仕組みです。毎朝ニュースと本を読み、同じ向きの話が3回たまった時だけ、考え方を少しずつ変えます。</p>
+    <div class="meta"><span class="tag">Claude Code</span><span class="tag">スキル 39個</span><span class="tag">定時タスク（毎朝2本）</span><span class="tag">人物ファイル 39枚</span></div>
+    <span class="sample-note">見本：人物の名前と役目は実際の設定、会議のお題と発言は架空です</span>
+  </header>
+
+  <section>
+    <h2>困りごと</h2>
+    <p>AIに一人で考えさせると、見方が偏ったり、確かめないまま言い切ったりします。前に直してもらったことを、別の日の作業で落としてしまうこともありました。相談相手としても、作り手としても、検品係としても頼れる「チーム」が欲しい、というのが出発点です。</p>
+  </section>
+
+  <section>
+    <h2>仕組み</h2>
+    <ol class="flow">
+      <li><b>相談の大きさを決める</b><span>最初の決まりは、クイック（6〜9席）・通常（12〜18席）・フル（30席＋5つの評議会）。今は「戻せない」「1か月以上続く」「人の信頼に響く」などに当たれば大きな判断として、人数を10人から15人に増やします。</span></li>
+      <li><b>その週のリーダーが席を選ぶ</b><span>持ち場の中心3人・反対側2人・番外1人・最近出番の少ない人4人の枠で選び、毎回同じ顔ぶれにしません。リーダーは毎週月曜に交代します。</span></li>
+      <li><b>一人ずつ、別々に意見を出す</b><span>メンバーは一人ずつ別のAIとして、ほかの人の答えを見ずに意見を出します。2回目はお互いの弱い所を突き、考えを変えるかを答えます。8割の意見がそろったら、わざと反対役を立てます。</span></li>
+      <li><b>評議会で穴をふさぐ</b><span>お客の得、独自さ、届け先への合わせ方、仕上げ、三方良しの5つ。決まった顔ぶれが、それぞれの穴を必ず閉じます。</span></li>
+      <li><b>記録係が前の決定と照らし、リーダーがまとめる</b><span>記録係のメモラが「決めたことの台帳」と食い違いがないかを確かめ、リーダーが「おすすめ1つ・考えを変えた人・割れた所・決めてほしいこと1つ」にまとめます。決めるのは人です。</span></li>
+      <li><b>作って、出す前に検品する</b><span>実物を開いて、言い過ぎ、数字の突き合わせ、初めて読む人がつまずかないかを点検してから出します。</span></li>
+    </ol>
+
+    <h3 class="sub">全員が守る3つの柱（憲章）</h3>
+    <div class="cards">
+      <div class="card"><h3>原理原則から考える</h3><p>「業界では普通」「流行っている」を根拠にしません。なぜそうなるのかを最低3回たどり、人の心や仕組みの原理まで降りてから案を組みます。</p></div>
+      <div class="card"><h3>三方良し</h3><p>売り手・買い手・世間の三者が、それぞれ単独で得をする案だけを採ります。一方でも損をする案は、差し引きで許さず、別の案を出します。</p></div>
+      <div class="card"><h3>相手の得から始める</h3><p>提案は「何を売りたいか」ではなく「相手が何を得るか」から書きます。相手が払うお金や手間と、断る理由3つを先に書きます。</p></div>
+    </div>
+
+    <h3 class="sub">毎朝、少しずつ育つ</h3>
+    <div class="cards">
+      <div class="card"><h3>7時ごろ：稽古</h3><p>世の中のニュースと流行を10〜12件見に行きます。半分以上は事業から遠い分野（科学、暮らし、文化、心と体など）。一件ずつ「なぜ」を3回重ね、その動きが効く人に1行ずつ配ります。同じ向きの動きが、別の日・別の出どころで3回たまった人だけ、考え方を一段寄せます（1日2人まで）。</p></div>
+      <div class="card"><h3>8時半ごろ：読書</h3><p>人の深い心についての本1冊と論文1本を、決めた棚の順に読みます。主張ごとに「定説か、議論中か、追試で再現されなかったか」を書き、確かさの高い学びだけを、効く人の考え方に1行足します。</p></div>
+      <div class="card"><h3>一人ずつ呼べる</h3><p>39人はそれぞれスキルになっています。<span class="skill">/o-e4-novi</span> のように打つと、その人だけが自分のファイルを読んで答え、最後に「反対側の人ならここを疑う」が1行つきます。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>見本</h2>
+    <div class="tabs" role="tablist" aria-label="見本の切り替え">
+      <button type="button" role="tab" id="t-ros" aria-selected="true" aria-controls="p-ros">39人の一覧</button>
+      <button type="button" role="tab" id="t-flow" aria-selected="false" aria-controls="p-flow">会議の流れ</button>
+      <button type="button" role="tab" id="t-rec" aria-selected="false" aria-controls="p-rec">会議の記録（見本）</button>
+    </div>
+
+    <div class="panel" id="p-ros" role="tabpanel" aria-labelledby="t-ros">
+      <p class="muted small">名前は架空の人物です。カギかっこは、その人がいつも自分に問いかける質問です。</p>
+      <div class="filters" role="group" aria-label="グループで絞り込む">
+        <button type="button" data-f="all" aria-pressed="true">すべて<span class="n">39</span></button>
+        <button type="button" data-f="A" aria-pressed="false">発想<span class="n">10</span></button>
+        <button type="button" data-f="R" aria-pressed="false">実現<span class="n">10</span></button>
+        <button type="button" data-f="E" aria-pressed="false">検査<span class="n">10</span></button>
+        <button type="button" data-f="S" aria-pressed="false">SNS<span class="n">6</span></button>
+        <button type="button" data-f="X" aria-pressed="false">番外<span class="n">3</span></button>
+      </div>
+      <p class="count" id="ros-count" aria-live="polite">39人を表示しています</p>
+      <ul class="roster" id="roster">
+        <li data-g="A"><span class="hd"><span class="code">A1</span><b>アクシア</b></span><span class="role">事業の目的</span><q>これは誰の何のための物か。その人が家族に一言で言えるか。</q></li>
+        <li data-g="A"><span class="hd"><span class="code">A2</span><b>リプラ</b></span><span class="role">新しい技術の取り入れ方</span><q>言葉の説明がなくても、触れた瞬間に伝わるか。その高度さは目的に効いているか。</q></li>
+        <li data-g="A"><span class="hd"><span class="code">A3</span><b>トノア</b></span><span class="role">屋号の顔の一貫性</span><q>並べた時、全部が同じ声の調子で話しているか。</q></li>
+        <li data-g="A"><span class="hd"><span class="code">A4</span><b>レゾナ</b></span><span class="role">人の気持ちと信頼</span><q>受け取った人は、どんな気持ちで閉じるか。恩着せ・疑い・置き去りを感じないか。</q></li>
+        <li data-g="A"><span class="hd"><span class="code">A5</span><b>マニカ</b></span><span class="role">人が人に話したくなる理由</span><q>このずれや失敗を、誰も傷つけずに一緒に笑える一言にできないか。笑いの代償は誰が払うか。</q></li>
+        <li data-g="A"><span class="hd"><span class="code">A6</span><b>シグナ</b></span><span class="role">覚えてもらう一点</span><q>通りすがりの人が足を止めるのは、どの一瞬か。</q></li>
+        <li data-g="A"><span class="hd"><span class="code">A7</span><b>タクティ</b></span><span class="role">また来てもらう仕組み</span><q>疲れた指で、最初の一回で反応が返るか。終わった後、次も来たくなる続きがあるか。</q></li>
+        <li data-g="A"><span class="hd"><span class="code">A8</span><b>ミラエ</b></span><span class="role">競合と手本の使い方</span><q>手本の何を借り、何を変え、何を似せないか。借りた物の意味を消していないか。</q></li>
+        <li data-g="A"><span class="hd"><span class="code">A9</span><b>イグナ</b></span><span class="role">常識を一つ破る戦い方</span><q>誰も傷つけずに破れる常識はどれか。破った時に止める線はどこか。</q></li>
+        <li data-g="A"><span class="hd"><span class="code">A10</span><b>オルカ</b></span><span class="role">事業の取捨</span><q>半分捨てたら、残りはもっと強く成り立たないか。</q></li>
+        <li data-g="R"><span class="hd"><span class="code">R1</span><b>ミノラ</b></span><span class="role">お客の片付けたい用事</span><q>この人に向けた説明の順番は何か。使った後、その人の一日の何が変わるか。</q></li>
+        <li data-g="R"><span class="hd"><span class="code">R2</span><b>フォルジ</b></span><span class="role">売る場所ごとの作法</span><q>見えない裏面（届け先の作法・端末・音・形）まで仕上がっているか。</q></li>
+        <li data-g="R"><span class="hd"><span class="code">R3</span><b>パスカ</b></span><span class="role">一人のお客を得るまでの道と、その費用</span><q>紙一枚で、家族の誰でも迷わず進めるか。</q></li>
+        <li data-g="R"><span class="hd"><span class="code">R4</span><b>アーキア</b></span><span class="role">事業の仕組み図</span><q>図の上で成り立つことが、暮らしの中でも使えるか。</q></li>
+        <li data-g="R"><span class="hd"><span class="code">R5</span><b>ルメト</b></span><span class="role">止まらない自動化</span><q>『動いている』と『使える』は同じか。止まった時、誰が気づくか。</q></li>
+        <li data-g="R"><span class="hd"><span class="code">R6</span><b>バラン</b></span><span class="role">お金の回り方と値付け</span><q>値下げの前に、語り方と置き場所を変えられないか。その値段に、どんな証拠があるか。</q></li>
+        <li data-g="R"><span class="hd"><span class="code">R7</span><b>リレア</b></span><span class="role">あなたの時間と続けられる量</span><q>疲れた夜のあなたが何もしなくても、明日もこれは回るか。</q></li>
+        <li data-g="R"><span class="hd"><span class="code">R8</span><b>セントラ</b></span><span class="role">法と約束の安心</span><q>これで損を負うのは誰か。その人は知っているか、止められるか。</q></li>
+        <li data-g="R"><span class="hd"><span class="code">R9</span><b>アンケル</b></span><span class="role">小さく負けて生き残る</span><q>『置いてある』と『届く』は同じか。一番弱い条件でも意味が残るか。</q></li>
+        <li data-g="R"><span class="hd"><span class="code">R10</span><b>カジト</b></span><span class="role">実行の順番</span><q>いま渡せる状態か。最初の一手と、渡す前の確かめ方は決まっているか。</q></li>
+        <li data-g="E"><span class="hd"><span class="code">E1</span><b>イレナ</b></span><span class="role">競合の構造と替えのききにくさ</span><q>名前を競合に入れ替えても成り立つ所はどこか。ここだけの声はどれか。</q></li>
+        <li data-g="E"><span class="hd"><span class="code">E2</span><b>トレサ</b></span><span class="role">真似と権利の線</span><q>似ているのか、盗んでいるのか。その差を具体で言えるか。</q></li>
+        <li data-g="E"><span class="hd"><span class="code">E3</span><b>メモラ</b></span><span class="role">あなたの判断の記録</span><q>これは、いつ、誰が言ったことか。今もそうか。</q></li>
+        <li data-g="E"><span class="hd"><span class="code">E4</span><b>ノヴィ</b></span><span class="role">初めての人の目</span><q>詳しくない家族がこれを見て、一語でつまずかないか。最初の1行・1秒で、何の話で自分に何の得か分かるか。</q></li>
+        <li data-g="E"><span class="hd"><span class="code">E5</span><b>ルペナ</b></span><span class="role">出す前の最後の一割</span><q>最後の大きさで、一文字ずつ、一本ずつ数えたか。</q></li>
+        <li data-g="E"><span class="hd"><span class="code">E6</span><b>リブラ</b></span><span class="role">数字の読み方と比べ方</span><q>数字に出てこない一人の声は何と言っているか。その数字は、自分の規模の実物か。</q></li>
+        <li data-g="E"><span class="hd"><span class="code">E7</span><b>ハザラ</b></span><span class="role">事業のリスクと撤退線</span><q>失敗した時、戻れないのは誰か。やめる線は先に決めたか。</q></li>
+        <li data-g="E"><span class="hd"><span class="code">E8</span><b>チゼラ</b></span><span class="role">やめて強くする</span><q>消す前に、それが誰の何を支えていたか。</q></li>
+        <li data-g="E"><span class="hd"><span class="code">E9</span><b>ヴェイラ</b></span><span class="role">比べ方の公平さ</span><q>名前と努力を伏せても、こちらが勝つか。</q></li>
+        <li data-g="E"><span class="hd"><span class="code">E10</span><b>シジル</b></span><span class="role">出す前の最終判断</span><q>今出す理由だけでなく、今止める理由はないか。戻せる決定か、戻せない決定か。</q></li>
+        <li data-g="S"><span class="hd"><span class="code">S1</span><b>ツカミ</b></span><span class="role">フックと台本</span><q>指を止めた人は、最初の1秒で何を見て、何を知りたくなったか。最後まで見た人は、何を待っていたか。</q></li>
+        <li data-g="S"><span class="hd"><span class="code">S2</span><b>ナガレ</b></span><span class="role">届き方の仕組み</span><q>この場所は、何を数えて、誰に、次に何を見せようとしているか。この投稿は、その数え方にどう読まれているか。</q></li>
+        <li data-g="S"><span class="hd"><span class="code">S3</span><b>ハカリ</b></span><span class="role">数字の読み方</span><q>どの数字が先に動き、どの数字がそれについてきたか。数字の裏で、見た人は実際に何をしたか。</q></li>
+        <li data-g="S"><span class="hd"><span class="code">S4</span><b>マトイ</b></span><span class="role">広告の運用</span><q>その広告にお金を払うと、誰が、何人、一人いくらで来て、その人は戻ってくるか。</q></li>
+        <li data-g="S"><span class="hd"><span class="code">S5</span><b>ユタカ</b></span><span class="role">収益化</span><q>この見られ方で、どこからお金が入る条件がそろうか。その入り方は、見る人の信頼を削らないか。</q></li>
+        <li data-g="S"><span class="hd"><span class="code">S6</span><b>ツナギ</b></span><span class="role">つながり</span><q>この人は、誰かにこれを見せたくなるか。返事をもらった人は、次に何をするか。</q></li>
+        <li data-g="X"><span class="hd"><span class="code">X1</span><b>カブキ</b></span><span class="role">目立ち方と、人のつながりから売上を作る</span><q>みんなが当たり前にやっていることを一つ選び、その逆をやったら、誰が喜んで、誰を連れて来るか。</q></li>
+        <li data-g="X"><span class="hd"><span class="code">X2</span><b>ハナミチ</b></span><span class="role">面白い案を、形を作り替えて本命に組み込む</span><q>この案の面白さの芯はどこか。芯を殺さずに、形・規模・時期・売り場・値段のどれを変えれば、本命と一緒に立てるか。</q></li>
+        <li data-g="X"><span class="hd"><span class="code">X3</span><b>ホンネ</b></span><span class="role">人間の本質と心理</span><q>この人は、口では何と言い、実際には何をし、本当は何を恐れ、何を欲しがっているか。</q></li>
+      </ul>
+      <div class="legend">
+        <span style="--c:var(--accent)">A 発想：何を作るか、どう心を動かすか</span>
+        <span style="--c:var(--live)">R 実現：どう作り、回し、守るか</span>
+        <span style="--c:var(--warn)">E 検査：出す前に何を疑うか</span>
+        <span style="--c:var(--bad)">S SNS：集客と広告</span>
+        <span style="--c:var(--muted)">X 番外：違う角度を持ち込む</span>
+      </div>
+    </div>
+
+    <div class="panel" id="p-flow" role="tabpanel" aria-labelledby="t-flow" hidden>
+      <p class="muted small" style="margin-bottom:14px">お題「地元のパン屋が、平日の夕方の客を増やすには」（架空）で、会議が進む順番を図にしました。</p>
+      <ol class="pipe">
+        <li>
+          <p class="st">1 問い</p>
+          <h3>お題を1文にして、大きさを決める</h3>
+          <p>「地元のパン屋が、平日の夕方の客を増やすには」。戻せる小さな試しなので、通常の大きさ（10人・2回）。この週のリーダーは A1 アクシア。</p>
+        </li>
+        <li>
+          <p class="st">2 席</p>
+          <h3>枠に沿って10人を選ぶ</h3>
+          <div class="slots">
+            <div class="slot"><span>持ち場の中心（3）</span><div class="chips"><span class="p"><i>R1</i>ミノラ</span><span class="p"><i>A7</i>タクティ</span><span class="p"><i>R6</i>バラン</span></div></div>
+            <div class="slot"><span>反対側（2）</span><div class="chips"><span class="p"><i>E6</i>リブラ</span><span class="p"><i>E7</i>ハザラ</span></div></div>
+            <div class="slot"><span>番外（1）</span><div class="chips"><span class="p"><i>X1</i>カブキ</span></div></div>
+            <div class="slot"><span>最近出番の少ない人（4）</span><div class="chips"><span class="p"><i>S6</i>ツナギ</span><span class="p"><i>A6</i>シグナ</span><span class="p"><i>R7</i>リレア</span><span class="p"><i>E4</i>ノヴィ</span></div></div>
+          </div>
+        </li>
+        <li>
+          <p class="st">3 意見</p>
+          <h3>別々に出して、ぶつけ合う</h3>
+          <div class="rounds">
+            <div class="r"><b>1回目</b>10人が、ほかの答えを見ずに一人1〜3行の意見を出す</div>
+            <span class="arr" aria-hidden="true">→</span>
+            <div class="r"><b>2回目</b>全員の意見を読み、弱い所を突く。考えを変えるかを答える</div>
+          </div>
+        </li>
+        <li>
+          <p class="st">4 評議会</p>
+          <h3>5つの評議会で穴をふさぐ</h3>
+          <div class="councils">
+            <div class="council"><b>お客の得</b><small>誰が何に困り、何ができるようになるか</small><span class="who">レゾナ・ミノラ・ノヴィ</span></div>
+            <div class="council"><b>独自さ</b><small>真似になっていないか、ここだけの一点はあるか</small><span class="who">トノア・マニカ・ミラエ・イグナ・イレナ・トレサ</span></div>
+            <div class="council"><b>届け先に合わせる</b><small>文字数・大きさ・画面など、届く先の条件で実物を確かめる</small><span class="who">リプラ・シグナ・タクティ・フォルジ・パスカ・アンケル・ルペナ</span></div>
+            <div class="council"><b>仕上げ</b><small>指示の抜け、費用、権利、証拠、戻し方、最後の判断</small><span class="who">アクシア・オルカ・カジト・ハザラ・シジルなど14人</span></div>
+            <div class="council"><b>三方良し</b><small>売り手・買い手・世間がそれぞれ得をするか。根拠は事実か推定か</small><span class="who">バラン・ミノラ・セントラ・リブラ</span></div>
+          </div>
+          <p>フルの会議では5つすべて。提案や値段、公開の判断では、小さな会議でも三方良しの確認を省きません。</p>
+        </li>
+        <li>
+          <p class="st">5 決定</p>
+          <h3>前の決定と照らして、リーダーがまとめる</h3>
+          <p>記録係 E3 メモラが「決めたことの台帳」と食い違いがないかを確かめ、リーダーがおすすめ1つにまとめます。考えを変えた人、割れた所、人に決めてほしいこと1つも添えます。</p>
+        </li>
+        <li>
+          <p class="st">6 検品</p>
+          <h3>出す前に、3つの目で点検する</h3>
+          <div class="chips"><span class="p"><i>E10</i>シジル：戻せる決定か</span><span class="p"><i>E5</i>ルペナ：数字と文字の突き合わせ</span><span class="p"><i>E4</i>ノヴィ：初めての人がつまずかないか</span></div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="panel rec" id="p-rec" role="tabpanel" aria-labelledby="t-rec" hidden>
+      <div class="head"><span>会議の記録（見本・架空）</span><span>大きさ：通常（10人・2回）</span><span>リーダー：A1 アクシア</span><span>記録：E3 メモラ</span></div>
+      <h3>お題：地元のパン屋が、平日の夕方の客を増やすには</h3>
+      <p class="answer">おすすめ：水曜の夕方だけ「明日の朝ごはんセット」を出し、店先の黒板に一行で知らせる。4週間、水曜の夕方のレジの回数を前の4週と比べ、増えなければやめる。</p>
+      <dl>
+        <dt>お客</dt><dd>仕事帰りに寄る人。朝は時間がなく、朝ごはんを抜きがち。セットがあれば、翌朝は温めるだけで済む。払うのは、いつもより少し高い代金と、寄り道の5分。</dd>
+        <dt>効く理由</dt><dd>人は物そのものより、使う場面が目に浮かんだ時に選ぶ。「明日の朝」という場面を、店先で先に見せる。</dd>
+      </dl>
+
+      <h3>メンバーの声</h3>
+      <div class="table-wrap voices">
+        <table>
+          <thead><tr><th>席</th><th>1回目の意見</th><th>2回目</th></tr></thead>
+          <tbody>
+            <tr><td class="who">R1 ミノラ<small>持ち場</small></td><td>夕方の客の用事は「明日の朝を楽にしたい」。売るのはパンより、明日の朝。</td><td class="chg">変えず</td></tr>
+            <tr><td class="who">A7 タクティ<small>持ち場</small></td><td>来る理由が毎回ない。曜日を決めて「水曜はあれ」にすると、習慣になる。</td><td class="chg">変えず</td></tr>
+            <tr><td class="who">R6 バラン<small>持ち場</small></td><td>夕方の値引きには反対。定価で買う人を、夕方に移すだけになる。</td><td class="chg on">夕方だけのセットなら定価で売れる、と賛成へ</td></tr>
+            <tr><td class="who">E6 リブラ<small>反対側</small></td><td>「平日が少ない」は感覚では？ 曜日と時間ごとのレジの回数を、4週ぶん並べてから決めたい。</td><td class="chg">変えず（始める前に数を出すことが条件に）</td></tr>
+            <tr><td class="who">E7 ハザラ<small>反対側</small></td><td>焼く量を増やして余れば、毎日の損になる。試すのは1品・4週まで。</td><td class="chg">変えず</td></tr>
+            <tr><td class="who">X1 カブキ<small>番外</small></td><td>逆に「夕方にしか買えないパン」を作る。並ぶ理由ができる。</td><td class="chg on">リレアの指摘で、毎日から水曜だけに縮めた</td></tr>
+            <tr><td class="who">S6 ツナギ<small>出番の少ない人</small></td><td>常連さんに「明日の分、取っておきます」とひと声。人が人を連れて来る。</td><td class="chg">変えず（割れた所へ）</td></tr>
+            <tr><td class="who">A6 シグナ<small>出番の少ない人</small></td><td>店先の黒板に一行だけ。「明日の朝ごはん、あります」。</td><td class="chg on">採用</td></tr>
+            <tr><td class="who">R7 リレア<small>出番の少ない人</small></td><td>店主一人で回る量か。仕込みが増える案は続かない。</td><td class="chg">変えず</td></tr>
+            <tr><td class="who">E4 ノヴィ<small>出番の少ない人</small></td><td>「取り置き」は通りがかりの人に伝わりにくい。「予約できます」に。</td><td class="chg on">採用</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>会議でどう決まったか</h3>
+      <dl>
+        <dt>取り入れた</dt><dd>ミノラの「売るのは明日の朝」、タクティの曜日決め、シグナの黒板の一行、ノヴィの言葉の直し。</dd>
+        <dt>退けた</dt><dd>夕方の値引き。定価で買う人を移すだけで、売れ残りを待つ癖もつく（バラン・ハザラ）。</dd>
+        <dt>割れた所</dt><dd>予約を電話でも受けるか。ツナギは受ける、リレアは店頭だけ（電話に出る手が足りない）。</dd>
+        <dt>決めてほしいこと</dt><dd>予約を電話でも受けるかどうか、の1つだけ。</dd>
+      </dl>
+
+      <h3>三方良しの確認</h3>
+      <div class="table-wrap sanpo">
+        <table>
+          <thead><tr><th>立場</th><th>得るもの</th><th>判定</th></tr></thead>
+          <tbody>
+            <tr><td>売り手（お店）</td><td>夕方の売上が増える見込み。予約があるので、焼く量が読める。</td><td><span class="chip ok">○ 見込み</span></td></tr>
+            <tr><td>買い手（お客）</td><td>翌朝の手間が減る。</td><td><span class="chip ok">○</span></td></tr>
+            <tr><td>世間（まわり）</td><td>予約分と少しだけを焼くので、捨てるパンが増えない。</td><td><span class="chip ok">○</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>検品</h3>
+      <ul>
+        <li>シジル：4週でやめられる、戻せる決定。出してよい。</li>
+        <li>ルペナ：「4週」と「1か月」が混ざっていたので、「4週」にそろえた。</li>
+        <li>ノヴィ：黒板の一行は、初めて通りかかった人でも何の話か分かる。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>工夫したこと</h2>
+    <ul>
+      <li>一度のニュースで考え方を変えません。いきなり変えると、昨日までできたことが今日できなくなるからです。同じ向きの話が3回たまった人だけ、1日2人まで、少しずつ寄せます。</li>
+      <li>毎回同じ人が選ばれて偏らないよう、席の選び方に枠を作りました。前回と7人以上同じなら入れ替えます。</li>
+      <li>決めたことは台帳に残し、リーダーが替わっても、新しい事実と人の「はい」がなければ変えません。</li>
+      <li>自動の仕事を直した時は、人がいない状態で最後まで動かし、記録が書き込まれたのを見てから「直った」と言うことにしています。</li>
+      <li>39人は「同じAIが別々の会話で考える形」で、本当の別人ではありません。そのことも、使う人に正直に伝えています。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>結果</h2>
+    <p>2026年8月から、サイト、動画、商品調査の判断と検品に毎日使っています。11月5日〜17日の13日間には28回の会議を記録し、大きな判断では15人前後が2〜3回やり取りしました。リーダーはこの間に3人が交代で務めています。</p>
+    <p style="margin-top:10px">毎朝の稽古は、はじめ書き込みの確認で止まっていて、11月3日〜15日の観測は保存されていませんでした。人がいなくても止まらない形に作り直し、11月16日から毎朝の記録が残っています。毎朝の読書は11月15日から始め、最初の3日で本3冊・論文3本を記録しました。</p>
+  </section>
+
+  <footer>人物はすべて架空のAIの役です。「会議の流れ」と「会議の記録」のお題・発言・お店は架空の見本です。</footer>
+</div>
+<script>
+(function () {
+  var tabs = document.querySelectorAll('[role="tab"]');
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      tabs.forEach(function (u) {
+        var on = u === t;
+        u.setAttribute('aria-selected', on ? 'true' : 'false');
+        document.getElementById(u.getAttribute('aria-controls')).hidden = !on;
+      });
+    });
+  });
+  var btns = document.querySelectorAll('.filters button');
+  var items = document.querySelectorAll('#roster li');
+  var count = document.getElementById('ros-count');
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var f = b.getAttribute('data-f'), n = 0;
+      btns.forEach(function (c) { c.setAttribute('aria-pressed', c === b ? 'true' : 'false'); });
+      items.forEach(function (li) {
+        var show = f === 'all' || li.getAttribute('data-g') === f;
+        li.hidden = !show;
+        if (show) n++;
+      });
+      count.textContent = n + '人を表示しています';
+    });
+  });
+})();
+</script>
+</body>
+</html>
